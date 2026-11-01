@@ -1,0 +1,226 @@
+<script>
+jQuery(function($) {
+  // Listen for changes to the cart note field
+  {% comment %} $('#CartNote').on('change', function() {
+    var newNote = $(this).val();
+
+    // Send the update using the Shopify API utility function or a direct AJAX call
+    updateCartNote(newNote);
+  }); {% endcomment %}
+  $(document).ready(function(){
+    jQuery.ajax({
+      url: '/cart.js',
+      type: 'GET',
+      dataType: 'json',
+      success: function(cart) {
+        // Code to run on success, 'cart' is the JSON response
+        console.log('Cart data:', cart);
+        var selling_plan = 0;
+      
+        if(cart.items){
+          for (let [key, value] of Object.entries(cart.items)) {
+            var cart_item = value;
+            if(cart_item.url.includes('selling_plan')){
+               selling_plan = 1
+            }
+          }
+        }
+        var cust_type = $('body').attr('data-customer');
+        console.log(cust_type);
+        updateCartNote(selling_plan, cust_type, cart); 
+      },
+      error: function(xhr, status, error) {
+        // Handle errors
+        console.error('Error fetching cart:', error);
+      }
+    });
+   {% comment %} var newNote = "Subscriber";
+      updateCartNote(newNote); {% endcomment %}
+  })
+
+  $(".cart-note__input").on('change', function(){    // 2nd way
+    jQuery.ajax({
+      url: '/cart.js',
+      type: 'GET',
+      dataType: 'json',
+      success: function(cart) {
+        // Code to run on success, 'cart' is the JSON response
+        console.log('Cart data:', cart);
+        var selling_plan = 0;
+        var note = $('.cart-note__input').val();
+
+        if(cart.items){
+          for (let [key, value] of Object.entries(cart.items)) {
+            var cart_item = value;
+            if(cart_item.url.includes('selling_plan')){
+               selling_plan = 1
+            }
+          }
+        }
+        var cust_type = $('body').attr('data-customer');
+        console.log(cust_type);
+        updateCartNotes(selling_plan, cust_type,note, cart); 
+      },
+      error: function(xhr, status, error) {
+        // Handle errors
+        console.error('Error fetching cart:', error);
+      }
+    });
+  });
+  function updateCartNotes(selling_plan, cust_type,note, cart) {
+    var newNote;
+    
+    if(cart.note != ""){
+      if(selling_plan == 1 && cust_type == "new"){
+        if(cart.note.includes('Subscriber') && cart.note.includes('New')){
+          newNote = note
+        }else if(cart.note.includes('Subscriber')){
+          newNote = "New | "+note;
+        }else if(cart.note.includes('New')){
+          newNote = "Subscriber | "+note;
+        }else{
+          newNote = "Subscriber | New | "+note;
+        }
+      }else if(selling_plan == 1){
+        if(cart.note.includes('Subscriber')){
+          newNote = note
+        }else{
+           newNote = "Subscriber | "+note;
+        }
+      }else if(cust_type == "new"){
+        if(cart.note.includes('New')){
+          newNote = note;
+        }else{
+           newNote = "New | "+note;
+        }
+      }else{
+        newNote = note;
+      }
+    }else{
+      if(selling_plan == 1 && cust_type == "new"){
+        if(cart.note.includes('Subscriber') && cart.note.includes('New')){
+          newNote = note
+        }else if(cart.note.includes('Subscriber')){
+          newNote = "New | "+note;
+        }else if(cart.note.includes('New')){
+          newNote = "Subscriber | "+note;
+        }else{
+          newNote = "Subscriber | New | "+note;
+        }
+      }else if(selling_plan == 1){
+        if(cart.note.includes('Subscriber')){
+          newNote = cart.note
+        }else{
+           newNote = "Subscriber | "+note;
+        }
+      }else if(cust_type == "new"){
+        if(cart.note.includes('New')){
+          newNote = cart.note
+        }else{
+           newNote = "New | "+note;
+        }
+      }else{
+        newNote = note;
+      }
+    }
+    
+    var params = {
+      type: 'POST',
+      url: '/cart/update.js',
+      data: { note: newNote },
+      dataType: 'json',
+      success: function(cart) {
+        // Handle success: the cart object is returned in the response
+        console.log('Cart note updated successfully:', cart);
+        // Optional: Update other parts of the UI (e.g., cart drawer)
+        // You may need to trigger a custom event for other scripts in your theme
+        $(document).trigger('cart:updated', cart); 
+      },
+      error: function(XMLHttpRequest, textStatus) {
+        // Handle error
+        console.error('Error updating cart note:', textStatus);
+      }
+    };
+
+    jQuery.ajax(params);
+  }
+  // A utility function to make the AJAX request
+  function updateCartNote(selling_plan, cust_type, cart) {
+    var newNote;
+    
+    if(cart.note != ""){
+      if(selling_plan == 1 && cust_type == "new"){
+        if(cart.note.includes('Subscriber') && cart.note.includes('New')){
+          newNote = cart.note
+        }else if(cart.note.includes('Subscriber')){
+          newNote = "New | "+cart.note;
+        }else if(cart.note.includes('New')){
+          newNote = "Subscriber | "+cart.note;
+        }else{
+          newNote = "Subscriber | New | "+cart.note;
+        }
+      }else if(selling_plan == 1){
+        if(cart.note.includes('Subscriber')){
+          newNote = cart.note
+        }else{
+           newNote = "Subscriber | "+cart.note;
+        }
+      }else if(cust_type == "new"){
+        if(cart.note.includes('New')){
+          newNote = cart.note
+        }else{
+           newNote = "New | "+cart.note;
+        }
+      }else{
+        newNote = cart.note;
+      }
+    }else{
+      if(selling_plan == 1 && cust_type == "new"){
+        if(cart.note.includes('Subscriber') && cart.note.includes('New')){
+          newNote = cart.note
+        }else if(cart.note.includes('Subscriber')){
+          newNote = "New | "+cart.note;
+        }else if(cart.note.includes('New')){
+          newNote = "Subscriber | "+cart.note;
+        }else{
+          newNote = "Subscriber | New | "+cart.note;
+        }
+      }else if(selling_plan == 1){
+        if(cart.note.includes('Subscriber')){
+          newNote = cart.note
+        }else{
+           newNote = "Subscriber | "+cart.note;
+        }
+      }else if(cust_type == "new"){
+        if(cart.note.includes('New')){
+          newNote = cart.note
+        }else{
+           newNote = "New | "+cart.note;
+        }
+      }else{
+        newNote = cart.note;
+      }
+    }
+    
+    var params = {
+      type: 'POST',
+      url: '/cart/update.js',
+      data: { note: newNote },
+      dataType: 'json',
+      success: function(cart) {
+        // Handle success: the cart object is returned in the response
+        console.log('Cart note updated successfully:', cart);
+        // Optional: Update other parts of the UI (e.g., cart drawer)
+        // You may need to trigger a custom event for other scripts in your theme
+        $(document).trigger('cart:updated', cart); 
+      },
+      error: function(XMLHttpRequest, textStatus) {
+        // Handle error
+        console.error('Error updating cart note:', textStatus);
+      }
+    };
+
+    jQuery.ajax(params);
+  }
+});
+</script>

@@ -1,0 +1,138 @@
+{% comment %}
+  subscription-free-beef.liquid  —  Freedom Farms
+  ------------------------------------------------------------
+  When "STEAK PACK – DAILY DEAL" is added to cart WITH a subscription
+  (selling plan), this adds the line item property:
+        Free Gift: 1lb of FREE GROUND BEEF
+  One-time purchases are added without it.
+
+  Theme-agnostic: it catches every add-to-cart path
+    1. normal form submit to /cart/add
+    2. fetch() calls to /cart/add(.js)  (FormData, URLSearchParams, JSON, string)
+    3. XMLHttpRequest / jQuery $.ajax / $.post calls to /cart/add(.js)
+  so it works with custom AJAX carts, quick view, and sticky add-to-cart bars.
+
+  INSTALL
+  1. Online Store > Themes > … > Edit code
+  2. Snippets > Add a new snippet > name it: subscription-free-beef
+     Paste this whole file in and Save.
+  3. Open layout/theme.liquid and paste this line just above </body>:
+         {% render 'subscription-free-beef' %}
+  4. Save. Test: choose Subscribe & Save > Add to cart > open /cart
+     — the line should show "Free Gift: 1lb of FREE GROUND BEEF".
+
+  CONFIG (below)
+  - gift_products: comma-separated product handles that get the gift.
+  - gift_label: rename to "_Free Gift" (leading underscore) to hide the
+    property from the customer but keep it on the order for packing.
+{% endcomment %}
+
+{%- assign gift_products = 'steak-deal-of-the-day-copy' | split: ',' -%}
+{%- assign gift_label = 'Free' -%}
+{%- assign gift_value = '1lb GROUND BEEF' -%}
+
+{%- capture gift_variant_ids -%}
+  {%- for handle in gift_products -%}
+    {%- assign p = all_products[handle] -%}
+    {%- for v in p.variants -%}{{ v.id }},{%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<script>
+(function () {
+  if (window.__subGiftInstalled) return;
+  window.__subGiftInstalled = true;
+
+  var CONFIG = {
+    label: {{ gift_label | json }},
+    value: {{ gift_value | json }},
+    variantIds: {{ gift_variant_ids | split: ',' | json }}.filter(Boolean).map(String)
+  };
+  var PROP_KEY = 'properties[' + CONFIG.label + ']';
+  var ADD_URL = /\/cart\/add(\.js|\.json)?(\?|$)/;
+
+  // Does this item qualify? (right product + a subscription plan chosen)
+  function qualifies(variantId, sellingPlan) {
+    if (!sellingPlan || String(sellingPlan).trim() === '') return false;
+    if (!CONFIG.variantIds.length) return true;          // no list = all products
+    return CONFIG.variantIds.indexOf(String(variantId)) !== -1;
+  }
+
+  // ---- body transformers --------------------------------------------------
+  function patchParams(params) {          // FormData or URLSearchParams
+    if (qualifies(params.get('id'), params.get('selling_plan')) && !params.has(PROP_KEY)) {
+      params.append(PROP_KEY, CONFIG.value);
+    }
+    return params;
+  }
+
+  function patchJsonItem(item) {
+    if (item && qualifies(item.id, item.selling_plan)) {
+      item.properties = item.properties || {};
+      if (!(CONFIG.label in item.properties)) item.properties[CONFIG.label] = CONFIG.value;
+    }
+  }
+
+  function patchBody(body) {
+    try {
+      if (!body) return body;
+      if (typeof FormData !== 'undefined' && body instanceof FormData) return patchParams(body);
+      if (typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams) return patchParams(body);
+      if (typeof body === 'string') {
+        var trimmed = body.trim();
+        if (trimmed.charAt(0) === '{') {                        // JSON body
+          var data = JSON.parse(trimmed);
+          if (Array.isArray(data.items)) data.items.forEach(patchJsonItem);
+          else patchJsonItem(data);
+          return JSON.stringify(data);
+        }
+        return patchParams(new URLSearchParams(body)).toString(); // url-encoded body
+      }
+    } catch (e) { /* never break add-to-cart */ }
+    return body;
+  }
+
+  // ---- 1. fetch() --------------------------------------------------------
+  if (window.fetch) {
+    var origFetch = window.fetch;
+    window.fetch = function (input, init) {
+      try {
+        var url = typeof input === 'string' ? input : (input && input.url) || '';
+        if (ADD_URL.test(url) && init && init.body) init.body = patchBody(init.body);
+      } catch (e) {}
+      return origFetch.apply(this, arguments);
+    };
+  }
+
+  // ---- 2. XMLHttpRequest (covers jQuery $.ajax / $.post) -------------------
+  var origOpen = XMLHttpRequest.prototype.open;
+  var origSend = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.open = function (method, url) {
+    this.__subGiftUrl = url;
+    return origOpen.apply(this, arguments);
+  };
+  XMLHttpRequest.prototype.send = function (body) {
+    try {
+      if (this.__subGiftUrl && ADD_URL.test(this.__subGiftUrl)) body = patchBody(body);
+    } catch (e) {}
+    return origSend.call(this, body);
+  };
+
+  // ---- 3. normal (non-AJAX) form submits & themes that read FormData(form) --
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || !form.action || !ADD_URL.test(form.action)) return;
+    var old = form.querySelector('input[data-sub-gift]');
+    if (old) old.remove();
+    var fd = new FormData(form);
+    if (qualifies(fd.get('id'), fd.get('selling_plan')) && !fd.has(PROP_KEY)) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = PROP_KEY;
+      input.value = CONFIG.value;
+      input.setAttribute('data-sub-gift', '');
+      form.appendChild(input);
+    }
+  }, true);
+})();
+</script>

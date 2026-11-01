@@ -1,0 +1,235 @@
+<!-- simply-insurance -->
+{%- assign sidecart = shop.metafields.SimplyInsurance.sidecart -%}
+{%- assign sidecart = false -%}
+<script>
+  window.simplyInsurance = window.simplyInsurance || {};
+  window.cn = function(o) {
+    return "undefined" == typeof o || null == o || "" == o.toString().trim()
+  };
+  simplyInsurance.insurancePlan = {{ shop.metafields.SimplyInsurance.InsurancePlan | json }};
+  simplyInsurance.insurancePlan = JSON.parse(simplyInsurance.insurancePlan);
+  simplyInsurance.money_format = "{{ shop.money_format }}";
+  simplyInsurance.cartJson = {{ cart | json }};
+  simplyInsurance.SkipProduct = {{ shop.metafields.SimplyInsurance.SkipProduct | json }};
+  simplyInsurance.SkipProduct = JSON.parse(simplyInsurance.SkipProduct);
+  simplyInsurance.skipSkus = simplyInsurance.SkipProduct
+    ? simplyInsurance.SkipProduct.sku
+      ? simplyInsurance.SkipProduct.sku
+      : []
+    : [];
+  simplyInsurance.skipHandles = simplyInsurance.SkipProduct
+    ? simplyInsurance.SkipProduct.handle
+      ? simplyInsurance.SkipProduct.handle
+      : []
+    : [];
+
+  simplyInsurance.customCSS = {{ shop.metafields.SimplyInsurance.CustomCSS | json }};
+  simplyInsurance.customJS = {{ shop.metafields.SimplyInsurance.customJS | json }};{% comment %}console.log(simplyInsurance.skipHandles);{% endcomment %}{% comment %}console.log(simplyInsurance.skipSkus);{% endcomment %}simplyInsurance.simplySelector = ".si-widget";
+  function checkInsure() {
+    if (cn(simplyInsurance.insurancePlan)) {
+      return;
+    }
+  }
+  checkInsure();
+
+/* Load css */
+  var cssId = 'myCss'; // you could encode the css path itself to generate id..
+  if (!document.getElementById(cssId)) {
+    var head = document.getElementsByTagName('head')[0];
+    var link = document.createElement('link');
+    link.id = cssId;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = "{{'simply-insurance.css' | asset_url}}";
+    link.media = 'all';
+    head.appendChild(link);
+  }
+</script>
+<style>
+  .simply-insurance {
+    display: none;
+  }
+  {{ simplyInsurance.customCSS}}
+</style>
+
+<script
+  src="{{'simply-insurance.js' | asset_url}}"
+  type="text/javascript"
+  defer="defer"></script>
+<script>
+
+  simplyInsurance.getSectionInnerHTML = function(html, selector = '.shopify-section') {
+    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+  }
+
+  simplyInsurance.getSectionsToRender = function() {
+    return [
+      {
+        id: 'cart-drawer',
+        selector: '#CartDrawer'
+      }, {
+        id: 'cart-icon-bubble'
+      }
+    ];
+  }
+
+  simplyInsurance.getSectionDOM = function(html, selector = '.shopify-section') {
+    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector);
+  }
+
+  simplyInsurance.renderContents = function(parsedState) {
+    simplyInsurance.getSectionsToRender().forEach((section => {
+      const sectionElement = section.selector
+        ? document.querySelector(section.selector)
+        : document.getElementById(section.id);
+      sectionElement.innerHTML = simplyInsurance.getSectionInnerHTML(parsedState[section.id], section.selector);
+    }));
+  }
+  simplyInsurance.updateSideCartforDawnBasedTheme = function() {
+    fetch(window.Shopify.routes.root + "?sections=cart-drawer,cart-icon-bubble").then(res => res.json()).then((state) => {
+      simplyInsurance.renderContents(state);
+    });
+  }
+
+
+  simplyInsurance.cartModificationCallback = function(changeType) {
+
+    $.get("/cart?view=json", function(e) {
+                                $(".widget_shopping_cart_content").html(e)
+                            }).always(function() {
+                                baselThemeModule.gl_currency(),
+                                window.Shopify && Shopify.StorefrontExpressButtons && nathan_settings.use_additional_checkout_buttons && Shopify.StorefrontExpressButtons.initialize()
+                            }),
+                            $.getJSON("/cart.js", function(e) {
+                                $(".cartCount").html(e.item_count),
+                                $(".basel-cart-subtotal >span").html(Shopify.formatMoney(e.total_price, theme.moneyFormat))
+                            }).always(function() {
+                                baselThemeModule.gl_currency()
+                            });
+    
+    {% if template contains 'cart'%}
+      if (typeof prepareDataForDisplayWidgetByRule !== "undefined" && prepareDataForDisplayWidgetByRule) {} else {
+        location.reload();
+      }
+    {% endif %}
+
+// Sticky Cart & Slide Cart - heysenior
+    if (typeof(window.HS_SLIDE_CART_UPDATE) === 'function') {
+      window.HS_SLIDE_CART_UPDATE(function() {});
+    }
+
+// Icart upsell
+    if (typeof prepareDataForDisplayWidgetByRule !== "undefined" && prepareDataForDisplayWidgetByRule) {
+      prepareDataForDisplayWidgetByRule();
+    }
+
+    {% comment %}
+      Slide Cart & Cart Drawer - TCC
+    {% endcomment %}
+    if (typeof(window.SLIDECART_UPDATE) === 'function') {
+      window.SLIDECART_UPDATE(function() {});
+    }
+    document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+      bubbles: true // same code for prestige theme
+    }));
+
+    if (typeof(theme) !== 'undefined' && theme != null) {
+      if (typeof theme.cart !== 'undefined' && theme.cart != null) {
+        if (typeof(theme.cart.updateAllHtml) === 'function') {
+          theme.cart.updateAllHtml();
+        }
+        if (typeof(theme.cart.updateTotals) === 'function') {
+          theme.cart.updateTotals();
+        }
+      }
+      if (typeof(theme.jQuery) !== 'undefined' && theme.jQuery != null) {
+        theme.jQuery("body").trigger("added.ajaxProduct")
+      }
+    }
+
+    document.body.dispatchEvent(new CustomEvent("cart:refresh"));
+    document.body.dispatchEvent(new CustomEvent("added.ajaxProduct"));
+    document.dispatchEvent(new CustomEvent('cart:build'));
+
+    simplyInsurance.updateSideCartforDawnBasedTheme();
+
+  }
+  simplyInsurance.mode = 1;{% comment %}simplyInsurance.html = '<div class="simply-insurance widget"><div class="header-wrap"><h3>##plan_title</h3><div class="switch-button"><input hidden="hidden" class="cart-insurance-input" type="checkbox" ><label class="switch" for="cart-insurance-input"></label></div></div><p>##plan_description</p></div>';{% endcomment %}simplyInsurance.cartReload = function(changeType) {
+    switch (changeType) {
+      case 0:
+        { // insurance added
+          simplyInsurance.cartModificationCallback(changeType);
+          break;
+        }
+      case 1:
+        { // insurance removed
+          simplyInsurance.cartModificationCallback(changeType);
+          break;
+        }
+    }
+  }
+
+  simplyInsurance.toggleUncheck = function() {
+    document.body.dispatchEvent(new Event("si.toggle.uncheck"));
+  }
+
+  {% comment %}
+    Slide Cart & Cart Drawer - TCC
+  {% endcomment %}
+  window.SLIDECART_UPDATED = function(cart) {
+
+// Fires whenevr slide cart has updated
+    try {
+      if (simplyInsurance && typeof simplyInsurance !== "undefined") 
+        simplyInsurance.loadApp();
+      
+
+
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+// Sticky Cart & Slide Cart - heysenior
+  window.HS_SLIDE_CART_UPDATED = function(cart) {
+
+// Runs every time the slider cart is updated.
+    try {
+      if (simplyInsurance && typeof simplyInsurance !== "undefined") 
+        simplyInsurance.loadApp();
+      
+
+
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  {% comment %}
+    rebuyengine start code
+  {% endcomment %}
+
+  document.addEventListener('rebuy:smartcart.show', function(event) {
+    console.log('rebuy:smartcart.show event', event.detail);
+    window.HS_SLIDE_CART_UPDATED();
+  });
+  document.addEventListener('rebuy:smartcart.product-removed', function(event) {
+    console.log('rebuy:smartcart.product-removed event', event.detail);
+    if (event.detail.product.vendor == "SimplyInsurance") {
+      simplyInsurance.toggleUncheck();
+    } else {
+      window.HS_SLIDE_CART_UPDATED();
+    }
+  });{% comment %}rebuyengine end code
+  {% endcomment %}
+
+  {% comment %}
+    custom JS start
+  {% endcomment %}
+  {{ simplyInsurance.customJS }}
+  {% comment %}
+    custom JS end
+  {% endcomment %}
+</script>
