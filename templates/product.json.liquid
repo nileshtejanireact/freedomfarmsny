@@ -1,0 +1,56 @@
+{%- layout none -%}
+{%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+   {%- capture variantSoldout -%}
+   {%- for option in product.options_with_values -%}
+       {%- for value in option.values -%}
+         {% if option.selected_value == value %} bg_{{ value | handleize }}{% endif -%}
+       {%- endfor -%}
+   {%- endfor -%}
+   {%- endcapture -%}
+{%- endunless -%}
+{%- if settings.first_available_variant or settings.remove_sold_out -%}
+ {%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- elsif product.selected_variant != blank  -%}
+ {%- assign current_variant = product.selected_variant -%}
+{%- else -%}
+ {%- assign current_variant = product.variants.first -%}
+{%- endif -%}
+{%- assign first_available_variant = settings.first_available_variant -%}
+{%- include 'space_check_variant', quick_shop: true -%}
+
+<div id="callBackVariant_quick_{{ product.id }}" class="{{ variantSoldout }}">
+  <form class="add-to-cart-form variations_form cart {%- if settings.show_watch_products %}swatch-color-single{%- endif -%}" method="post" action="/cart/add" enctype="multipart/form-data" id="cart-form" data-product_id="{{ product.id }}">
+    {% for variant in product.variants %}
+      <input type="radio" id="variant-{{ variant.id }}" name="variant_id" value="{{ variant.id }}" {% if variant == current_variant %}checked{% endif %}>
+      <label for="variant-{{ variant.id }}">{{ variant.title }}</label>
+    {% endfor %}
+
+    <div class="single_variation_wrap">
+      {%- if product.price_varies -%}
+        <div class="shopify-variation single_variation">
+          <div class="shopify-variation-price">
+            <span class="price" id="productPrice_quick_{{ product.id }}">
+              {%- if on_sale -%}
+                <del id="old-product-price_quick">{{ current_variant.compare_at_price | money }}</del>
+                <ins id="product-price_quick">{{ current_variant.price | money }}</ins>
+              {%- else -%}
+                <span id="product-price">{{ current_variant.price | money }}</span> 
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="shopify-variation-add-to-cart variations_button shopify-variation-add-to-cart-enabled">
+        <div id="shopify_quantity" class="quantity">
+          <input type="button" value="-" class="minus">
+          <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
+          <input type="button" value="+" class="plus">
+        </div>
+        <button type="submit" name="add" id="add-to-cart" class="btn btn-primary">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

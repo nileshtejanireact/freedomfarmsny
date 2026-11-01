@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "claim_free_steaks": {
+      "type": "claim-free-steaks",
+      "blocks": {
+        "offer_1": {
+          "type": "offer",
+          "settings": {
+            "image": "shopify://shop_images/get-started-ny-strip.png",
+            "title": "Free NY Strip Steaks For A Year",
+            "description": "2 x 10 oz 100% grass-fed and finished NY Strip Steaks FREE in every order for a year. $924 value*",
+            "value": "ny-strip"
+          }
+        },
+        "offer_2": {
+          "type": "offer",
+          "settings": {
+            "image": "shopify://shop_images/get-started-filet-mignon.png",
+            "title": "Free Filet Mignons For A Year",
+            "description": "2 x 6 oz 100% grass-fed and finished Filet Mignons FREE in every order for a year. $818 value*",
+            "value": "filet-mignon"
+          }
+        },
+        "offer_3": {
+          "type": "offer",
+          "settings": {
+            "image": "shopify://shop_images/get-started-chicken-breasts.png",
+            "title": "Free Chicken Breasts For Life",
+            "description": "3 lbs of free-range organic Chicken Breasts FREE in every order for life. $1,037 value*",
+            "value": "chicken-breasts"
+          }
+        }
+      },
+      "block_order": [
+        "offer_1",
+        "offer_2",
+        "offer_3"
+      ],
+      "settings": {
+        "heading": "Claim Free Steaks For a Year!",
+        "subheading": "Pick one cut below and we'll add it to every box, free.",
+        "show_email": true,
+        "email_label": "Email",
+        "button_text": "Customize your box",
+        "button_link": "/pages/subscription-box",
+        "fine_print": "<p>By entering my email address above, you opt in to receiving marketing emails from ButcherBox &nbsp;and it’s agents. You can unsubscribe any time. <a href=\"/pages/privacy-policy\" target=\"_blank\" title=\"PRIVACY POLICY\">Terms of Use</a> and <a href=\"/pages/privacy-policy\" target=\"_blank\" title=\"PRIVACY POLICY\">Privacy Policy</a>.</p><p>*Free 2 x 10 oz NY Strips or 2 x 6 oz Filet mignons in every subscription order for a year. Or choose free 3 lbs Chicken Breasts in every subscription order for lifetime of membership. Offer valid for new members only. Cannot be combined with any other offer. Offer not valid on prior purchases, gift cards, non-subscription boxes, or gift certificates. Offer valid in contiguous U.S. only. Offer valid until 10/27/26 or while supplies last. ButcherBox reserves the right to cancel this offer at any time in its sole discretion and substitute another promotion in its place. Value based on non-member subscribing and ordering a subscription box every 2 weeks. Price of ButcherBox 2 x 10 oz NY Strips, 2 x 6 oz Filet mignons, and 3 lbs Chicken Breasts as of 7/30/26.</p>",
+        "bg_color": "#faf9f7",
+        "text_color": "#1c2321",
+        "button_color": "#3a9468",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "claim_free_steaks"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "subscription_builder": {
+      "type": "subscription-builder",
+      "settings": {
+        "step1_heading": "Select Your Plan & Frequency",
+        "variant_notes": "Choose 6 proteins (up to 21 lbs)\nChoose 9 proteins (up to 31 lbs)\nChoose 12 proteins (up to 42 lbs)",
+        "popular_variant": "Medium",
+        "frequency_heading": "How often do you want a box?",
+        "frequency_sub": "You can pause or cancel anytime.",
+        "next_text": "Next, choose your proteins",
+        "cuts_heading": "Choose Your Proteins",
+        "category_order": "Member Favorites,Beef,Poultry,Pork,Seafood,More",
+        "review_text": "Review box",
+        "cuts_property_name": "Meat Cuts",
+        "step2_heading": "Review Your Subscription",
+        "add_text": "Add to cart",
+        "property_name": "Free Offer"
+      }
+    }
+  },
+  "order": ["subscription_builder"]
+}

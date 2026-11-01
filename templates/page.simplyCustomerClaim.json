@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1663161721c9f66d91": {
+      "type": "apps",
+      "blocks": {
+        "9444af1a-4cac-4c0a-a8f8-719eb4abcb1b": {
+          "type": "shopify://apps/simply-shipping-protection/blocks/claimpage/e9bd463f-26d8-4126-9497-0375dca0f009",
+          "settings": {
+            "raiseOrderClaimHeading": "Raise Order Claim",
+            "emailPhonePlaceholder": "Enter your Email ID/Phone Number",
+            "orderNumberPlaceholder": "Order Number",
+            "customerComment": "Comment",
+            "attachment": "Attachment",
+            "generateClaimRequestbtn": "Generate Claim Request",
+            "submitClaimRequestbtn": "Submit Claim Request"
+          }
+        }
+      },
+      "block_order": [
+        "9444af1a-4cac-4c0a-a8f8-719eb4abcb1b"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "1663161721c9f66d91"
+  ]
+}

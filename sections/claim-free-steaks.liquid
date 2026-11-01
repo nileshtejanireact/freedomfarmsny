@@ -1,0 +1,233 @@
+{%- assign sid = section.id -%}
+<section class="cfs cfs-{{ sid }}">
+  <style>
+    .cfs-{{ sid }} {
+      --cfs-bg: {{ section.settings.bg_color }};
+      --cfs-text: {{ section.settings.text_color }};
+      --cfs-accent: {{ section.settings.button_color }};
+      background: var(--cfs-bg);
+      color: var(--cfs-text);
+      padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    }
+    .cfs-{{ sid }} .cfs__inner { max-width: 1200px; margin: 0 auto; }
+    .cfs-{{ sid }} .cfs__heading {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 24px;
+      color: var(--cfs-text);
+    }
+    .cfs-{{ sid }} .cfs__sub {
+      font-size: 20px;
+      line-height: 1.5;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto 48px;
+    }
+    .cfs-{{ sid }} .cfs__cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .cfs-{{ sid }} .cfs__card {
+      position: relative;
+      display: block;
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .cfs-{{ sid }} .cfs__card input { position: absolute; opacity: 0; pointer-events: none; }
+    .cfs-{{ sid }} .cfs__card:has(input:checked) { border-color: var(--cfs-text); }
+    .cfs-{{ sid }} .cfs__card:has(input:focus-visible) { outline: 3px solid var(--cfs-accent); outline-offset: 2px; }
+    .cfs-{{ sid }} .cfs__media { aspect-ratio: 16 / 9; background: #ece9e3; }
+    .cfs-{{ sid }} .cfs__media img,
+    .cfs-{{ sid }} .cfs__media svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .cfs-{{ sid }} .cfs__body { padding: 24px 28px 28px; }
+    .cfs-{{ sid }} .cfs__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .cfs-{{ sid }} .cfs__title { display: block !important; visibility: visible !important; opacity: 1 !important; font-size: 28px; line-height: 1.5; font-weight: 600; margin: 0; color: var(--cfs-text) !important; text-transform: none; letter-spacing: normal; }
+    .cfs-{{ sid }} .cfs__radio {
+      flex: 0 0 42px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cfs-{{ sid }} .cfs__radio svg { width: 18px; height: 18px; opacity: 0; fill: none; stroke: #fff; stroke-width: 3; }
+    .cfs-{{ sid }} .cfs__card:has(input:checked) .cfs__radio { background: var(--cfs-text); border-color: var(--cfs-text); }
+    .cfs-{{ sid }} .cfs__card:has(input:checked) .cfs__radio svg { opacity: 1; }
+    .cfs-{{ sid }} .cfs__desc { font-size: 22px; line-height: 1.65; margin: 12px 0 0; }
+    .cfs-{{ sid }} .cfs__form {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 12px;
+      margin: 0 auto 40px;
+      flex-wrap: wrap;
+    }
+    .cfs-{{ sid }} .cfs__email {
+      width: 432px;
+      max-width: 100%;
+      height: 74px;
+      padding: 0 24px;
+      font-size: 22px;
+      border: 1px solid var(--cfs-text);
+      border-radius: 0;
+      background: #fff;
+      color: var(--cfs-text);
+    }
+    .cfs-{{ sid }} .cfs__button {
+      height: 66px;
+      align-self: center;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--cfs-accent);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: filter .2s;
+    }
+    .cfs-{{ sid }} .cfs__button:hover:not(:disabled) { filter: brightness(.9); }
+    .cfs-{{ sid }} .cfs__button:disabled { opacity: .45; cursor: not-allowed; }
+    .cfs-{{ sid }} .cfs__fine { max-width: 1200px; margin: 0 auto; padding: 0 160px; font-size: 16px; line-height: 1.5; }
+    .cfs-{{ sid }} .cfs__fine p { margin: 0 0 24px; }
+    @media (max-width: 989px) {
+      .cfs-{{ sid }} .cfs__cards { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
+      .cfs-{{ sid }} .cfs__heading { font-size: 40px; }
+      .cfs-{{ sid }} .cfs__fine { padding: 0; }
+    }
+    @media (max-width: 480px) {
+      .cfs-{{ sid }} .cfs__heading { font-size: 32px; }
+      .cfs-{{ sid }} .cfs__sub { font-size: 17px; margin-bottom: 32px; }
+      .cfs-{{ sid }} .cfs__title { font-size: 22px; }
+      .cfs-{{ sid }} .cfs__desc { font-size: 17px; }
+      .cfs-{{ sid }} .cfs__email { height: 56px; font-size: 18px; }
+      .cfs-{{ sid }} .cfs__button { width: 100%; height: 56px; font-size: 17px; }
+    }
+  </style>
+
+  <div class="cfs__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="cfs__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="cfs__sub">{{ section.settings.subheading | escape }}</p>
+    {%- endif -%}
+
+    <form class="cfs__formwrap" id="cfs-form-{{ sid }}" action="{{ section.settings.button_link | default: 'https://wearefreedomfarms.com/pages/subscription-box' }}" method="get" novalidate>
+      <div class="cfs__cards" role="radiogroup" aria-label="{{ section.settings.heading | escape }}">
+        {%- for block in section.blocks -%}
+          <label class="cfs__card" {{ block.shopify_attributes }}>
+            <input type="radio" name="box" value="{{ block.settings.title | escape }}" {% if forloop.first %}checked{% endif %}>
+            <div class="cfs__media">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 900 }}" srcset="{{ block.settings.image | image_url: width: 450 }} 450w, {{ block.settings.image | image_url: width: 900 }} 900w" sizes="(max-width: 989px) 100vw, 33vw" alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" loading="lazy" width="900" height="{{ 900 | divided_by: block.settings.image.aspect_ratio | round }}">
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            <div class="cfs__body">
+              <div class="cfs__top">
+                <span class="cfs__title">{{ block.settings.title | escape }}</span>
+                <span class="cfs__radio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              {%- if block.settings.description != blank -%}
+                <p class="cfs__desc">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          </label>
+        {%- endfor -%}
+      </div>
+
+      <div class="cfs__form">
+        {%- if section.settings.show_email -%}
+          <input class="cfs__email" type="email" name="email" placeholder="{{ section.settings.email_label | escape }}" aria-label="{{ section.settings.email_label | escape }}" autocomplete="email">
+        {%- endif -%}
+        <button class="cfs__button" type="submit" {% if section.settings.show_email %}disabled{% endif %}>{{ section.settings.button_text | escape }}</button>
+      </div>
+    </form>
+
+    {%- if section.settings.fine_print != blank -%}
+      <div class="cfs__fine">{{ section.settings.fine_print }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById('cfs-form-{{ sid }}');
+    if (!form) return;
+    var email = form.querySelector('.cfs__email');
+    var button = form.querySelector('.cfs__button');
+    if (!email || !button) return;
+    var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    function sync() { button.disabled = !pattern.test(email.value.trim()); }
+    email.addEventListener('input', sync);
+    email.addEventListener('change', sync);
+    form.addEventListener('submit', function (e) {
+      if (!pattern.test(email.value.trim())) { e.preventDefault(); sync(); }
+    });
+    sync();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Claim free steaks",
+  "tag": "div",
+  "class": "index-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Claim Free Steaks For a Year!" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Pick one cut below and we'll add it to every box, free." },
+    { "type": "header", "content": "Email and button" },
+    { "type": "checkbox", "id": "show_email", "label": "Show email field", "default": true },
+    { "type": "text", "id": "email_label", "label": "Email placeholder", "default": "Email" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Customize your box" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "The chosen card title and the email are added to this link as ?box= and ?email=." },
+    { "type": "header", "content": "Fine print" },
+    { "type": "richtext", "id": "fine_print", "label": "Fine print", "default": "<p>*Add your offer terms here: eligibility, dates, and any restrictions.</p>" },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#faf9f7" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1c2321" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#3a9468" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "offer",
+      "name": "Offer card",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free steaks for a year" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Describe the offer here." },
+        { "type": "text", "id": "value", "label": "Value passed in link", "info": "Optional short id, e.g. ny-strip. Defaults to the block id." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Claim free steaks",
+      "blocks": [
+        { "type": "offer", "settings": { "title": "Free NY Strip Steaks For A Year", "value": "ny-strip" } },
+        { "type": "offer", "settings": { "title": "Free Filet Mignons For A Year", "value": "filet-mignon" } },
+        { "type": "offer", "settings": { "title": "Free Chicken Breasts For Life", "value": "chicken-breasts" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

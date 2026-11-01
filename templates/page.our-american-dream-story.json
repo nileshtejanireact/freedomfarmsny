@@ -1,0 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_content_H4jAyB": {
+      "type": "custom-content",
+      "name": "Custom HTMl",
+      "settings": {
+        "row_stretch": "default",
+        "code": "<section class=\"hero-banner\">\n  <div class=\"hero-overlay\">\n    <div class=\"hero-content\">\n      <h1>\n        “OUR GOAL IS TO PRODUCE<br>\n        AND SOURCE THE BEST MEATS<br>\n        FOR OUR CUSTOMERS AND<br>\n        THEIR FAMILIES. BORN, RAISED,<br>\n        AND PROCESSED IN THE USA.”\n      </h1>\n\n      <div class=\"quote-mark\">”</div>\n\n      <p class=\"author\">\n        - DANA &amp; LAUREN CAVALEA<br>\n        (AND ROCCO &amp; LUCCI- THE BULLDOGS!)\n      </p>\n    </div>\n  </div>\n</section>\n<style>\n.hero-banner {\n  position: relative;\n  min-height: 100%;\n  background: url(\"https://cdn.shopify.com/s/files/1/0529/2376/0823/files/ChatGPT_Image_Jun_7_2026_06_16_50_PM.png?v=1780836640\") center center/cover no-repeat;\n  overflow: hidden;\n}\n\n.hero-overlay {\n  width: 100%;\n  height: 100%;\n  background: linear-gradient(\n    90deg,\n    rgba(245, 239, 228, 0.95) 0%,\n    rgba(245, 239, 228, 0.75) 35%,\n    rgba(245, 239, 228, 0.05) 100%\n  );\n  display: flex;\n  align-items: center;\n}\n\n.hero-content {\n      max-width: 650px;\n    margin-left: 70px;\n    padding: 30px 0;\n}\n\n.hero-content h1 {\n  font-family: Impact, \"Arial Narrow\", sans-serif;\n  font-size: 36px;\n  line-height: 1.08;\n  letter-spacing: 1px;\n  color: #0b2757;\n  text-transform: uppercase;\n  margin: 0;\n}\n\n.quote-mark {\n  font-size: 180px;\n  color: #0b2757;\n  line-height: 1;\n  margin-top: 30px;\n  font-family: Georgia, serif;\n}\n\n.author {\n  font-family: Arial, sans-serif;\n  font-size: 24px;\n  line-height: 1.5;\n  color: #0b2757;\n  font-weight: 600;\n  text-transform: uppercase;\n  margin-top: -40px;\n}\n@media (max-width: 767px) {\n.hero-content {\n    max-width: 100%;\n    margin-left: 30px;\n    padding: 30px 0;\n}\n.hero-content h1 {\n    font-size: 20px;\n}\n.quote-mark {\n    font-size: 90px;\n}\n.author {\n    \n    font-size: 19px;\n}\n}\n</style>",
+        "section_bg_color": "",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "",
+        "section_padding_bottom": "",
+        "section_padding_left": "",
+        "hidden_section": false
+      }
+    },
+    "custom_content_dLA9BK": {
+      "type": "custom-content",
+      "name": "Custom HTMl",
+      "settings": {
+        "row_stretch": "default",
+        "code": "<section class=\"our-journey\">\n    <div class=\"container\">\n\n        <div class=\"journey-content\">\n\n            <!-- Left Content -->\n            <div class=\"journey-text\">\n\n                <h2>OUR JOURNEY</h2>\n\n                <div class=\"heading-divider\">\n                    <span></span>\n                    <svg width=\"22\" height=\"22\" viewbox=\"0 0 24 24\">\n                        <path fill=\"#0B2A5B\" d=\"M12 3L14 8H19L15 11L17 16L12 13L7 16L9 11L5 8H10L12 3Z\"></path>\n                    </svg>\n                    <span></span>\n                </div>\n\n                <p>\n                    Freedom Farms was started by Dana &amp; Lauren Cavalea.\n                    The two met in high school and eventually went their\n                    separate ways for college and the years that followed.\n                </p>\n\n                <p>\n                    About a decade later the two reunited and have been on\n                    a journey ever since. Lauren spent her career working\n                    in news for ABC News, while Coach Dana Cavalea became a\n                    World Champion Coach for the New York Yankees.\n                </p>\n\n                <div class=\"highlight-title\">\n                    <div class=\"icon\">\n                        ★\n                    </div>\n\n                    <div class=\"title-text\">\n                        WHAT DO YOU GET WHEN A PROFESSIONAL\n                        SPORTS COACH AND A NEWS AFICIONADO GET TOGETHER?\n                    </div>\n                </div>\n\n                <p>\n                    You get <strong>Freedom Farms.</strong>\n                    A 270 acre farm in Upstate NY shipping meats nationwide.\n                    We are a PRO-AMERICA, PRO-FREEDOM Farm that loves America\n                    and we are 100% committed to keeping American Farms Being\n                    Farmed by Americans!\n                </p>\n\n                <p>\n                    Together, along with the farm's mascots, Rocco &amp; Lucci, and Santino (our English Bulldogs), Gunner and Bullet, the farm is worked daily and filled with energy— producing the best and healthiest <a href=\"https://wearefreedomfarms.com/collections/beef\"><strong>local grass fed beef</strong></a> in New York.\n                </p>\n<a href=\"https://wearefreedomfarms.com/collections/beef\">\n\n            </a>\n</div>\n<a href=\"https://wearefreedomfarms.com/collections/beef\">\n\n            <!-- Right Image -->\n            <div class=\"journey-image\">\n                <img src=\"https://cdn.shopify.com/s/files/1/0529/2376/0823/files/515503716_795711799468947_5880284339870322737_n_da4006b9-ac42-43e7-a2e2-6a52c5dfd8f2.jpg?v=1781243357\" alt=\"Freedom Farms\">\n            </div>\n\n        </a>\n</div>\n<a href=\"https://wearefreedomfarms.com/collections/beef\">\n\n    </a>\n</div>\n<a href=\"https://wearefreedomfarms.com/collections/beef\">\n</a></section><a href=\"https://wearefreedomfarms.com/collections/beef\">\n<style>\n.main-header {\n    margin-bottom: 0;\n}\n.our-journey {\n    background: #f5f1ea;\n    padding: 90px 0;\n}\n\n.container {\n    width: 90%;\n    max-width: 1400px;\n    margin: auto;\n}\n\n.journey-content {\n    display: flex;\n    gap: 70px;\n    align-items: flex-start;\n}\n\n.journey-text {\n    flex: 1;\n    max-width: 600px;\n}\n\n.journey-text h2 {\n    font-size: 36px;\n    line-height: 1;\n    color: #0b2a5b;\n    font-weight: 900;\n    margin-bottom: 25px;\n    text-transform: uppercase;\n    letter-spacing: 2px;\n    font-family: Impact, sans-serif;\n}\n\n.heading-divider {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n    margin-bottom: 40px;\n}\n\n.heading-divider span {\n    width: 140px;\n    height: 3px;\n    background: #d83b3b;\n}\n\n.journey-text p {\n    font-size: 22px;\n    line-height: 1.8;\n    color: #222;\n    margin-bottom: 32px;\n}\n\n.highlight-title {\n    display: flex;\n    align-items: flex-start;\n    gap: 18px;\n    margin: 50px 0 35px;\n}\n\n.icon {\n    width: 54px;\n    height: 54px;\n    min-width: 54px;\n    border-radius: 50%;\n    background: #0b2a5b;\n    color: #fff;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 22px;\n}\n\n.title-text {\n    font-size: 28px;\n    line-height: 1.3;\n    font-weight: 900;\n    color: #1b1b1b;\n    text-transform: uppercase;\n}\n\n.journey-text strong {\n    color: #d73d32;\n}\n\n.journey-image {\n    flex: 1;\n}\n\n.journey-image img {\n    width: 100%;\n    display: block;\n    border-radius: 40px;\n    object-fit: cover;\n}\n@media (max-width: 767px) {\n.journey-content {\n    flex-flow: column-reverse;\n}\n.container {\n    width: 100%;\n}\n}\n</style></a>",
+        "section_bg_color": "",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "",
+        "section_padding_bottom": "",
+        "section_padding_left": "",
+        "hidden_section": false
+      }
+    }
+  },
+  "order": [
+    "custom_content_H4jAyB",
+    "custom_content_dLA9BK"
+  ]
+}

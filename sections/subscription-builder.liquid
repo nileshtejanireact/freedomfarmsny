@@ -1,0 +1,451 @@
+{%- assign sid = section.id -%}
+{%- assign bp = section.settings.product | default: all_products['signature-box'] -%}
+{%- assign group = bp.selling_plan_groups.first -%}
+{%- assign notes = section.settings.variant_notes | newline_to_br | split: '<br />' -%}
+{%- assign cuts = shop.metaobjects.meat_cuts.values -%}
+{%- if section.settings.cuts_list != blank -%}{%- assign cuts = section.settings.cuts_list -%}{%- endif -%}
+{%- assign cat_raw = '' -%}
+{%- for m in cuts -%}
+  {%- assign c = m.category.value | default: 'More' -%}
+  {%- assign cat_raw = cat_raw | append: c | append: '||' -%}
+{%- endfor -%}
+{%- assign present = cat_raw | split: '||' | uniq -%}
+{%- assign preferred = section.settings.category_order | split: ',' -%}
+{%- assign cats = '' -%}
+{%- for p in preferred -%}
+  {%- assign p = p | strip -%}
+  {%- if present contains p -%}{%- assign cats = cats | append: p | append: '||' -%}{%- endif -%}
+{%- endfor -%}
+{%- for p in present -%}
+  {%- if p != blank -%}
+    {%- assign already = false -%}
+    {%- for q in preferred -%}{%- assign qs = q | strip -%}{%- if qs == p -%}{%- assign already = true -%}{%- endif -%}{%- endfor -%}
+    {%- unless already -%}{%- assign cats = cats | append: p | append: '||' -%}{%- endunless -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign cat_list = cats | split: '||' -%}
+<section class="sb sb-{{ sid }}" id="sb-{{ sid }}">
+  <style>
+    .sb-{{ sid }} {
+      --sb-bg: {{ section.settings.bg_color }};
+      --sb-text: {{ section.settings.text_color }};
+      --sb-btn: {{ section.settings.button_color }};
+      background: var(--sb-bg);
+      color: var(--sb-text);
+      padding: 0 20px 64px;
+      min-height: 60vh;
+    }
+    .sb-{{ sid }} .sb__progress { height: 6px; background: #ddd; margin: 0 -20px 40px; }
+    .sb-{{ sid }} .sb__bar { height: 100%; width: 33.33%; background: var(--sb-text); transition: width .3s; }
+    .sb-{{ sid }} .sb__inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .sb-{{ sid }} .sb__h { display: block; font-size: 28px; font-weight: 700; line-height: 1.3; margin: 0 0 40px; color: var(--sb-text) !important; text-transform: none; }
+    .sb-{{ sid }} .sb__h2 { display: block; font-size: 30px; font-weight: 700; margin: 0 0 12px; color: var(--sb-text) !important; text-transform: none; }
+    .sb-{{ sid }} .sb__prod { font-size: 26px; font-weight: 700; margin: 0 0 24px; }
+    .sb-{{ sid }} .sb__sizes { display: grid; grid-template-columns: repeat({{ bp.variants.size | at_most: 4 | at_least: 1 }}, 1fr); gap: 24px; margin-bottom: 72px; }
+    .sb-{{ sid }} .sb__card { position: relative; display: block; text-align: left; background: #fff; border: 1px solid transparent; border-radius: 6px; padding: 28px; box-shadow: 0 2px 10px rgba(0,0,0,.06); cursor: pointer; }
+    .sb-{{ sid }} .sb__card input { position: absolute; opacity: 0; pointer-events: none; }
+    .sb-{{ sid }} .sb__card:has(input:checked) { border-color: var(--sb-text); }
+    .sb-{{ sid }} .sb__card:has(input:focus-visible) { outline: 3px solid var(--sb-btn); outline-offset: 2px; }
+    .sb-{{ sid }} .sb__card.is-soldout { opacity: .5; cursor: not-allowed; }
+    .sb-{{ sid }} .sb__badge { position: absolute; top: -14px; left: 20px; background: #f1e9df; font-size: 14px; font-weight: 600; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+    .sb-{{ sid }} .sb__row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .sb-{{ sid }} .sb__name { font-size: 26px; font-weight: 700; }
+    .sb-{{ sid }} .sb__price { display: block; font-size: 18px; font-weight: 600; margin: 8px 0; }
+    .sb-{{ sid }} .sb__note { display: block; font-size: 18px; line-height: 1.5; }
+    .sb-{{ sid }} .sb__dot { flex: 0 0 34px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--sb-text); background: #fff; display: flex; align-items: center; justify-content: center; }
+    .sb-{{ sid }} .sb__dot svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 3; opacity: 0; }
+    .sb-{{ sid }} input:checked ~ .sb__row .sb__dot,
+    .sb-{{ sid }} input:checked ~ .sb__dot { background: var(--sb-text); }
+    .sb-{{ sid }} input:checked ~ .sb__row .sb__dot svg,
+    .sb-{{ sid }} input:checked ~ .sb__dot svg { opacity: 1; }
+    .sb-{{ sid }} .sb__sub { font-size: 18px; margin: 0 0 32px; }
+    .sb-{{ sid }} .sb__plans { max-width: 360px; margin: 0 auto 56px; background: #fff; padding: 24px 28px; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .sb-{{ sid }} .sb__plan { display: flex; align-items: center; gap: 16px; padding: 12px 0; cursor: pointer; font-size: 17px; }
+    .sb-{{ sid }} .sb__plan input { position: absolute; opacity: 0; pointer-events: none; }
+    .sb-{{ sid }} .sb__plan:has(input:focus-visible) .sb__dot { outline: 3px solid var(--sb-btn); outline-offset: 2px; }
+    .sb-{{ sid }} .sb__plan:has(input:checked) .sb__dot { background: var(--sb-text); }
+    .sb-{{ sid }} .sb__plan:has(input:checked) .sb__dot svg { opacity: 1; }
+    .sb-{{ sid }} .sb__save { margin-left: auto; font-size: 14px; color: var(--sb-btn); font-weight: 600; }
+    .sb-{{ sid }} .sb__btn { display: inline-block; padding: 20px 32px; border: 0; border-radius: 999px; background: var(--sb-text); color: #fff; font-size: 18px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; }
+    .sb-{{ sid }} .sb__btn:disabled { opacity: .5; cursor: not-allowed; }
+    .sb-{{ sid }} .sb__back { display: block; margin: 20px auto 0; background: none; border: 0; text-decoration: underline; font-size: 16px; cursor: pointer; color: var(--sb-text); }
+    .sb-{{ sid }} .sb__summary { max-width: 520px; margin: 0 auto 32px; background: #fff; padding: 28px; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .sb-{{ sid }} .sb__line { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 18px; }
+    .sb-{{ sid }} .sb__line:last-child { border-bottom: 0; }
+    .sb-{{ sid }} .sb__line b { font-weight: 700; }
+    .sb-{{ sid }} .sb__err { color: #b3261e; margin-top: 16px; min-height: 1.4em; }
+    @media (max-width: 800px) {
+      .sb-{{ sid }} .sb__sizes { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; gap: 28px; margin-bottom: 56px; }
+      .sb-{{ sid }} .sb__h { font-size: 22px; margin-bottom: 28px; }
+      .sb-{{ sid }} .sb__h2 { font-size: 24px; }
+    }
+
+    .sb-{{ sid }} .sb__inner--wide { max-width: 1240px; text-align: left; }
+    .sb-{{ sid }} .sb__cuts { display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+    .sb-{{ sid }} .sb__cats { display: flex; flex-direction: column; gap: 2px; background: #fff; }
+    .sb-{{ sid }} .sb__cat { display: block; width: 100%; text-align: left; padding: 30px 38px; border: 0; border-left: 4px solid transparent; background: #fff; font-size: 18px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; cursor: pointer; color: var(--sb-text); }
+    .sb-{{ sid }} .sb__cat[aria-selected="true"] { border-left-color: var(--sb-text); }
+    .sb-{{ sid }} .sb__tray { margin-top: 20px; padding: 16px; background: #eaf5f2; border-radius: 40px; text-align: center; font-weight: 700; font-size: 20px; text-transform: uppercase; }
+    .sb-{{ sid }} .sb__tray .sb__btn { margin-top: 12px; width: 100%; padding: 16px; font-size: 16px; }
+    .sb-{{ sid }} .sb__panel-h { display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; font-size: 30px; line-height: 1.3; font-weight: 700; text-transform: none; letter-spacing: normal; margin: 12px 0 24px; padding-bottom: 20px; border-bottom: 1px solid #e3e0da; color: var(--sb-text) !important; }
+    .sb-{{ sid }} .sb__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; }
+    .sb-{{ sid }} .sb__cut { background: #fff; display: flex; flex-direction: column; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .sb-{{ sid }} .sb__img { position: relative; aspect-ratio: 3 / 2; background: #ece9e3; }
+    .sb-{{ sid }} .sb__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sb-{{ sid }} .sb__info { position: absolute; right: 8px; bottom: 8px; width: 36px; height: 36px; border: 0; background: transparent; font: italic 700 20px Georgia, serif; cursor: pointer; color: var(--sb-text); }
+    .sb-{{ sid }} .sb__cbody { padding: 20px 16px 16px; text-align: center; flex: 1; display: flex; flex-direction: column; }
+    .sb-{{ sid }} .sb__tag, .sb-{{ sid }} .sb__tag p, .sb-{{ sid }} .sb__tag strong { margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; text-decoration: underline; color: #7a5c48; line-height: 1.3; }
+    .sb-{{ sid }} .sb__cname { display: block; font-size: 18px; font-weight: 700; line-height: 1.6; margin-top: 8px; }
+    .sb-{{ sid }} .sb__cw { display: block; font-size: 17px; color: #555; margin: 4px 0 20px; }
+    .sb-{{ sid }} .sb__cact { margin-top: auto; }
+    .sb-{{ sid }} .sb__add { width: 100%; padding: 14px; border: 2px solid var(--sb-text); border-radius: 999px; background: #fff; font-size: 18px; font-weight: 700; text-transform: uppercase; cursor: pointer; color: var(--sb-text); }
+    .sb-{{ sid }} .sb__add:disabled { opacity: .4; cursor: not-allowed; }
+    .sb-{{ sid }} .sb__stepper { display: none; align-items: center; justify-content: space-between; border: 2px solid var(--sb-text); border-radius: 999px; background: var(--sb-text); color: #fff; }
+    .sb-{{ sid }} .sb__cut.is-added .sb__stepper { display: flex; }
+    .sb-{{ sid }} .sb__cut.is-added .sb__add { display: none; }
+    .sb-{{ sid }} .sb__stepper button { width: 52px; height: 48px; border: 0; background: none; color: #fff; font-size: 24px; cursor: pointer; }
+    .sb-{{ sid }} .sb__stepper button:disabled { opacity: .35; cursor: not-allowed; }
+    .sb-{{ sid }} .sb__stepper span { font-size: 18px; font-weight: 700; }
+    .sb-{{ sid }} .sb__panel { margin-bottom: 48px; scroll-margin-top: 24px; }
+    .sb-{{ sid }} .sb__panel:last-child { margin-bottom: 0; }
+    .sb-{{ sid }} .sb__cuts > div:first-child { position: sticky; top: 20px; align-self: start; }
+    .sb-{{ sid }} .sb__empty { padding: 40px 0; }
+    .sb__dlg { border: 0; padding: 0; width: calc(100% - 32px); max-width: 680px; max-height: 88vh; border-radius: 8px; color: #1c2321; }
+    .sb__dlg::backdrop { background: rgba(0,0,0,.55); }
+    .sb__dlg-in { padding: 32px; overflow: auto; max-height: 88vh; }
+    .sb__dlg-x { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; background: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+    .sb__dlg img { width: 100%; height: auto; display: block; margin-bottom: 20px; }
+    .sb__dlg h3 { font-size: 26px; margin: 0 0 8px; }
+    .sb__dlg h4 { font-size: 18px; margin: 24px 0 8px; }
+    .sb__dlg p { margin: 0 0 12px; line-height: 1.6; }
+    .sb__dlg details { border-top: 1px solid #e3e0da; padding: 12px 0; }
+    .sb__dlg summary { cursor: pointer; font-weight: 700; }
+    @media (max-width: 800px) {
+      .sb-{{ sid }} .sb__cuts { grid-template-columns: 1fr; gap: 16px; }
+      .sb-{{ sid }} .sb__cuts > div:first-child { top: 0; z-index: 20; background: var(--sb-bg); margin: 0 -20px; padding: 0 20px; }
+      .sb-{{ sid }} .sb__cats { flex-direction: row; overflow-x: auto; gap: 8px; background: none; }
+      .sb-{{ sid }} .sb__cat { width: auto; white-space: nowrap; padding: 14px 18px; font-size: 15px; border-left: 0; border-bottom: 3px solid transparent; }
+      .sb-{{ sid }} .sb__cat[aria-selected="true"] { border-bottom-color: var(--sb-text); }
+      .sb-{{ sid }} .sb__tray { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; margin: 0; border-radius: 0; background: #eaf5f2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; font-size: 16px; }
+      .sb-{{ sid }} .sb__tray .sb__btn { margin: 0; width: auto; padding: 12px 18px; }
+      .sb-{{ sid }} { padding-bottom: 110px; }
+      .sb-{{ sid }} .sb__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .sb-{{ sid }} .sb__panel-h { font-size: 24px; }
+      .sb-{{ sid }} .sb__cname { font-size: 16px; }
+    }
+  </style>
+
+  <div class="sb__progress" aria-hidden="true"><div class="sb__bar" data-bar></div></div>
+
+  <div class="sb__inner">
+    {%- if bp == blank or bp.variants.size == 0 -%}
+      <p>Choose a product in this section's settings.</p>
+    {%- else -%}
+
+    <div data-step="1">
+      <span class="sb__h" role="heading" aria-level="2">{{ section.settings.step1_heading | escape }}</span>
+      <p class="sb__prod">{{ bp.title | escape }}</p>
+
+      <div class="sb__sizes" role="radiogroup" aria-label="{{ bp.title | escape }}">
+        {%- for variant in bp.variants -%}
+          <label class="sb__card{% unless variant.available %} is-soldout{% endunless %}">
+            {%- if variant.title == section.settings.popular_variant -%}<span class="sb__badge">Popular</span>{%- endif -%}
+            <input type="radio" name="sb-variant" value="{{ variant.id }}" data-title="{{ variant.title | escape }}" data-price="{{ variant.price | money_without_trailing_zeros | escape }}" data-cents="{{ variant.price }}" data-note="{{ notes[forloop.index0] | strip | escape }}" {% unless variant.available %}disabled{% endunless %} {% if forloop.first and variant.available %}checked{% endif %}>
+            <span class="sb__row">
+              <span class="sb__name">{{ variant.title | escape }}</span>
+              <span class="sb__dot"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </span>
+            <span class="sb__price">{{ variant.price | money }}{% unless variant.available %} · Sold out{% endunless %}</span>
+            {%- assign note = notes[forloop.index0] | strip -%}
+            {%- if note != blank -%}<span class="sb__note">{{ note | escape }}</span>{%- endif -%}
+          </label>
+        {%- endfor -%}
+      </div>
+
+      {%- if group != blank -%}
+      <span class="sb__h2" role="heading" aria-level="2">{{ section.settings.frequency_heading | escape }}</span>
+      <p class="sb__sub">{{ section.settings.frequency_sub | escape }}</p>
+      <div class="sb__plans" role="radiogroup" aria-label="{{ section.settings.frequency_heading | escape }}">
+        {%- for plan in group.selling_plans -%}
+          {%- assign adj = plan.price_adjustments.first -%}
+          <label class="sb__plan">
+            <input type="radio" name="sb-plan" value="{{ plan.id }}" data-name="{{ plan.name | escape }}" {% if forloop.first %}checked{% endif %}>
+            <span class="sb__dot"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>Every {{ plan.name | escape }}</span>
+            {%- if adj and adj.value_type == 'percentage' and adj.value > 0 -%}<span class="sb__save">Save {{ adj.value }}%</span>{%- endif -%}
+          </label>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      <button type="button" class="sb__btn" data-next>{{ section.settings.next_text | escape }}</button>
+    </div>
+
+    <div data-step="2" hidden class="sb__inner--wide">
+      <span class="sb__h" role="heading" aria-level="2" style="text-align:center">{{ section.settings.cuts_heading | escape }}</span>
+      {%- if cuts.size == 0 -%}
+        <p class="sb__empty" style="text-align:center">No meat cuts are available right now.</p>
+      {%- else -%}
+      <div class="sb__cuts">
+        <div>
+          <div class="sb__cats" role="navigation" aria-label="Categories">
+            {%- for cat in cat_list -%}
+              <button type="button" class="sb__cat" data-cat="{{ cat | handleize }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ cat | escape }}</button>
+            {%- endfor -%}
+          </div>
+          <div class="sb__tray"><span><span data-count>0</span>/<span data-limit>0</span> selected</span><button type="button" class="sb__btn" data-to-review disabled>{{ section.settings.review_text | escape }}</button></div>
+        </div>
+        <div>
+          {%- for cat in cat_list -%}
+            <div class="sb__panel" data-panel="{{ cat | handleize }}" role="region" aria-label="{{ cat | escape }}">
+              <span class="sb__panel-h" role="heading" aria-level="3">{{ cat | escape }}</span>
+              <div class="sb__grid">
+                {%- for m in cuts -%}
+                  {%- assign mcat = m.category.value | default: 'More' -%}
+                  {%- if mcat == cat -%}
+                    {%- assign wv = m.weight.value -%}
+                    {%- capture wtext -%}{%- if wv != blank -%}~{{ wv.value | round: 1 | append: '' | remove: '.0' }} {{ wv.unit | replace: 'lb', 'lbs' | replace: 'lbss', 'lbs' }}{%- endif -%}{%- endcapture -%}
+                    <div class="sb__cut" data-id="{{ m.system.handle }}" data-name="{{ m.name.value | escape }}">
+                      <div class="sb__img">
+                        {%- if m.image.value != blank -%}<img src="{{ m.image.value | image_url: width: 600 }}" alt="{{ m.image.value.alt | default: m.name.value | escape }}" loading="lazy" width="600" height="400">{%- endif -%}
+                        <button type="button" class="sb__info" data-info="{{ m.system.handle }}" aria-label="More about {{ m.name.value | escape }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 0.5H20C21.933 0.5 23.5 2.067 23.5 4V20C23.5 21.933 21.933 23.5 20 23.5H4C2.067 23.5 0.5 21.933 0.5 20V4C0.5 2.067 2.067 0.5 4 0.5Z" fill="white"></path><path d="M4 0.5H20C21.933 0.5 23.5 2.067 23.5 4V20C23.5 21.933 21.933 23.5 20 23.5H4C2.067 23.5 0.5 21.933 0.5 20V4C0.5 2.067 2.067 0.5 4 0.5Z" stroke="white"></path><path d="M12.9928 9.792V18H11.0088V9.792H12.9928ZM13.2648 7.4C13.2648 7.57067 13.2301 7.73067 13.1608 7.88C13.0914 8.02933 12.9981 8.16 12.8808 8.272C12.7688 8.384 12.6354 8.47467 12.4808 8.544C12.3261 8.608 12.1608 8.64 11.9848 8.64C11.8141 8.64 11.6514 8.608 11.4968 8.544C11.3474 8.47467 11.2168 8.384 11.1048 8.272C10.9928 8.16 10.9021 8.02933 10.8328 7.88C10.7688 7.73067 10.7368 7.57067 10.7368 7.4C10.7368 7.224 10.7688 7.05867 10.8328 6.904C10.9021 6.74933 10.9928 6.616 11.1048 6.504C11.2168 6.392 11.3474 6.304 11.4968 6.24C11.6514 6.17067 11.8141 6.136 11.9848 6.136C12.1608 6.136 12.3261 6.17067 12.4808 6.24C12.6354 6.304 12.7688 6.392 12.8808 6.504C12.9981 6.616 13.0914 6.74933 13.1608 6.904C13.2301 7.05867 13.2648 7.224 13.2648 7.4Z" fill="#262421"></path></svg></button>
+                      </div>
+                      <div class="sb__cbody">
+                        {%- if m.short_description != blank -%}<div class="sb__tag">{{ m.short_description | metafield_tag }}</div>{%- endif -%}
+                        <span class="sb__cname">{{ m.name.value | escape }}</span>
+                        {%- if wtext != blank -%}<span class="sb__cw">{{ wtext }}</span>{%- endif -%}
+                        <div class="sb__cact">
+                          <button type="button" class="sb__add" data-add-cut>Add to box</button>
+                          <div class="sb__stepper"><button type="button" data-minus aria-label="Remove one">&minus;</button><span data-qty aria-live="polite">0</span><button type="button" data-plus aria-label="Add one">+</button></div>
+                        </div>
+                      </div>
+                    </div>
+                    <template data-info-tpl="{{ m.system.handle }}">
+                      {%- if m.image.value != blank -%}<img src="{{ m.image.value | image_url: width: 900 }}" alt="{{ m.image.value.alt | default: m.name.value | escape }}" loading="lazy">{%- endif -%}
+                      <h3>{{ m.name.value | escape }}</h3>
+                      {%- if m.short_description != blank -%}<div class="sb__tag">{{ m.short_description | metafield_tag }}</div>{%- endif -%}
+                      {%- if wtext != blank -%}<p><b>{{ wtext }}</b></p>{%- endif -%}
+                      {%- if m.description != blank -%}{{ m.description | metafield_tag }}{%- endif -%}
+                      {%- if m.ingredients.value != blank -%}<h4>Ingredients &amp; nutrition</h4><p>{{ m.ingredients.value | escape }}</p>{%- endif -%}
+                      {%- assign faqs = m.faqs.value -%}
+                      {%- if faqs.size > 0 -%}
+                        <h4>FAQs</h4>
+                        {%- for f in faqs -%}
+                          {%- if f.question != blank -%}<details><summary>{{ f.question.value | escape }}</summary><div>{{ f.answer | metafield_tag }}</div></details>{%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </template>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+      <button type="button" class="sb__back" data-back2>Back</button>
+    </div>
+
+    <div data-step="3" hidden>
+      <span class="sb__h" role="heading" aria-level="2">{{ section.settings.step2_heading | escape }}</span>
+      <div class="sb__summary">
+        <div class="sb__line"><span>Box</span><b>{{ bp.title | escape }}</b></div>
+        <div class="sb__line"><span>Size</span><b data-sum-size></b></div>
+        {%- if group != blank -%}<div class="sb__line"><span>Delivery</span><b data-sum-plan></b></div>{%- endif -%}
+        <div class="sb__line" data-sum-offer-row hidden><span>{{ section.settings.property_name | escape }}</span><b data-sum-offer></b></div>
+        <div class="sb__line" data-sum-cuts-row hidden><span>Cuts</span><b data-sum-cuts style="text-align:right"></b></div>
+        <div class="sb__line"><span>Price</span><b data-sum-price></b></div>
+      </div>
+      <button type="button" class="sb__btn" data-add>{{ section.settings.add_text | escape }}</button>
+      <button type="button" class="sb__back" data-back>Back</button>
+      <p class="sb__err" role="alert" data-err></p>
+    </div>
+
+    {%- endif -%}
+  </div>
+</section>
+
+<dialog class="sb__dlg" id="sb-dlg-{{ sid }}" aria-label="Meat cut details"><button type="button" class="sb__dlg-x" data-close aria-label="Close">&times;</button><div class="sb__dlg-in" data-dlg-body></div></dialog>
+
+<script>
+  (function () {
+    var root = document.getElementById('sb-{{ sid }}');
+    if (!root) return;
+    var dlg = document.getElementById('sb-dlg-{{ sid }}');
+    var PROP = {{ section.settings.property_name | json }};
+    var CUT_PROP = {{ section.settings.cuts_property_name | json }};
+    var steps = root.querySelectorAll('[data-step]');
+    var bar = root.querySelector('[data-bar]');
+    var sel = {};
+    var limit = 0;
+    var offer = '';
+    try {
+      offer = new URLSearchParams(window.location.search).get('box') || '';
+      if (offer) sessionStorage.setItem('ff_claimed_box', offer); else offer = sessionStorage.getItem('ff_claimed_box') || '';
+    } catch (e) {}
+
+    function checked(name) { return root.querySelector('input[name="' + name + '"]:checked'); }
+    function total() { return Object.keys(sel).reduce(function (n, k) { return n + sel[k]; }, 0); }
+    function limitFor(v) { var m = ((v && v.getAttribute('data-note')) || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
+    function show(n) {
+      steps.forEach(function (s) { s.hidden = s.getAttribute('data-step') !== String(n); });
+      bar.style.width = (n * 33.33) + '%';
+      window.scrollTo({ top: root.getBoundingClientRect().top + window.pageYOffset - 20, behavior: 'smooth' });
+    }
+
+    function render() {
+      var t = total(), full = limit > 0 && t >= limit;
+      var c = root.querySelector('[data-count]'), l = root.querySelector('[data-limit]'), go = root.querySelector('[data-to-review]');
+      if (c) c.textContent = t;
+      if (l) l.textContent = limit;
+      if (go) go.disabled = !(limit > 0 && t === limit);
+      root.querySelectorAll('.sb__cut').forEach(function (card) {
+        var q = sel[card.getAttribute('data-id')] || 0;
+        card.classList.toggle('is-added', q > 0);
+        card.querySelector('[data-qty]').textContent = q;
+        card.querySelector('[data-add-cut]').disabled = full;
+        card.querySelector('[data-plus]').disabled = full;
+      });
+    }
+    function change(card, d) {
+      var id = card.getAttribute('data-id'), q = (sel[id] || 0) + d;
+      if (d > 0 && total() >= limit) return;
+      if (q <= 0) delete sel[id]; else sel[id] = q;
+      render();
+    }
+    function cutsText() {
+      return Object.keys(sel).map(function (id) {
+        var card = root.querySelector('.sb__cut[data-id="' + id + '"]');
+        return (card ? card.getAttribute('data-name') : id) + ' x' + sel[id];
+      }).join(', ');
+    }
+
+    function setActive(cat) {
+      root.querySelectorAll('.sb__cat').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-cat') === cat ? 'true' : 'false'); });
+    }
+    var lockUntil = 0;
+    function spy() {
+      if (Date.now() < lockUntil || root.querySelector('[data-step="2"]').hidden) return;
+      var panels = root.querySelectorAll('.sb__panel'), cur = null;
+      for (var i = 0; i < panels.length; i++) { if (panels[i].getBoundingClientRect().top <= 120) cur = panels[i]; }
+      if (!cur && panels.length) cur = panels[0];
+      if (cur) setActive(cur.getAttribute('data-panel'));
+    }
+    window.addEventListener('scroll', spy, { passive: true });
+
+    root.addEventListener('click', function (e) {
+      var t = e.target.closest('button');
+      if (!t) return;
+      var card = t.closest('.sb__cut');
+      if (t.hasAttribute('data-add-cut') || t.hasAttribute('data-plus')) change(card, 1);
+      else if (t.hasAttribute('data-minus')) change(card, -1);
+      else if (t.hasAttribute('data-cat')) {
+        var panel = root.querySelector('.sb__panel[data-panel="' + t.getAttribute('data-cat') + '"]');
+        setActive(t.getAttribute('data-cat'));
+        lockUntil = Date.now() + 900;
+        if (panel) {
+          var off = window.matchMedia('(max-width: 800px)').matches ? 70 : 20;
+          window.scrollTo({ top: panel.getBoundingClientRect().top + window.pageYOffset - off, behavior: 'smooth' });
+        }
+      }
+      else if (t.hasAttribute('data-info')) {
+        var tpl = root.querySelector('template[data-info-tpl="' + t.getAttribute('data-info') + '"]');
+        if (!tpl || !dlg) return;
+        dlg.querySelector('[data-dlg-body]').innerHTML = tpl.innerHTML;
+        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+      }
+    });
+    if (dlg) {
+      dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.hasAttribute('data-close')) dlg.close(); });
+    }
+
+    root.querySelector('[data-next]').addEventListener('click', function () {
+      var v = checked('sb-variant');
+      if (!v) return;
+      var newLimit = limitFor(v);
+      if (newLimit !== limit && total() > newLimit) sel = {};
+      limit = newLimit;
+      if (limit === 0) { toReview(); return; }
+      render();
+      show(2);
+    });
+    root.querySelector('[data-back2]').addEventListener('click', function () { show(1); });
+    var go = root.querySelector('[data-to-review]');
+    if (go) go.addEventListener('click', function () { if (total() === limit) toReview(); });
+
+    function toReview() {
+      var v = checked('sb-variant'), p = checked('sb-plan');
+      root.querySelector('[data-sum-size]').textContent = v.getAttribute('data-title');
+      root.querySelector('[data-sum-price]').textContent = v.getAttribute('data-price');
+      var sp = root.querySelector('[data-sum-plan]');
+      if (sp && p) sp.textContent = 'Every ' + p.getAttribute('data-name');
+      if (offer) {
+        root.querySelector('[data-sum-offer-row]').hidden = false;
+        root.querySelector('[data-sum-offer]').textContent = offer;
+      }
+      var ct = cutsText();
+      root.querySelector('[data-sum-cuts-row]').hidden = !ct;
+      root.querySelector('[data-sum-cuts]').textContent = ct;
+      show(3);
+    }
+    root.querySelector('[data-back]').addEventListener('click', function () { show(limit > 0 ? 2 : 1); });
+
+    root.querySelector('[data-add]').addEventListener('click', function () {
+      var btn = this, err = root.querySelector('[data-err]');
+      var v = checked('sb-variant'), p = checked('sb-plan');
+      if (!v) return;
+      if (limit > 0 && total() !== limit) { err.textContent = 'Please choose exactly ' + limit + ' cuts.'; show(2); return; }
+      var item = { id: Number(v.value), quantity: 1, properties: {} };
+      if (p) item.selling_plan = Number(p.value);
+      if (offer) item.properties[PROP] = offer;
+      var ct = cutsText();
+      if (ct) item.properties[CUT_PROP] = ct;
+      err.textContent = '';
+      btn.disabled = true;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ items: [item] })
+      }).then(function (r) {
+        return r.json().then(function (d) { if (!r.ok) throw new Error(d.description || d.message || 'Could not add to cart'); });
+      }).then(function () {
+        window.location.href = '/cart';
+      }).catch(function (e) {
+        err.textContent = e.message;
+        btn.disabled = false;
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Subscription builder",
+  "class": "index-section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product", "info": "Defaults to the signature-box product." },
+    { "type": "header", "content": "Step 1: plan and frequency" },
+    { "type": "text", "id": "step1_heading", "label": "Heading", "default": "Select Your Plan & Frequency" },
+    { "type": "textarea", "id": "variant_notes", "label": "Size descriptions", "info": "One line per size, in variant order.", "default": "Choose 6 proteins (up to 21 lbs)\nChoose 9 proteins (up to 31 lbs)\nChoose 12 proteins (up to 42 lbs)" },
+    { "type": "text", "id": "popular_variant", "label": "Popular size name", "default": "Medium" },
+    { "type": "text", "id": "frequency_heading", "label": "Frequency heading", "default": "How often do you want a box?" },
+    { "type": "text", "id": "frequency_sub", "label": "Frequency subtext", "default": "You can pause or cancel anytime." },
+    { "type": "text", "id": "next_text", "label": "Next button", "default": "Next, choose your proteins" },
+    { "type": "header", "content": "Step 2: choose cuts" },
+    { "type": "text", "id": "cuts_heading", "label": "Heading", "default": "Choose Your Proteins" },
+    { "type": "metaobject_list", "id": "cuts_list", "label": "Meat cuts to show", "metaobject_type": "meat_cuts", "info": "Leave empty to show every Meat Cuts entry." },
+    { "type": "text", "id": "category_order", "label": "Category order", "info": "Comma separated. Categories come from the Meat Cuts category field; any not listed are added after.", "default": "Member Favorites,Beef,Poultry,Pork,Seafood,More" },
+    { "type": "text", "id": "review_text", "label": "Review button", "default": "Review box" },
+    { "type": "text", "id": "cuts_property_name", "label": "Cart property name for chosen cuts", "default": "Meat Cuts" },
+    { "type": "header", "content": "Step 3: review" },
+    { "type": "text", "id": "step2_heading", "label": "Heading", "default": "Review Your Subscription" },
+    { "type": "text", "id": "add_text", "label": "Add to cart button", "default": "Add to cart" },
+    { "type": "text", "id": "property_name", "label": "Cart property name", "info": "The card chosen on the Get Started page is saved on the cart item under this name.", "default": "Free Offer" },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#faf9f7" },
+    { "type": "color", "id": "text_color", "label": "Text and dark button", "default": "#1c2321" },
+    { "type": "color", "id": "button_color", "label": "Accent", "default": "#3a9468" }
+  ],
+  "presets": [{ "name": "Subscription builder" }]
+}
+{% endschema %}

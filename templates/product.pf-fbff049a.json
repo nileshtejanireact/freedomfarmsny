@@ -1,0 +1,319 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {}
+    },
+    "1685189246057f65a4": {
+      "type": "apps",
+      "blocks": {
+        "806f09ca-e3d5-4980-85ec-f42739831d51": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": true
+          }
+        }
+      },
+      "block_order": [
+        "806f09ca-e3d5-4980-85ec-f42739831d51"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "6d48b3fb-7905-4482-a55d-63b998716c40": {
+      "type": "gl_video_player",
+      "blocks": {
+        "template--15853637271735__6d48b3fb-7905-4482-a55d-63b998716c40-text-1": {
+          "type": "text",
+          "settings": {
+            "title": "MAKE MEAT GREAT AGAIN!",
+            "sub_title": "",
+            "text_after_title": "At Freedom Farms we love bringing customers in our region only the best grass-fed beef, pastured raised pork, free-range chickens, and eggs.",
+            "content_1": "<ul>\n<li>Order Your Meat Share.</li>\n<li>We Deliver/You Pick Up.</li>\n</ul>",
+            "content_2": "<ul>\n<li>Enjoy Fresh Meat.</li>\n<li>Latest Farming Updates.</li>\n</ul>",
+            "btn_title": "More about us",
+            "btn_link": ""
+          }
+        },
+        "template--15853637271735__6d48b3fb-7905-4482-a55d-63b998716c40-video-1": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=NlgTTUhpfDY",
+            "width": "100",
+            "ratio": "169",
+            "alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "template--15853637271735__6d48b3fb-7905-4482-a55d-63b998716c40-text-1",
+        "template--15853637271735__6d48b3fb-7905-4482-a55d-63b998716c40-video-1"
+      ],
+      "disabled": true,
+      "settings": {
+        "row_stretch": "stretch_row_content",
+        "full_height": false,
+        "columns_position": "middle",
+        "equal_height": true,
+        "content_position": "middle",
+        "section_bg_color": "#eaeaea",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "80",
+        "section_padding_bottom": "",
+        "section_padding_left": "80"
+      }
+    },
+    "2d96ada7-f504-447f-a150-05f54f2ca23d": {
+      "type": "gl_section_categories",
+      "blocks": {
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-0": {
+          "type": "masonry_image",
+          "settings": {
+            "id_collection": "beef",
+            "width": "3",
+            "mobile_width": "6"
+          }
+        },
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-1": {
+          "type": "masonry_image",
+          "settings": {
+            "id_collection": "100-pasture-raised-chicken",
+            "width": "3",
+            "mobile_width": "6"
+          }
+        },
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-2": {
+          "type": "masonry_image",
+          "settings": {
+            "id_collection": "pork",
+            "width": "3",
+            "mobile_width": "6"
+          }
+        },
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-3": {
+          "type": "masonry_image",
+          "disabled": true,
+          "settings": {
+            "id_collection": "",
+            "width": "3",
+            "mobile_width": "6"
+          }
+        }
+      },
+      "block_order": [
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-0",
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-1",
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-2",
+        "template--15842512928951__2d96ada7-f504-447f-a150-05f54f2ca23d-168624866059f74fcd-3"
+      ],
+      "disabled": true,
+      "settings": {
+        "row_stretch": "default",
+        "categories_layout": "carousel",
+        "categories_design": "default",
+        "space_categories": "30",
+        "silder_speed": "5000",
+        "silder_per_view": "3",
+        "hide_pagination": false,
+        "hide_button": false,
+        "slider_loop": false,
+        "autoplay": false,
+        "section_bg_color": "#fff6eb",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "60",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "60",
+        "section_padding_bottom": "",
+        "section_padding_left": "60"
+      }
+    },
+    "eb3631fe-99cb-445a-9f9c-b33513fb4a15": {
+      "type": "gl_section_image_text_6",
+      "blocks": {
+        "template--15842512928951__eb3631fe-99cb-445a-9f9c-b33513fb4a15-16851893306bc73c7e-0": {
+          "type": "text",
+          "settings": {
+            "text_title": "",
+            "text_heading": "High Quality Sourcing:",
+            "content": "<p><strong><span style=\"color: white;\">✔︎ </span></strong><span style=\"color: white;\">100% Grass Fed Beef and Pasture Raised Pork</span></p>\n<p><strong><span style=\"color: white;\">✔︎ </span></strong><span style=\"color: white;\">Premium Quality Products</span></p>\n<p><strong><span style=\"color: white;\">✔︎ </span></strong><span style=\"color: white;\">Farm-Raised and Farm Fresh Meats</span></p>\n<p><strong><span style=\"color: white;\">✔︎ </span></strong><span style=\"color: white;\">We Ship Nationwide </span></p>\n\n<p><span style=\"color: white;\">At Freedom Farms you are buying directly from your farmer. We are out on the farm working with our animals daily- making sure you are getting only the best Farm-To-Table meats. When you buy from us, you are supporting a small, local family farm. You directly impact our local economy. </span></p>",
+            "button_label": "",
+            "button_link": "",
+            "button_label_2": "",
+            "button_link_2": "",
+            "use_countdown": false,
+            "date": "2018/12/12",
+            "countdown_color_scheme": "dark",
+            "size": "large",
+            "align": "center",
+            "style": "standard"
+          }
+        },
+        "template--15842512928951__eb3631fe-99cb-445a-9f9c-b33513fb4a15-16851893306bc73c7e-1": {
+          "type": "image",
+          "settings": {
+            "block_image": "shopify://shop_images/347233815_268582275558832_7974183227539452543_n_83e151e0-7ed5-4e6c-a4e6-cea5dbfe63d2.jpg",
+            "image_alignment_one": "center",
+            "image_style_one": "default"
+          }
+        }
+      },
+      "block_order": [
+        "template--15842512928951__eb3631fe-99cb-445a-9f9c-b33513fb4a15-16851893306bc73c7e-0",
+        "template--15842512928951__eb3631fe-99cb-445a-9f9c-b33513fb4a15-16851893306bc73c7e-1"
+      ],
+      "disabled": true,
+      "settings": {
+        "row_stretch": "stretch_row_content",
+        "full_height": false,
+        "columns_position": "middle",
+        "equal_height": true,
+        "content_position": "middle",
+        "section_bg_color": "#203c99",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "50",
+        "section_padding_bottom": "",
+        "section_padding_left": "50"
+      }
+    },
+    "c11a0b73-0c0b-4402-b1a8-6365de5e936e": {
+      "type": "gl_section_image_text_6",
+      "blocks": {
+        "2a17f892-9d65-44bb-9751-ba48ecea8626": {
+          "type": "image",
+          "settings": {
+            "block_image": "shopify://shop_images/345923809_811128526587432_1113430128965160028_n.jpg",
+            "image_alignment_one": "center",
+            "image_style_one": "default"
+          }
+        },
+        "6d9879d4-2475-44d9-8602-7f284fdd8633": {
+          "type": "text",
+          "settings": {
+            "text_title": "",
+            "text_heading": "Our Beliefs:",
+            "content": "<p>✔︎ At Freedom Farms, we are more than just a farm and local brand. We are a community of individuals who share a passion for sustainable farming, quality food, and a better future for farm fresh foods </p><p></p>\n<p>✔︎ We believe in sustainable farming practices, which prioritize the health of the animals, the health of our customers and their families</p>\n\n<p>✔︎ Our commitment is to make each customer feel important and give them the confidence of knowing their farmer and where their food comes from </p>\n<p>✔︎ PSALM 16:8\n</p><p>\n\n</p><p></p>\n<p></p>",
+            "button_label": "",
+            "button_link": "",
+            "button_label_2": "",
+            "button_link_2": "",
+            "use_countdown": false,
+            "date": "2018/12/12",
+            "countdown_color_scheme": "dark",
+            "size": "large",
+            "align": "center",
+            "style": "standard"
+          }
+        }
+      },
+      "block_order": [
+        "2a17f892-9d65-44bb-9751-ba48ecea8626",
+        "6d9879d4-2475-44d9-8602-7f284fdd8633"
+      ],
+      "disabled": true,
+      "settings": {
+        "row_stretch": "stretch_row_content",
+        "full_height": false,
+        "columns_position": "middle",
+        "equal_height": false,
+        "content_position": "middle",
+        "section_bg_color": "#203c99",
+        "section_border_color": "",
+        "section_border_style": "solid",
+        "section_border": "",
+        "section_margin_top": "",
+        "section_margin_bottom": "",
+        "section_padding_top": "",
+        "section_padding_right": "",
+        "section_padding_bottom": "",
+        "section_padding_left": ""
+      }
+    },
+    "loox-product-reviews-app-section": {
+      "type": "apps",
+      "blocks": {
+        "loox-product-reviews": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "loox-product-reviews"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "175168560234018fb5": {
+      "type": "apps",
+      "disabled": true,
+      "settings": {}
+    },
+    "175322823905a63bca": {
+      "type": "apps",
+      "blocks": {
+        "seal_subscriptions_subscription_widget_Yep6Cb": {
+          "type": "shopify://apps/seal-subscriptions/blocks/subscription-widget/13b25004-a140-4ab7-b5fe-29918f759699",
+          "settings": {
+            "product": "{{product}}"
+          }
+        }
+      },
+      "block_order": [
+        "seal_subscriptions_subscription_widget_Yep6Cb"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "pf-fbff049a": {
+      "type": "pf-fbff049a",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "1685189246057f65a4",
+    "6d48b3fb-7905-4482-a55d-63b998716c40",
+    "2d96ada7-f504-447f-a150-05f54f2ca23d",
+    "eb3631fe-99cb-445a-9f9c-b33513fb4a15",
+    "c11a0b73-0c0b-4402-b1a8-6365de5e936e",
+    "loox-product-reviews-app-section",
+    "175168560234018fb5",
+    "175322823905a63bca",
+    "pf-fbff049a"
+  ]
+}
