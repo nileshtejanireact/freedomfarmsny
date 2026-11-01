@@ -124,3 +124,141 @@ button.btnToggleAccordian_X7z3.isActive_Ak9x:after {
     font-size: 17px !important;
     font-weight: 600;
 }
+.template-product .sealsubs-target-element {
+    margin: 0 0 22px;
+    color: #171717;
+    font-family: inherit;
+}
+.template-product .sealsubs-target-element .sealsubs-container {
+    overflow: hidden;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(37, 26, 17, .08);
+}
+.template-product .sealsubs-target-element #seal-purchase-options-label {
+    display: block;
+    width: 100%;
+    margin: 0 !important;
+    padding: 13px 18px !important;
+    border-radius: 0 !important;
+    background: #da291c;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 750;
+    line-height: 1.35;
+    letter-spacing: .02em;
+    text-align: center;
+}
+.template-product .sealsubs-target-element .sls-purchase-options-container {
+    padding: 8px 14px 4px;
+    border: 1px solid #eaded5;
+    border-top: 0;
+    border-radius: 0 0 14px 14px;
+    background: #fff;
+}
+.template-product .sealsubs-target-element .sls-option-container.seal-table {
+    margin: 8px 0;
+    overflow: hidden;
+    border: 1px solid #e8e1db;
+    border-radius: 11px;
+    background: #fff;
+    transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.template-product .sealsubs-target-element .sls-option-container.seal-table:hover {
+    border-color: #d7b6a8;
+}
+.template-product .sealsubs-target-element .sls-option-container.seal-table.sls-active {
+    border: 2px solid #da291c;
+    background: #fff8f5;
+    box-shadow: 0 2px 8px rgba(218, 41, 28, .08);
+}
+.template-product .sealsubs-target-element .seal-row {
+    vertical-align: top;
+}
+.template-product .sealsubs-target-element .seal-row > .seal-col {
+    padding: 12px 10px !important;
+}
+.template-product .sealsubs-target-element .sls-selling-plan-group-name {
+    color: #171717;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.template-product .sealsubs-target-element .sls-price {
+    color: #171717;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.template-product .sealsubs-target-element .sls-savings-badge {
+    display: inline-block;
+    margin: 5px 0 0;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #da291c;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+.template-product .sealsubs-target-element .sls-selling-plan-group-options {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 0 2px;
+}
+.template-product .sealsubs-target-element .selling-plan-group-options-name-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.template-product .sealsubs-target-element .selling-plan-group-options-name-select > label {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+.template-product .sealsubs-target-element .sls-select {
+    min-height: 46px;
+    padding: 0 38px 0 13px;
+    border: 1px solid #d5cec8;
+    border-radius: 9px;
+    background-color: #fff;
+    color: #171717;
+    font: inherit;
+}
+.template-product .sealsubs-target-element .sls-more-info-container {
+    padding: 9px 14px 13px;
+}
+.template-product .sealsubs-target-element .sls-subscription-details-label a {
+    color: #3d392f;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+@media (max-width: 600px) {
+    .template-product .sealsubs-target-element #seal-purchase-options-label {
+        padding: 12px 10px !important;
+        font-size: 15px;
+    }
+    .template-product .sealsubs-target-element .sls-purchase-options-container {
+        padding: 6px 9px 3px;
+    }
+    .template-product .sealsubs-target-element .seal-row {
+        padding: 11px 9px;
+    }
+    .template-product .sealsubs-target-element .sls-selling-plan-group-name,
+    .template-product .sealsubs-target-element .sls-price {
+        font-size: 14px;
+    }
+    .template-product .sealsubs-target-element .sls-savings-badge {
+        font-size: 10px;
+        padding: 4px 7px;
+    }
+    .template-product .sealsubs-target-element .sls-select {
+        min-height: 42px;
+    }
+}
