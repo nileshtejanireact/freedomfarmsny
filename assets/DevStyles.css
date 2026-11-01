@@ -63,7 +63,7 @@
 @media (min-width: 992px) {
     .template-product .single-product-content .product-image-summary > .row > .product-images {
         position: sticky;
-        top: 110px;
+        top: 0;
         align-self: flex-start;
     }
 }
