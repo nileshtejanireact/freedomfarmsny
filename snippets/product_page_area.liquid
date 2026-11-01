@@ -458,6 +458,15 @@
 
                                             <div id="hulkapps_custom_options_{{ product.id }}"> </div>
                                             <div class="shopify-variation-add-to-cart variations_button shopify-variation-add-to-cart-enabled">
+                                                                        {%- assign product_bullets = product.metafields.custom.product_bullets.value -%}
+                                                                        {%- if product_bullets != blank -%}
+                                                                           <ul class="product-benefit-bullets" aria-label="Product highlights">
+                                                                              {%- for bullet in product_bullets limit: 4 -%}
+                                                                                 {%- assign bullet_text = bullet | strip -%}
+                                                                                 {%- if bullet_text != blank -%}<li>{{ bullet_text | escape }}</li>{%- endif -%}
+                                                                              {%- endfor -%}
+                                                                           </ul>
+                                                                        {%- endif -%}
                                                 <div id="shopify_quantity" class="quantity">
                                                    <input type="button" value="-" class="minus">
                                                    <input type="number" step="1" min="1" max="{%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management != null -%}999{%- elsif current_variant.inventory_management != null -%}{{current_variant.inventory_quantity}}{%- else -%}999{%- endif -%}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
@@ -515,6 +524,15 @@
                                              </div>
                                           {%- endif -%}
                                           <div id="hulkapps_custom_options_{{ product.id }}"> </div>
+                                                               {%- assign product_bullets = product.metafields.custom.product_bullets.value -%}
+                                                               {%- if product_bullets != blank -%}
+                                                                  <ul class="product-benefit-bullets" aria-label="Product highlights">
+                                                                     {%- for bullet in product_bullets limit: 4 -%}
+                                                                        {%- assign bullet_text = bullet | strip -%}
+                                                                        {%- if bullet_text != blank -%}<li>{{ bullet_text | escape }}</li>{%- endif -%}
+                                                                     {%- endfor -%}
+                                                                  </ul>
+                                                               {%- endif -%}
                                           <div id="shopify_quantity" class="quantity">
                                              <input type="button" value="-" class="minus">
                                              <input type="number" step="1" min="1" max="{%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management != null -%}999{%- elsif current_variant.inventory_management != null -%}{{current_variant.inventory_quantity}}{%- else -%}999{%- endif -%}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
