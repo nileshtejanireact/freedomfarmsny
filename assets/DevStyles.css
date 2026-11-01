@@ -17,6 +17,31 @@
     padding: 1rem 3px;
     font-weight: 600;
     width: 100%;
+.single-product-content .cart #shopify_add_to_cart {
+    background: #da291c !important;
+    border: 1px solid #da291c !important;
+    color: #fff !important;
+    font-weight: 700;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+.single-product-content .cart #shopify_add_to_cart:hover {
+    background: #b82016 !important;
+    border-color: #b82016 !important;
+}
+.single-product-content .cart #shopify_add_to_cart:focus-visible,
+.btnToggleAccordian_X7z3:focus-visible {
+    outline: 3px solid #1f5a46;
+    outline-offset: 3px;
+}
+@media (min-width: 992px) {
+    .btnToggleAccordian_X7z3 { display: none; }
+    .contentWrapper_Q1p9 { display: block !important; }
+}
+@media (max-width: 991px) {
+    .btnToggleAccordian_X7z3 { display: flex; }
+    .contentWrapper_Q1p9 { display: none; }
+    .contentWrapper_Q1p9.is-open { display: block; }
+}
     border: none;
     text-align: left;
     outline: none;

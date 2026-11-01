@@ -593,36 +593,12 @@
                            </div>
                            
                  <div class="basel-tab-wrapper">
-  <button class="btnToggleAccordian_X7z3">Description</button>
+   <button type="button" class="btnToggleAccordian_X7z3" aria-controls="product-description" aria-expanded="false">Description</button>
 
-  <div class="contentWrapper_Q1p9 active">
+   <div id="product-description" class="contentWrapper_Q1p9" role="region" aria-label="Product description">
     {{ product.description }} 
   </div>
 </div>
-
-  
-
-<style>
-/* Desktop: Always show description */
-@media (min-width: 992px) {
-  .btnToggleAccordian_X7z3 {
-    display: none; /* Hide button on desktop */
-  }
-  .contentWrapper_Q1p9 {
-    display: block !important; /* Always show description */
-  }
-}
-
-/* Mobile: Make it collapsible */
-@media (max-width: 991px) {
-  .contentWrapper_Q1p9 {
-    display: none;
-  }
-  .contentWrapper_Q1p9.active {
-    display: block;
-  }
-}
-</style>
                            <div class="cstm-tesxt-ad">
                              <p>Get 117 portions of quality grass-fed, grass-finished beef straight from the Great Plains with our 29-pound Eighth Cow Box.</p>
                          <h3>Grass-fed. Hormone-free. Antibiotic-free. Always.</h3>
