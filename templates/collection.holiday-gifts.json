@@ -9,7 +9,6 @@
  */
 {
   "sections": {
-  
     "product-grid": {
       "type": "collection_grid"
     }
