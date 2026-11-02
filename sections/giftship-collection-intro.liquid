@@ -1,0 +1,85 @@
+{%- assign intro_heading = section.settings.heading | default: collection.title -%}
+<section class="giftship-collection-intro giftship-collection-intro--{{ section.id }}">
+  <style>
+    .giftship-collection-intro--{{ section.id }} {
+      background-color: {{ section.settings.background_color }};
+      color: {{ section.settings.text_color }};
+      padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+      text-align: {{ section.settings.text_alignment }};
+    }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__inner {
+      margin: 0 auto;
+      max-width: {{ section.settings.content_width }}px;
+    }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__eyebrow {
+      color: {{ section.settings.accent_color }};
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+    .giftship-collection-intro--{{ section.id }} h1 {
+      color: inherit;
+      font-size: clamp(30px, 5vw, {{ section.settings.heading_size }}px);
+      line-height: 1.12;
+      margin: 0 0 14px;
+    }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__text {
+      font-size: 16px;
+      line-height: 1.7;
+      margin: 0 auto;
+      max-width: 760px;
+    }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__text > :last-child { margin-bottom: 0; }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__button {
+      background: {{ section.settings.button_background }};
+      border: 1px solid {{ section.settings.button_background }};
+      color: {{ section.settings.button_text_color }};
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      margin-top: 20px;
+      padding: 13px 22px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__button:hover,
+    .giftship-collection-intro--{{ section.id }} .giftship-collection-intro__button:focus { opacity: .8; }
+  </style>
+
+  <div class="giftship-collection-intro__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="giftship-collection-intro__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if intro_heading != blank -%}<h1>{{ intro_heading | escape }}</h1>{%- endif -%}
+    {%- if section.settings.text != blank -%}<div class="giftship-collection-intro__text rte">{{ section.settings.text }}</div>{%- endif -%}
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <a class="giftship-collection-intro__button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Giftship collection intro",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to use the collection title." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add a short introduction for this collection.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "select", "id": "text_alignment", "label": "Text alignment", "default": "center", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }] },
+    { "type": "range", "id": "content_width", "label": "Content width", "min": 600, "max": 1400, "step": 50, "unit": "px", "default": 1000 },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 32, "max": 72, "step": 2, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#f7f3e8" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#173c2b" },
+    { "type": "color", "id": "accent_color", "label": "Eyebrow color", "default": "#8a6431" },
+    { "type": "color", "id": "button_background", "label": "Button background", "default": "#173c2b" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" }
+  ]
+}
+{% endschema %}
