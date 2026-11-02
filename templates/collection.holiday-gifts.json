@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "holiday_gifts_landing": {
+      "type": "holiday-gifts-landing",
+      "blocks": {
+        "highlight_1": {
+          "type": "highlight",
+          "settings": {
+            "text": "A centerpiece worth sharing"
+          }
+        },
+        "highlight_2": {
+          "type": "highlight",
+          "settings": {
+            "text": "Thoughtful gifts for food lovers"
+          }
+        },
+        "highlight_3": {
+          "type": "highlight",
+          "settings": {
+            "text": "Make the holidays delicious"
+          }
+        }
+      },
+      "block_order": [
+        "highlight_1",
+        "highlight_2",
+        "highlight_3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "holiday_gifts_landing"
+  ]
+}

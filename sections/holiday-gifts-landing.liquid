@@ -2,6 +2,8 @@
 {%- assign hero_image = section.settings.hero_image | default: collection.image -%}
 {%- assign hero_title = section.settings.hero_title | default: collection.title -%}
 {%- assign product_anchor = section.settings.product_anchor | default: 'holiday-gifts-products' -%}
+{%- assign limit = settings.products_per_page | plus: 0 -%}
+{%- if settings.shop_show_per_page -%}{%- assign limit = 12 -%}{%- endif -%}
 <section class="holiday-gifts holiday-gifts-{{ sid }}">
   <style>
     .holiday-gifts-{{ sid }} {
