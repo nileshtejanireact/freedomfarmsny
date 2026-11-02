@@ -15,7 +15,9 @@
        {%- endfor -%}
        {%- assign current_tags = list_current_tag | split:',' -%}
    {%- endif -%}
-{%- if settings.shop_sidebar == 'left' -%}
+{%- if skip_nested_sections == true -%}
+   {%- assign class_gl = 'col-sm-12' -%}
+{%- elsif settings.shop_sidebar == 'left' -%}
    {%- case settings.shop_size_sidebar -%}
      {% when '1' %}
        {%- assign class_gl = 'col-sm-10 col-sm-push-2' -%}
@@ -182,7 +184,7 @@
          <div class="site-content {{class_gl}}" role="main">
            
          {%- paginate collection.products by limit -%}
-            {%- if settings.use_promo_banner_collection -%}{%- section 'promo_banner_collection' -%}{%- endif -%}
+            {%- if settings.use_promo_banner_collection and skip_nested_sections != true -%}{%- section 'promo_banner_collection' -%}{%- endif -%}
             {%- if collection.description != blank and settings.show_des_collection -%}<div class="term-description promo-banner text-center" id="des_{{collection.id}}"><h2>{{collection.title}}</h2>{{collection.description}}</div>{%- endif -%}
             <div class="shop-loop-head">
                <nav class="shopify-breadcrumb"><a href="/">{{ 'general.breadcrumbs.home' | t }}</a><span class="breadcrumb-last"> {{collection.title | capitalize}}</span></nav>
@@ -201,7 +203,7 @@
                   <input class="collection-header__default-show" type="hidden" value="{{show}}" />
                </form>
               {%- endif -%}
-              {%- if settings.shop_filters %}
+              {%- if settings.shop_filters and skip_nested_sections != true %}
                <div class="basel-filter-buttons">
                   <a href="#" class="open-filters">{{ 'collections.filters.filters_title' | t }}</a>
                </div>
@@ -223,7 +225,7 @@
                </form>
                {%- endif -%}
             </div>
-            {%- if settings.shop_filters %}{%- section 'gl_filter_area' -%}{%- endif -%}
+            {%- if settings.shop_filters and skip_nested_sections != true %}{%- section 'gl_filter_area' -%}{%- endif -%}
             <!-- .filters-area -->
             {%- if current_tags.size > 0 -%}
                <div class="basel-active-filters">
@@ -328,7 +330,7 @@
             {%- endif -%}
          {%- endpaginate -%}  
          </div>
-         {%- if settings.shop_sidebar != '1' -%}
+         {%- if settings.shop_sidebar != '1' and skip_nested_sections != true -%}
          <aside class="sidebar-container {{class_sidebar}} sidebar-{{settings.shop_size_sidebar}}" role="complementary">
             <div class="sidebar-inner">
                {%- section 'gl_section_sidebar_shop' -%}<!-- .widget-area -->

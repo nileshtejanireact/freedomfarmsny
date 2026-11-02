@@ -134,7 +134,7 @@
   {%- endif -%}
 
   <div id="{{ product_anchor | handleize }}" class="hg-products">
-    {%- render 'collection_grid' -%}
+    {%- render 'collection_grid', skip_nested_sections: true -%}
   </div>
 </section>
 

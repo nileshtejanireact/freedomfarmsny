@@ -1,8 +1,7 @@
 {%- assign view_not_default = false -%}
 {%- assign limit = settings.products_per_page | plus:0 -%}{%- if settings.shop_show_per_page -%}{%- assign limit = 12 -%}{%- endif -%}
 {%- if settings.view_default == 'grid' -%}
- {%- render 'collection_grid' -%}
+ {%- render 'collection_grid', skip_nested_sections: true -%}
 {%- else -%}
- {%- render 'collection_list' -%}
+ {%- render 'collection_list', skip_nested_sections: true -%}
 {%- endif -%}
-
