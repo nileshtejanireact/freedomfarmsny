@@ -1,0 +1,91 @@
+{%- assign page_size = page_size | default: 20 | plus: 0 -%}
+{%- if page_size < 1 -%}{%- assign page_size = 20 -%}{%- endif -%}
+{%- if page_size > 50 -%}{%- assign page_size = 50 -%}{%- endif -%}
+
+<section class="holiday-collection-products" aria-label="{{ collection.title | escape }}">
+  <style>
+    .holiday-collection-products { margin: 0 auto; max-width: 1440px; padding: 32px 24px; }
+    .holiday-collection-products__header { align-items: center; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; margin-bottom: 24px; }
+    .holiday-collection-products__title { color: #173c2b; font-size: clamp(24px, 3vw, 36px); margin: 0; }
+    .holiday-collection-products__count { margin: 0; }
+    .holiday-collection-products__sort { border: 1px solid #d5d5d5; padding: 10px 12px; }
+    .holiday-collection-products__grid { display: grid; gap: 24px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .holiday-collection-products__card { min-width: 0; }
+    .holiday-collection-products__image-link { background: #f7f3e8; display: block; overflow: hidden; }
+    .holiday-collection-products__image { aspect-ratio: 1 / 1; display: block; height: auto; object-fit: cover; width: 100%; }
+    .holiday-collection-products__image--placeholder { aspect-ratio: 1 / 1; background: #f7f3e8; }
+    .holiday-collection-products__name { color: inherit; display: block; font-weight: 600; margin-top: 12px; text-decoration: none; }
+    .holiday-collection-products__price { margin: 6px 0 0; }
+    .holiday-collection-products__compare { margin-left: 8px; opacity: .65; }
+    .holiday-collection-products__pagination { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 36px; }
+    .holiday-collection-products__page { border: 1px solid #d5d5d5; color: inherit; min-width: 40px; padding: 9px 12px; text-align: center; text-decoration: none; }
+    .holiday-collection-products__page[aria-current="page"] { background: #173c2b; border-color: #173c2b; color: #fff; }
+    @media (max-width: 900px) { .holiday-collection-products__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 600px) {
+      .holiday-collection-products { padding: 24px 16px; }
+      .holiday-collection-products__grid { gap: 16px 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+
+  {%- paginate collection.products by page_size -%}
+    <div class="holiday-collection-products__header">
+      <h2 class="holiday-collection-products__title">{{ collection.title | escape }}</h2>
+      <p class="holiday-collection-products__count">
+        {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: collection.products.size }} of {{ collection.all_products_count }} products
+      </p>
+      <form method="get" action="{{ collection.url }}">
+        <label class="visually-hidden" for="holiday-collection-sort">Sort products</label>
+        {%- if request.params.view != blank -%}<input type="hidden" name="view" value="{{ request.params.view | escape }}">{%- endif -%}
+        <select class="holiday-collection-products__sort" id="holiday-collection-sort" name="sort_by" onchange="this.form.submit()">
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+          {%- endfor -%}
+        </select>
+      </form>
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="holiday-collection-products__grid">
+        {%- for product in collection.products -%}
+          <article class="holiday-collection-products__card">
+            <a class="holiday-collection-products__image-link" href="{{ product.url }}">
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 720 | image_tag: class: 'holiday-collection-products__image', loading: 'lazy', alt: product.featured_image.alt }}
+              {%- else -%}
+                <div class="holiday-collection-products__image--placeholder"></div>
+              {%- endif -%}
+            </a>
+            <a class="holiday-collection-products__name" href="{{ product.url }}">{{ product.title | escape }}</a>
+            <p class="holiday-collection-products__price">
+              {%- if product.price_varies -%}From {% endif -%}{{ product.price_min | money }}
+              {%- if product.compare_at_price > product.price -%}
+                <s class="holiday-collection-products__compare">{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+            </p>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p>{{ 'collections.general.no_matches' | t }}</p>
+    {%- endif -%}
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="holiday-collection-products__pagination" aria-label="Pagination">
+        {%- if paginate.previous -%}
+          <a class="holiday-collection-products__page" href="{{ paginate.previous.url }}">Previous</a>
+        {%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a class="holiday-collection-products__page" href="{{ part.url }}">{{ part.title }}</a>
+          {%- else -%}
+            <span class="holiday-collection-products__page"{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}
+          <a class="holiday-collection-products__page" href="{{ paginate.next.url }}">Next</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
