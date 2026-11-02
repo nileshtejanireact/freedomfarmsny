@@ -58,8 +58,10 @@ fieldset.bsub-widget legend {
 	 border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
  .bsub-widget__groups-container {
-	 display: flex;
-	 align-items: stretch;
+ display: grid;
+ align-items: stretch;
+ gap: 12px;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
 }
  .bsub-widget__groups-container input[type='radio'] {
 	 display: none;
@@ -68,10 +70,15 @@ fieldset.bsub-widget legend {
 	 margin-bottom: 0;
 }
  .bsub-widget__group {
-	 flex: 1 1 100%;
+ flex: none;
+ min-width: 0;
+ order: 2;
 }
+ .bsub-widget__group[data-bsub-selling-plan-group] {
+ order: 1;
+ }
  .bsub-widget__group + .bsub-widget__group {
-	 margin-left: 1em;
+ margin-left: 0;
 }
  .bsub-widget__group-header {
 	 display: flex !important;
@@ -151,4 +158,10 @@ fieldset.bsub-widget legend {
 }
  .bsub-cart__selling-plan-details, .bsub-cart-popup__selling-plan-details {
 	 font-size: 12px;
+}
+
+@media (max-width: 560px) {
+	.bsub-widget__groups-container {
+		grid-template-columns: 1fr;
+	}
 }
