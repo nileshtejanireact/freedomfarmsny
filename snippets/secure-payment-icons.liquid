@@ -1,0 +1,51 @@
+{%- if shop.enabled_payment_types.size > 0 -%}
+  <div class="product-secure-payment" aria-label="Secure payment methods">
+    <p class="product-secure-payment__heading">
+      <svg class="product-secure-payment__lock" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M4.5 6V4.5a3.5 3.5 0 0 1 7 0V6M3.5 6h9A1.5 1.5 0 0 1 14 7.5v6A1.5 1.5 0 0 1 12.5 15h-9A1.5 1.5 0 0 1 2 13.5v-6A1.5 1.5 0 0 1 3.5 6Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </svg>
+      Secure checkout
+    </p>
+    <ul class="product-secure-payment__list" role="list" aria-label="Accepted payment methods">
+      {%- for type in shop.enabled_payment_types -%}
+        <li class="product-secure-payment__item">{{ type | payment_type_svg_tag: class: 'product-secure-payment__icon' }}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  <style>
+    .product-secure-payment {
+      align-items: center;
+      border: 1px solid rgba(0, 0, 0, .12);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      justify-content: space-between;
+      margin: 14px 0 20px;
+      padding: 12px 14px;
+    }
+    .product-secure-payment__heading {
+      align-items: center;
+      color: #333;
+      display: inline-flex;
+      font-size: 13px;
+      font-weight: 600;
+      gap: 7px;
+      margin: 0;
+    }
+    .product-secure-payment__lock { height: 16px; width: 16px; }
+    .product-secure-payment__list {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .product-secure-payment__item { display: flex; line-height: 0; }
+    .product-secure-payment__icon { height: 24px; width: auto; }
+    @media (max-width: 480px) {
+      .product-secure-payment { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+{%- endif -%}

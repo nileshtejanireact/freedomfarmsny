@@ -585,6 +585,7 @@
                                  {%- if settings.product_img_trust_seal and settings.img_trust_seal != blank -%}{%- include 'product_img_trust_seal',padding_class:'gl_mb_20' -%}{%- endif -%}
                               {%- endif -%}
                            {%- endif -%}
+                           {%- render 'secure-payment-icons' -%}
                            {%- if settings.use_wishlist and pages['wishlist'].empty? != true -%}{%- include 'gl-wishlist-product' -%}{%- endif -%}
                            {%- if product.variants.size == 1 -%}<div class="clear"></div>{%- endif -%}
                            {%- if product.variants.size > 1 and settings.product_img_trust_seal == false -%}<div class="clear"></div>{%- endif -%}
