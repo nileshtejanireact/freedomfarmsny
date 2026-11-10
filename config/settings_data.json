@@ -1159,6 +1159,18 @@
               "full_width": false,
               "menu_width": "800px"
             }
+          },
+          "dropdown_TycTzx": {
+            "type": "dropdown",
+            "settings": {
+              "title": "Holiday Meats & Corporate Gifting",
+              "icon": "",
+              "button_link": "shopify://collections/holiday-farm-to-table-meat-box-gifts",
+              "label": "",
+              "menu": "",
+              "color": "#ffffff",
+              "menu_width": ""
+            }
           }
         },
         "block_order": [
@@ -1168,7 +1180,8 @@
           "1501751953132",
           "1501751981346",
           "html_block_bP6GUa",
-          "1502078978383"
+          "1502078978383",
+          "dropdown_TycTzx"
         ],
         "custom_css": [],
         "settings": {
