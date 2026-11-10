@@ -1041,7 +1041,7 @@ display: flex;
 @media only screen and (max-width: 1450px) and (min-width: 1250px) {
 
     .main-header .container, .sticky-header .container, .main-page-wrapper .container, .footer-container .container, #shopify-section-1547774880206 .banner-inner > div {
-      width: 1200px !important;
+      width: 1440px !important;
     }
     
   } 
