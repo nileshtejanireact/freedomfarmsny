@@ -89,7 +89,7 @@
     "mobile_cur_lang": false,
     "header_design": "simple",
     "overlap_header_enable": false,
-    "right_column_width": "300",
+    "right_column_width": "225",
     "header_height": "120",
     "header_sticky_height": "75",
     "mobile_header_height": "60",
