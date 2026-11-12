@@ -1,0 +1,240 @@
+{%- assign sid = section.id -%}
+{%- assign logo_img = section.settings.logo | default: settings.body_logo_image -%}
+<div class="fm fm-{{ sid }}">
+  <style>
+    .footer-container { background: {{ section.settings.bg }} !important; background-image: none !important; border-top: 0 !important; }
+    footer.footer-container .fm-{{ sid }} .fm__form input[type="email"]::placeholder { color: #8a8576 !important; opacity: 1 !important; }
+    .fm-{{ sid }} {
+      --fm-bg: {{ section.settings.bg }};
+      --fm-text: {{ section.settings.text }};
+      --fm-btn: {{ section.settings.button }};
+      --fm-tile: {{ section.settings.tile }};
+      font-family: Karla, Arial, sans-serif;
+      color: var(--fm-text);
+      background: var(--fm-bg);
+      padding: 64px 0 0;
+    }
+    .fm-{{ sid }} *, .fm-{{ sid }} *::before, .fm-{{ sid }} *::after { box-sizing: border-box; }
+    .fm-{{ sid }} .fm__wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+    .fm-{{ sid }} .fm__top { display: grid; grid-template-columns: 1.35fr 1fr 1fr 1.7fr; gap: 48px; padding-bottom: 56px; }
+    .fm-{{ sid }} .fm__logo img { display: block; max-width: {{ section.settings.logo_width }}px; width: 100%; height: auto; }
+    .fm-{{ sid }} .fm__about { margin: 18px 0 0; font-size: 16px; line-height: 1.55; color: #4a4a44; max-width: 340px; }
+    .fm-{{ sid }} .fm__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; color: var(--fm-text) !important; margin: 0 0 22px; }
+    .fm-{{ sid }} .fm__links { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+    .fm-{{ sid }} .fm__links li { margin: 0 0 14px !important; padding: 0 !important; list-style: none !important; }
+    .fm-{{ sid }} .fm__links a { font-size: 18px; color: var(--fm-text) !important; text-decoration: none !important; transition: color .15s; }
+    .fm-{{ sid }} .fm__links a:hover { color: var(--fm-btn) !important; }
+    .fm-{{ sid }} .fm__lead { font-size: 18px; line-height: 1.45; margin: -8px 0 18px; color: #3a3a34; }
+
+    /* email form (reuses the theme newsletter snippet so the existing signup keeps working) */
+    .fm-{{ sid }} .fm__form form, .fm-{{ sid }} .fm__form .mc4wp-form-fields { margin: 0; }
+    .fm-{{ sid }} .fm__form .mc4wp-form-fields { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+    .fm-{{ sid }} .fm__form p { margin: 0 !important; padding: 0 !important; }
+    .fm-{{ sid }} .fm__form .mailchimp-input-icon { flex: 1 1 230px; position: relative; }
+    .fm-{{ sid }} .fm__form label { display: none !important; }
+    .fm-{{ sid }} .fm__form input[type="email"] { width: 100%; height: 56px; padding: 0 18px; border: 1px solid #bdb7a6; border-radius: 6px; background: #fff !important; color: var(--fm-text) !important; font-size: 18px; font-family: Karla, Arial, sans-serif; box-shadow: none; }
+    .fm-{{ sid }} .fm__form input[type="email"]:focus { outline: 3px solid color-mix(in srgb, var(--fm-btn) 35%, transparent); border-color: var(--fm-btn); }
+    .fm-{{ sid }} .fm__form input[type="submit"] { height: 56px; padding: 0 28px; border: 0; border-radius: 6px; background: var(--fm-btn) !important; color: #fff !important; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+    .fm-{{ sid }} .fm__form input[type="submit"]:hover { filter: brightness(1.12); }
+    .fm-{{ sid }} .fm__form .mc4wp-response { flex-basis: 100%; font-size: 15px; margin-top: 6px; }
+    .fm-{{ sid }} .fm__fine { margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: #5a5a52; max-width: 560px; }
+    .fm-{{ sid }} .fm__fine a { color: #5a5a52 !important; text-decoration: underline !important; }
+
+    /* social */
+    .fm-{{ sid }} .fm__follow { margin-top: 34px; }
+    .fm-{{ sid }} .fm__follow .fm__h { margin-bottom: 16px; font-size: 20px; }
+    .fm-{{ sid }} .fm__social { display: flex; gap: 14px; flex-wrap: wrap; }
+    .fm-{{ sid }} .fm__social a { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 10px; background: var(--fm-tile); color: var(--fm-text) !important; transition: background .15s, color .15s, transform .15s; }
+    .fm-{{ sid }} .fm__social a:hover { background: var(--fm-text); color: #fff !important; transform: translateY(-2px); }
+    .fm-{{ sid }} .fm__social svg { width: 24px; height: 24px; fill: currentColor; display: block; }
+
+    /* support strip */
+    .fm-{{ sid }} .fm__help { border-top: 1px solid #d9d2bd; border-bottom: 1px solid #d9d2bd; }
+    .fm-{{ sid }} .fm__help-in { display: grid; grid-template-columns: repeat(var(--cols, 1), 1fr); align-items: center; }
+    .fm-{{ sid }} .fm__help-i { display: flex; align-items: center; gap: 16px; padding: 22px 28px; min-height: 100px; color: var(--fm-text) !important; text-decoration: none !important; }
+    .fm-{{ sid }} .fm__help-i + .fm__help-i { border-left: 1px solid #d9d2bd; }
+    .fm-{{ sid }} .fm__help-i:first-child { padding-left: 0; }
+    .fm-{{ sid }} .fm__ic { flex: 0 0 56px; width: 56px; height: 56px; border-radius: 10px; background: var(--fm-tile); display: flex; align-items: center; justify-content: center; }
+    .fm-{{ sid }} .fm__ic svg { width: 28px; height: 28px; fill: none; stroke: var(--fm-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .fm-{{ sid }} .fm__help-t b { display: block; font-size: 20px; font-weight: 700; line-height: 1.25; }
+    .fm-{{ sid }} .fm__help-t span { display: block; font-size: 18px; line-height: 1.35; }
+    .fm-{{ sid }} .fm__help-i--end { justify-content: flex-end; }
+
+    /* bottom bar */
+    .fm-{{ sid }} .fm__bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; padding: 24px 0 32px; font-size: 15px; color: #5a5a52; }
+    .fm-{{ sid }} .fm__legal { display: flex; gap: 8px 24px; flex-wrap: wrap; }
+    .fm-{{ sid }} .fm__legal a { color: #5a5a52 !important; text-decoration: none !important; }
+    .fm-{{ sid }} .fm__legal a:hover { color: var(--fm-text) !important; text-decoration: underline !important; }
+
+
+    /* the theme forces white text in the footer, so these rules are written to out-rank it */
+    footer.footer-container .fm-{{ sid }} .fm__about, footer.footer-container .fm-{{ sid }} .fm__lead { color: #4a4a44 !important; font-family: Karla, Arial, sans-serif !important; font-size: 17px !important; line-height: 1.5 !important; }
+    footer.footer-container .fm-{{ sid }} .fm__links a { color: var(--fm-text) !important; font-family: Karla, Arial, sans-serif !important; font-size: 18px !important; }
+    footer.footer-container .fm-{{ sid }} .fm__links a:hover { color: var(--fm-btn) !important; }
+    footer.footer-container .fm-{{ sid }} .fm__fine, footer.footer-container .fm-{{ sid }} .fm__fine a { color: #5a5a52 !important; font-family: Karla, Arial, sans-serif !important; font-size: 14px !important; }
+    footer.footer-container .fm-{{ sid }} .fm__help-t b, footer.footer-container .fm-{{ sid }} .fm__help-t span, footer.footer-container .fm-{{ sid }} .fm__help-i { color: var(--fm-text) !important; font-family: Karla, Arial, sans-serif !important; }
+    footer.footer-container .fm-{{ sid }} .fm__bottom, footer.footer-container .fm-{{ sid }} .fm__bottom span, footer.footer-container .fm-{{ sid }} .fm__legal a { color: #5a5a52 !important; font-family: Karla, Arial, sans-serif !important; }
+    footer.footer-container .fm-{{ sid }} .fm__social a { color: var(--fm-text) !important; }
+    footer.footer-container .fm-{{ sid }} .fm__social a:hover { color: #fff !important; }
+    footer.footer-container .fm-{{ sid }} .fm__form .mailchimp-input-icon { flex: 1 1 150px; }
+    footer.footer-container .fm-{{ sid }} .fm__form input[type="email"] { color: var(--fm-text) !important; font-family: Karla, Arial, sans-serif !important; }
+    @media (max-width: 1100px) {
+      .fm-{{ sid }} .fm__top { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
+      .fm-{{ sid }} .fm__brand { grid-column: 1 / -1; }
+      .fm-{{ sid }} .fm__join { grid-column: 1 / -1; }
+    }
+    @media (max-width: 720px) {
+      .fm-{{ sid }} { padding-top: 44px; }
+      .fm-{{ sid }} .fm__wrap { padding: 0 20px; }
+      .fm-{{ sid }} .fm__top { gap: 34px 20px; padding-bottom: 40px; }
+      .fm-{{ sid }} .fm__help-in { grid-template-columns: 1fr; }
+      .fm-{{ sid }} .fm__help-i { padding: 18px 0; min-height: 0; }
+      .fm-{{ sid }} .fm__help-i + .fm__help-i { border-left: 0; border-top: 1px solid #d9d2bd; }
+      .fm-{{ sid }} .fm__help-i--end { justify-content: flex-start; }
+      .fm-{{ sid }} .fm__form input[type="submit"] { width: 100%; }
+    }
+  </style>
+
+  <div class="fm__wrap">
+    <div class="fm__top">
+      <div class="fm__brand">
+        {%- if logo_img != blank -%}
+          <a class="fm__logo" href="/"><img src="{{ logo_img | image_url: width: 600 }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}"></a>
+        {%- else -%}
+          <a class="fm__logo" href="/"><span class="fm__h" style="font-size:30px;margin:0">{{ shop.name | escape }}</span></a>
+        {%- endif -%}
+        {%- if section.settings.about != blank -%}<p class="fm__about">{{ section.settings.about | escape }}</p>{%- endif -%}
+      </div>
+
+      <nav class="fm__col" aria-label="{{ section.settings.col1_title | escape }}">
+        <span class="fm__h" role="heading" aria-level="2">{{ section.settings.col1_title | escape }}</span>
+        <ul class="fm__links">
+          {%- assign l1 = section.settings.col1_links | newline_to_br | split: '<br />' -%}
+          {%- for line in l1 -%}{%- assign parts = line | strip | split: '|' -%}{%- if parts.size > 1 -%}<li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}
+        </ul>
+      </nav>
+
+      <nav class="fm__col" aria-label="{{ section.settings.col2_title | escape }}">
+        <span class="fm__h" role="heading" aria-level="2">{{ section.settings.col2_title | escape }}</span>
+        <ul class="fm__links">
+          {%- assign l2 = section.settings.col2_links | newline_to_br | split: '<br />' -%}
+          {%- for line in l2 -%}{%- assign parts = line | strip | split: '|' -%}{%- if parts.size > 1 -%}<li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}
+        </ul>
+      </nav>
+
+      <div class="fm__join">
+        <span class="fm__h" role="heading" aria-level="2">{{ section.settings.join_title | escape }}</span>
+        {%- if section.settings.join_text != blank -%}<p class="fm__lead">{{ section.settings.join_text | escape }}</p>{%- endif -%}
+        <div class="fm__form">{%- include 'gl_form_newlester' -%}</div>
+        {%- if section.settings.join_fine != blank -%}<p class="fm__fine">{{ section.settings.join_fine | escape }} <a href="{{ section.settings.privacy_link | default: '/pages/privacy-policy' }}">Privacy Policy</a>.</p>{%- endif -%}
+
+        {%- capture socials -%}
+          {%- if settings.social_facebook_link != blank and settings.social_facebook_link != '#' -%}<a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8h2.7l.5-3.2h-3.2V7.7c0-.9.4-1.6 1.7-1.6h1.6V3.3c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.5H7.6V13h2.8v8z"/></svg></a>{%- endif -%}
+          {%- if settings.social_instagram_link != blank and settings.social_instagram_link != '#' -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M8 3h8a5 5 0 015 5v8a5 5 0 01-5 5H8a5 5 0 01-5-5V8a5 5 0 015-5zm0 1.8A3.2 3.2 0 004.8 8v8A3.2 3.2 0 008 19.2h8a3.2 3.2 0 003.2-3.2V8A3.2 3.2 0 0016 4.8zM12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 1.8a2.7 2.7 0 100 5.4 2.7 2.7 0 000-5.4z"/><circle cx="17.2" cy="6.8" r="1.1"/></svg></a>{%- endif -%}
+          {%- if settings.social_youtube_link != blank and settings.social_youtube_link != '#' -%}<a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 00-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 002.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 001.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 001.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z"/></svg></a>{%- endif -%}
+          {%- if section.settings.tiktok_link != blank -%}<a href="{{ section.settings.tiktok_link }}" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 3c.3 2.4 1.7 3.9 4 4v3a7 7 0 01-4-1.3v6.3A6 6 0 1111 9v3.2a2.9 2.9 0 102 2.7V3z"/></svg></a>{%- endif -%}
+        {%- endcapture -%}
+        {%- assign socials_clean = socials | strip -%}
+        {%- if socials_clean != blank -%}
+          <div class="fm__follow">
+            <span class="fm__h" role="heading" aria-level="2">{{ section.settings.follow_title | escape }}</span>
+            <div class="fm__social">{{ socials }}</div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- assign has_phone = section.settings.phone -%}
+  {%- assign has_email = section.settings.support_email -%}
+  {%- assign cols = 1 -%}
+  {%- if has_phone != blank -%}{%- assign cols = cols | plus: 1 -%}{%- endif -%}
+  {%- if has_email != blank -%}{%- assign cols = cols | plus: 1 -%}{%- endif -%}
+  {%- if section.settings.help_title != blank -%}
+  <div class="fm__help">
+    <div class="fm__wrap">
+      <div class="fm__help-in" style="--cols: {{ cols }}">
+        <div class="fm__help-i">
+          <span class="fm__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0116 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.5-2 2.5-5 2.5"/></svg></span>
+          <span class="fm__help-t"><b>{{ section.settings.help_title | escape }}</b>{%- if section.settings.help_text != blank -%}<span>{{ section.settings.help_text | escape }}</span>{%- endif -%}</span>
+        </div>
+        {%- if has_phone != blank -%}
+        <a class="fm__help-i" href="tel:{{ has_phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">
+          <span class="fm__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span>
+          <span class="fm__help-t"><b>{{ has_phone | escape }}</b></span>
+        </a>
+        {%- endif -%}
+        {%- if has_email != blank -%}
+        <a class="fm__help-i fm__help-i--end" href="mailto:{{ has_email }}">
+          <span class="fm__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <span class="fm__help-t"><b>{{ has_email | escape }}</b></span>
+        </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  <div class="fm__wrap">
+    <div class="fm__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_name | default: shop.name | escape }}. All rights reserved.</span>
+      <div class="fm__legal">
+        {%- assign l3 = section.settings.legal_links | newline_to_br | split: '<br />' -%}
+        {%- for line in l3 -%}{%- assign parts = line | strip | split: '|' -%}{%- if parts.size > 1 -%}<a href="{{ parts[1] | strip }}">{{ parts[0] | strip | escape }}</a>{%- endif -%}{%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('.fm-{{ sid }}');
+    if (!root) return;
+    var email = root.querySelector('.fm__form input[type="email"]');
+    var btn = root.querySelector('.fm__form input[type="submit"]');
+    if (email) email.placeholder = {{ section.settings.join_placeholder | json }};
+    if (email) email.setAttribute('aria-label', {{ section.settings.join_placeholder | json }});
+    if (btn) btn.value = {{ section.settings.join_button | json }};
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Footer (modern)",
+  "settings": [
+    { "type": "header", "content": "Brand" },
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to use the theme logo." },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 120, "max": 360, "step": 10, "unit": "px", "default": 240 },
+    { "type": "textarea", "id": "about", "label": "Short text under the logo", "default": "Family-farmed beef, pork and chicken from Greene, NY, shipped nationwide." },
+    { "type": "header", "content": "Column 1" },
+    { "type": "text", "id": "col1_title", "label": "Heading", "default": "Shop" },
+    { "type": "textarea", "id": "col1_links", "label": "Links", "info": "One per line: Label | /url", "default": "Shop All | /collections\nHoliday Gifts | /collections/holiday-gifts\nGift Cards | /collections/gift-cards" },
+    { "type": "header", "content": "Column 2" },
+    { "type": "text", "id": "col2_title", "label": "Heading", "default": "Company" },
+    { "type": "textarea", "id": "col2_links", "label": "Links", "info": "One per line: Label | /url", "default": "About Us | /pages/the-farm\nFAQ | /pages/faq\nBlog | /blogs/news\nContact Us | /pages/contact-us" },
+    { "type": "header", "content": "Email signup" },
+    { "type": "text", "id": "join_title", "label": "Heading", "default": "Join Our Email List" },
+    { "type": "text", "id": "join_placeholder", "label": "Email placeholder", "default": "Enter your email" },
+    { "type": "text", "id": "join_button", "label": "Button text", "default": "Sign me up" },
+    { "type": "text", "id": "join_text", "label": "Text", "default": "Be the first to hear about offers, new cuts and recipes." },
+    { "type": "text", "id": "join_fine", "label": "Small print", "info": "Only promise what you really send.", "default": "By signing up, you agree to receive marketing emails from Freedom Farms. Unsubscribe anytime. See our" },
+    { "type": "url", "id": "privacy_link", "label": "Privacy policy link", "info": "Defaults to /pages/privacy-policy." },
+    { "type": "header", "content": "Social" },
+    { "type": "text", "id": "follow_title", "label": "Heading", "default": "Follow Us" },
+    { "type": "url", "id": "tiktok_link", "label": "TikTok link", "info": "Facebook, Instagram and YouTube come from the theme's social settings." },
+    { "type": "header", "content": "Support strip" },
+    { "type": "text", "id": "help_title", "label": "Heading", "info": "Leave empty to hide the whole strip.", "default": "We're here to help." },
+    { "type": "text", "id": "help_text", "label": "Text (hours or note)", "default": "Questions about your order? Email is fastest, or give us a call." },
+    { "type": "text", "id": "phone", "label": "Phone number", "info": "Leave empty to hide.", "default": "607-444-1396" },
+    { "type": "text", "id": "support_email", "label": "Support email", "info": "Leave empty to hide.", "default": "info@wearefreedomfarms.com" },
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "text", "id": "copyright_name", "label": "Copyright name", "default": "Freedom Farms" },
+    { "type": "textarea", "id": "legal_links", "label": "Legal links", "info": "One per line: Label | /url", "default": "Privacy Policy | /pages/privacy-policy\nRefund Policy | /policies/refund-policy\nTerms of Service | /policies/terms-of-service" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f5efe0" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1c2321" },
+    { "type": "color", "id": "button", "label": "Button", "default": "#0b1a33" },
+    { "type": "color", "id": "tile", "label": "Icon tiles", "default": "#ece4d0" }
+  ]
+}
+{% endschema %}
