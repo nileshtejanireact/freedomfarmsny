@@ -2877,12 +2877,343 @@
           "red": "#c8232c",
           "cream": "#f7f1e3"
         }
+      },
+      "collection-cro": {
+        "type": "collection-cro",
+        "blocks": {
+          "tab_boxes": {
+            "type": "tab",
+            "settings": {
+              "title": "Boxes & bundles",
+              "products": [
+                "the-ranchers-reserve-collection-by-freedom-farms-our-best-cuts",
+                "13lbs-of-premium-farm-raised-meat",
+                "beef-variety-box",
+                "farm-fresh-beef-pork-chicken-bundle",
+                "woof-woof-box",
+                "beef-pork-box",
+                "the-ranchers-reserve-collection-our-best-cuts",
+                "fall-stock-up-box-save-100",
+                "try-it-box-10lbs"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "tab_steaks": {
+            "type": "tab",
+            "settings": {
+              "title": "Steaks",
+              "products": [
+                "steak-deal-of-the-day-copy",
+                "whole-beef-tenderloin",
+                "steak-grill-packs",
+                "steak-grill-packs-filet-tenderloin",
+                "steak-grill-packs-new-york-strip",
+                "steak-grill-packs-delmonicos",
+                "steak-grill-packs-sirloin",
+                "skirt-steak-thin-flavor-packed-and-100-americanskirt",
+                "flanksteak",
+                "fatboy-delmonico-steaks-copy",
+                "fatboy-ny-strip-steaks",
+                "fatboy-t-bone-steaks",
+                "fatboy-ribeye-steaks",
+                "fatboy-porterhouse-steaks",
+                "american-wagyu-ny-strip-steaks-hand-cut",
+                "fatboy-porterhouse-steaks-32oz-copy",
+                "t-bone-steaks-2ooz",
+                "premium-steak-pack-free-four-1-2-pound-burger-patties"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "tab_ground": {
+            "type": "tab",
+            "settings": {
+              "title": "Ground & burgers",
+              "products": [
+                "ground-beef-box",
+                "burger-box",
+                "grass-fed-brisket-burger-box",
+                "5lbs-chicken-breast-5lbs-of-ground-beef",
+                "short-rib-burgers",
+                "american-wagyu-burgers-limited-time-only"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "tab_roasts": {
+            "type": "tab",
+            "settings": {
+              "title": "Roasts & specialty",
+              "products": [
+                "prime-rib-roast-bone-in-limited-quantity-copy-1",
+                "short-ribs",
+                "chuck-roast",
+                "stewmeat",
+                "smoker-pack-brisket",
+                "prime-rib-roast-limited-quantity"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "tab_organ": {
+            "type": "tab",
+            "settings": {
+              "title": "Organ, Meats & Bones",
+              "products": [
+                "primal-ground-beef-mixed-with-organ-meat",
+                "beef-marrow-bones",
+                "beef-liver",
+                "beef-soup-bones",
+                "tallow-beef-fat-for-rendering-tallow-and-cooking",
+                "beef-oxtail"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "tab_shares": {
+            "type": "tab",
+            "settings": {
+              "title": "Cow shares",
+              "products": [
+                "beef-meat-share-free-freezer",
+                "whole-cow",
+                "half-cow-box",
+                "quarter-cox-box",
+                "eighth-cow-box"
+              ],
+              "collection_handle": "beef"
+            }
+          },
+          "intro_beef": {
+            "type": "intro",
+            "settings": {
+              "collection_handle": "beef",
+              "text": "Grass-fed beef from our family farm in Greene, NY, shipped nationwide to your door."
+            }
+          },
+          "pork_shares": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Pig shares",
+              "products": [
+                "order-a-whole-pig",
+                "half-pig-box",
+                "quarter-pig-box"
+              ]
+            }
+          },
+          "pork_boxes": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Boxes & bundles",
+              "products": [
+                "pork-variety-box",
+                "beef-pork-box",
+                "farm-fresh-beef-pork-chicken-bundle"
+              ]
+            }
+          },
+          "pork_cuts": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Chops, ribs & roasts",
+              "products": [
+                "pork-chops",
+                "pork-ribs",
+                "copy-of-pork-chops"
+              ]
+            }
+          },
+          "pork_bacon": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Bacon & belly",
+              "products": [
+                "bacon",
+                "fresh-bacon",
+                "pork-belly"
+              ]
+            }
+          },
+          "pork_sausage": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Sausage & ground",
+              "products": [
+                "breakfast-sausage-patties",
+                "sweet-sausage-links-rope-sausage",
+                "hot-sausage-links-rope-sausage",
+                "maple-breakfast-sausage-links",
+                "ground-pork",
+                "premium-pork-hot-dogs"
+              ]
+            }
+          },
+          "intro_pork": {
+            "type": "intro",
+            "settings": {
+              "collection_handle": "pork",
+              "text": "Pork cuts, bacon, sausage and boxes, shipped nationwide to your door."
+            }
+          },
+          "chk_boxes": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Boxes & bundles",
+              "products": [
+                "the-freedom-farms-bbq-chicken-box-99-copy",
+                "5lbs-chicken-breast-5lbs-of-ground-beef",
+                "farm-fresh-beef-pork-chicken-bundle"
+              ]
+            }
+          },
+          "chk_cuts": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Chicken cuts",
+              "products": [
+                "chicken-breast-copy",
+                "chicken-thighs",
+                "chicken-drumsticks",
+                "chicken-wings-and-drumsticks-10lbs-or-20lbs-limited-quantity-copy"
+              ]
+            }
+          },
+          "chk_whole": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Whole & half chickens",
+              "products": [
+                "whole-free-range-chicken",
+                "pasture-raised-half-chickens-limited-batch"
+              ]
+            }
+          },
+          "chk_ground": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Ground, sausage & burgers",
+              "products": [
+                "ground-chicken",
+                "ground-turkey",
+                "freedom-farms-turkey-burgers-10-lb-bundle",
+                "maple-apple-chicken-sausage-small-batch"
+              ]
+            }
+          },
+          "chk_turkey": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Turkey",
+              "products": [
+                "reserve-your-farm-raised-thanksgiving-turkey-pre-order",
+                "christmas-turkey-2olb-average"
+              ]
+            }
+          },
+          "chk_shares": {
+            "type": "tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Chicken shares",
+              "products": [
+                "chicken-for-the-year-deposit",
+                "chicken-for-the-year-deposit-copy",
+                "chicken-for-half-the-year-deposit-copy"
+              ]
+            }
+          },
+          "intro_chicken": {
+            "type": "intro",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "text": "Chicken, turkey and eggs, shipped nationwide to your door."
+            }
+          },
+          "hol_beef": {
+            "type": "holiday_tab",
+            "settings": {
+              "collection_handle": "beef",
+              "title": "Holiday meats",
+              "products": [
+                "prime-rib-roast-limited-quantity",
+                "prime-rib-roast-bone-in-limited-quantity-copy-1",
+                "whole-beef-tenderloin-xl",
+                "holiday-whole-beef-tenderloin-medium"
+              ]
+            }
+          },
+          "hol_pork": {
+            "type": "holiday_tab",
+            "settings": {
+              "collection_handle": "pork",
+              "title": "Holiday meats",
+              "products": [
+                "holiday-smoked-ham",
+                "holiday-ham-fresh-copy"
+              ]
+            }
+          },
+          "hol_chicken": {
+            "type": "holiday_tab",
+            "settings": {
+              "collection_handle": "100-pasture-raised-chicken",
+              "title": "Holiday meats",
+              "products": [
+                "christmas-turkey-2olb-average",
+                "reserve-your-farm-raised-thanksgiving-turkey-pre-order"
+              ]
+            }
+          }
+        },
+        "block_order": [
+          "tab_boxes",
+          "tab_steaks",
+          "tab_ground",
+          "tab_roasts",
+          "tab_organ",
+          "tab_shares",
+          "intro_beef",
+          "pork_shares",
+          "pork_boxes",
+          "pork_cuts",
+          "pork_bacon",
+          "pork_sausage",
+          "intro_pork",
+          "chk_boxes",
+          "chk_cuts",
+          "chk_whole",
+          "chk_ground",
+          "chk_turkey",
+          "chk_shares",
+          "intro_chicken",
+          "hol_beef",
+          "hol_pork",
+          "hol_chicken"
+        ],
+        "settings": {}
+      },
+      "holiday_promo_home": {
+        "type": "holiday-promo",
+        "settings": {}
       }
     },
     "content_for_index": [
       "1547774880206",
       "c9fd8d76-538f-420d-a2ff-c94848d37329",
       "ef02df17-52ef-45d3-8031-daef62f4bd08",
+      "holiday_promo_home",
       "e52c83f2-28cb-4318-923c-e7d237747dd2",
       "9ec010c0-2180-47b1-9674-88c319202336",
       "9a4a48f5-2e99-4651-bae6-96bcf3bc4899",

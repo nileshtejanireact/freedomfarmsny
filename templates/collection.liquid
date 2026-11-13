@@ -1,3 +1,6 @@
+{%- if collection.handle == 'beef' or collection.handle == 'pork' or collection.handle == '100-pasture-raised-chicken' -%}
+  {%- section 'collection-cro' -%}
+{%- else -%}
 {%- assign view_not_default = false -%}
 {%- assign limit = settings.products_per_page | plus:0 -%}{%- if settings.shop_show_per_page -%}{%- assign limit = 12 -%}{%- endif -%}
 {%- if settings.view_default == 'grid' -%}
@@ -5,4 +8,4 @@
 {%- else -%}
  {%- include 'collection_list' -%}
 {%- endif -%}
-
+{%- endif -%}

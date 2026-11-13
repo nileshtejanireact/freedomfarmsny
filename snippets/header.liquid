@@ -1,3 +1,5 @@
+<div class="ff-head" id="ff-head">
+ <div class="ff-head__in" id="ff-head-in">
 {%- assign ck_curency_lang = false -%}
 {%- if settings.show_multiple_currencies and settings.supported_currencies != blank -%}
    {%- assign ck_curency_lang = true -%}
@@ -9,7 +11,7 @@
    <div class="container">
       <div class="topbar-content">
          {%- if settings.top_bar_text != blank -%}
-         <div class="top-bar-left">{%- if settings.top_bar_text contains '[social_buttons' -%}{{settings.top_bar_text | split:'[social_buttons' | first }} {% if settings.top_bar_text contains 'social_buttons_share' -%}{%- assign gl_follow_social = false -%}{%- else -%}{%- assign gl_follow_social = true -%}{%- endif -%}{%- include 'social-sharing', gl_design:'icons-design-colored', gl_size:'icons-size-small', follow_social:gl_follow_social -%}{%-else-%}{{settings.top_bar_text}}{%- endif -%}</div>
+         <div class="top-bar-left">{%- if settings.top_bar_text contains '[social_buttons' -%}{{settings.top_bar_text | split:'[social_buttons' | first }} {% if settings.top_bar_text contains 'social_buttons_share' -%}{%- assign gl_follow_social = false -%}{%- else -%}{%- assign gl_follow_social = true -%}{%- endif -%}{%- include 'social-sharing', gl_design:'icons-design-colored', gl_size:'icons-size-small', follow_social:gl_follow_social -%}{%-else-%}{%- section 'announcement-rotator' -%}{%- endif -%}</div>
          {%- endif -%}
          {%- section 'gl_top_bar_menu' -%}
       </div>
@@ -31,4 +33,7 @@
    {%- include name_el_header -%}
 </header>
 <!--END MAIN HEADER-->
+   {%- section 'sticky-header' -%}
+  </div>
+</div>
 <div class="clear"></div>
