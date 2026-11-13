@@ -3234,12 +3234,17 @@
           "logo_height_mobile": 44,
           "hide_bar_on_phone": true
         }
+      },
+      "holiday_promo_home": {
+        "type": "holiday-promo",
+        "settings": {}
       }
     },
     "content_for_index": [
       "1547774880206",
       "c9fd8d76-538f-420d-a2ff-c94848d37329",
       "ef02df17-52ef-45d3-8031-daef62f4bd08",
+      "holiday_promo_home",
       "e52c83f2-28cb-4318-923c-e7d237747dd2",
       "9ec010c0-2180-47b1-9674-88c319202336",
       "9a4a48f5-2e99-4651-bae6-96bcf3bc4899",
