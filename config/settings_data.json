@@ -2884,6 +2884,7 @@
           "tab_boxes": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Boxes & bundles",
               "products": [
                 "the-ranchers-reserve-collection-by-freedom-farms-our-best-cuts",
@@ -2895,13 +2896,13 @@
                 "the-ranchers-reserve-collection-our-best-cuts",
                 "fall-stock-up-box-save-100",
                 "try-it-box-10lbs"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "tab_steaks": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Steaks",
               "products": [
                 "steak-deal-of-the-day-copy",
@@ -2922,13 +2923,13 @@
                 "fatboy-porterhouse-steaks-32oz-copy",
                 "t-bone-steaks-2ooz",
                 "premium-steak-pack-free-four-1-2-pound-burger-patties"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "tab_ground": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Ground & burgers",
               "products": [
                 "ground-beef-box",
@@ -2937,13 +2938,13 @@
                 "5lbs-chicken-breast-5lbs-of-ground-beef",
                 "short-rib-burgers",
                 "american-wagyu-burgers-limited-time-only"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "tab_roasts": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Roasts & specialty",
               "products": [
                 "prime-rib-roast-bone-in-limited-quantity-copy-1",
@@ -2952,13 +2953,13 @@
                 "stewmeat",
                 "smoker-pack-brisket",
                 "prime-rib-roast-limited-quantity"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "tab_organ": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Organ, Meats & Bones",
               "products": [
                 "primal-ground-beef-mixed-with-organ-meat",
@@ -2967,13 +2968,13 @@
                 "beef-soup-bones",
                 "tallow-beef-fat-for-rendering-tallow-and-cooking",
                 "beef-oxtail"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "tab_shares": {
             "type": "tab",
             "settings": {
+              "collection_handle": "beef",
               "title": "Cow shares",
               "products": [
                 "beef-meat-share-free-freezer",
@@ -2981,8 +2982,7 @@
                 "half-cow-box",
                 "quarter-cox-box",
                 "eighth-cow-box"
-              ],
-              "collection_handle": "beef"
+              ]
             }
           },
           "intro_beef": {
@@ -3204,16 +3204,42 @@
         ],
         "settings": {}
       },
-      "holiday_promo_home": {
-        "type": "holiday-promo",
-        "settings": {}
+      "announcement-rotator": {
+        "type": "announcement-rotator",
+        "settings": {
+          "slide_time": 4,
+          "speed": 1.2,
+          "message_1": "",
+          "link_1": "",
+          "link_text_1": "",
+          "message_2": "Born, raised & processed in the USA. Shipping nationwide.",
+          "link_2": "",
+          "link_text_2": "",
+          "message_3": "",
+          "link_3": "",
+          "link_text_3": "",
+          "message_4": "",
+          "link_4": "",
+          "link_text_4": ""
+        }
+      },
+      "sticky-header": {
+        "type": "sticky-header",
+        "settings": {
+          "enabled": true,
+          "shadow": true,
+          "compact_height": 70,
+          "logo_height": 54,
+          "compact_height_mobile": 60,
+          "logo_height_mobile": 44,
+          "hide_bar_on_phone": true
+        }
       }
     },
     "content_for_index": [
       "1547774880206",
       "c9fd8d76-538f-420d-a2ff-c94848d37329",
       "ef02df17-52ef-45d3-8031-daef62f4bd08",
-      "holiday_promo_home",
       "e52c83f2-28cb-4318-923c-e7d237747dd2",
       "9ec010c0-2180-47b1-9674-88c319202336",
       "9a4a48f5-2e99-4651-bae6-96bcf3bc4899",
