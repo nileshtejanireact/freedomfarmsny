@@ -1,0 +1,82 @@
+{%- if section.settings.enabled -%}
+{%- assign sid = section.id -%}
+<style>
+  /* The wrapper keeps the header's original height in the page (so nothing jumps); the inner block is pinned to the top. */
+  .ff-head { position: relative; z-index: 300; }
+  .ff-head__in { position: fixed; top: 0; left: 0; right: 0; z-index: 300; }
+  html { scroll-padding-top: calc(var(--ff-head-h, 120px) + 12px); }
+  .ff-head__in .main-header { transition: box-shadow .2s ease; }
+  .ff-head__in.is-stuck .main-header { box-shadow: {% if section.settings.shadow %}0 6px 20px rgba(0, 0, 0, .13){% else %}none{% endif %}; }
+  .ff-head__in.is-stuck .site-logo img { height: {{ section.settings.logo_height }}px !important; max-height: {{ section.settings.logo_height }}px !important; width: auto !important; max-width: none !important; object-fit: contain; padding: 0 !important; box-sizing: content-box !important; margin: 0 !important; vertical-align: middle; }
+  .ff-head__in.is-stuck .basel-logo-wrap, .ff-head__in.is-stuck .basel-logo { width: auto !important; flex: none !important; }
+  .ff-head__in.is-stuck .site-logo,
+  .ff-head__in.is-stuck .wrapp-header,
+  .ff-head__in.is-stuck .main-nav,
+  .ff-head__in.is-stuck .right-column { height: {{ section.settings.compact_height }}px !important; min-height: 0 !important; }
+  .ff-head__in.is-stuck .main-nav .menu > li > a,
+  .ff-head__in.is-stuck .right-column .header-links,
+  .ff-head__in.is-stuck .right-column a { height: {{ section.settings.compact_height }}px !important; line-height: {{ section.settings.compact_height }}px !important; }
+  @media (max-width: 991px) {
+    .ff-head__in.is-stuck .site-logo img { height: {{ section.settings.logo_height_mobile }}px !important; max-height: {{ section.settings.logo_height_mobile }}px !important; }
+    .ff-head__in.is-stuck .site-logo,
+    .ff-head__in.is-stuck .wrapp-header,
+    .ff-head__in.is-stuck .main-nav,
+    .ff-head__in.is-stuck .right-column,
+    .ff-head__in.is-stuck .right-column a { height: {{ section.settings.compact_height_mobile }}px !important; line-height: {{ section.settings.compact_height_mobile }}px !important; min-height: 0 !important; }
+    {%- if section.settings.hide_bar_on_phone -%}
+    .ff-head__in.is-stuck .topbar-wrapp { display: none !important; }
+    {%- endif -%}
+  }
+</style>
+<script>
+  (function () {
+    var wrap = document.getElementById('ff-head');
+    var inner = document.getElementById('ff-head-in');
+    if (!wrap || !inner) return;
+    var ticking = false;
+
+    function measure() {
+      var was = inner.classList.contains('is-stuck');
+      inner.classList.remove('is-stuck');
+      var natural = inner.offsetHeight;
+      wrap.style.height = natural + 'px';
+      if (was) inner.classList.add('is-stuck');
+      document.documentElement.style.setProperty('--ff-head-h', inner.offsetHeight + 'px');
+    }
+    function update() {
+      ticking = false;
+      var on = (window.pageYOffset || document.documentElement.scrollTop) > 30;
+      if (on !== inner.classList.contains('is-stuck')) {
+        inner.classList.toggle('is-stuck', on);
+        document.documentElement.style.setProperty('--ff-head-h', inner.offsetHeight + 'px');
+      }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+
+    measure();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { measure(); update(); });
+    window.addEventListener('load', function () { measure(); update(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); update(); });
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sticky header",
+  "settings": [
+    { "type": "paragraph", "content": "Keeps the top message bar and the header pinned to the top of the screen while scrolling." },
+    { "type": "checkbox", "id": "enabled", "label": "Keep the header at the top", "default": true },
+    { "type": "checkbox", "id": "shadow", "label": "Soft shadow when scrolled", "default": true },
+    { "type": "header", "content": "Size once scrolled (desktop)" },
+    { "type": "range", "id": "compact_height", "label": "Header height", "min": 50, "max": 110, "step": 2, "unit": "px", "default": 70 },
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 30, "max": 100, "step": 2, "unit": "px", "default": 54 },
+    { "type": "header", "content": "Size once scrolled (phone)" },
+    { "type": "range", "id": "compact_height_mobile", "label": "Header height", "min": 44, "max": 90, "step": 2, "unit": "px", "default": 60 },
+    { "type": "range", "id": "logo_height_mobile", "label": "Logo height", "min": 24, "max": 80, "step": 2, "unit": "px", "default": 44 },
+    { "type": "checkbox", "id": "hide_bar_on_phone", "label": "Hide the message bar on phones once scrolled", "info": "Saves screen space. It comes back at the top of the page.", "default": true }
+  ]
+}
+{% endschema %}

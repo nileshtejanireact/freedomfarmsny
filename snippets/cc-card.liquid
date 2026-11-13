@@ -1,0 +1,48 @@
+{%- comment -%} One product card for the collection page. Params: product, cat, idx, in_collection, extra, hol {%- endcomment -%}
+{%- if extra or in_collection == blank -%}{%- assign purl = product.url -%}{%- else -%}{%- assign purl = product.url | within: in_collection -%}{%- endif -%}
+  {%- assign v = product.selected_or_first_available_variant -%}
+  {%- assign on_sale = false -%}
+  {%- if v.compare_at_price > v.price and v.price > 0 -%}{%- assign on_sale = true -%}{%- assign saved = v.compare_at_price | minus: v.price -%}{%- else -%}{%- assign saved = 0 -%}{%- endif -%}
+  {%- assign sub_pct = 0 -%}
+  {%- if product.selling_plan_groups.size > 0 -%}
+    {%- assign first_plan = product.selling_plan_groups.first.selling_plans.first -%}
+    {%- assign adj = first_plan.price_adjustments.first -%}
+    {%- if adj and adj.value_type == 'percentage' and adj.value > 0 -%}{%- assign sub_pct = adj.value -%}{%- endif -%}
+  {%- endif -%}
+  <article class="cc__card" data-cat="{{ cat }}" data-i="{{ idx }}" data-price="{{ v.price }}" data-save="{{ saved }}"{% if hol %} data-hol="1"{% endif %}{% if extra %} data-extra="1" hidden{% endif %}>
+    <a class="cc__img" href="{{ purl }}" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_image != blank -%}
+        <img src="{{ product.featured_image | image_url: width: 600 }}" srcset="{{ product.featured_image | image_url: width: 360 }} 360w, {{ product.featured_image | image_url: width: 600 }} 600w" sizes="(max-width: 800px) 50vw, 25vw" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="{% if extra %}eager{% else %}lazy{% endif %}" width="600" height="600">
+      {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}
+      {%- if product.images.size > 1 -%}<img class="cc__img2" src="{{ product.images[1] | image_url: width: 600 }}" alt="" loading="{% if extra %}eager{% else %}lazy{% endif %}" width="600" height="600">{%- endif -%}
+      <span class="cc__badges">
+        {%- unless product.available -%}<span class="cc__badge cc__badge--out">Sold out</span>{%- elsif on_sale -%}<span class="cc__badge">Save {{ saved | money_without_trailing_zeros }}</span>{%- endunless -%}
+        {%- if sub_pct > 0 and product.available -%}<span class="cc__badge cc__badge--sub">Subscribe &amp; save {{ sub_pct }}%</span>{%- endif -%}
+      </span>
+    </a>
+    <div class="cc__body">
+      <a class="cc__name" href="{{ purl }}">{{ product.title | escape }}</a>
+      <div class="cc__price" data-price-box>
+        <span data-p>{{ v.price | money_without_trailing_zeros }}</span>{%- if on_sale -%}<s data-c>{{ v.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+      </div>
+      <div class="cc__buy">
+        {%- if product.available -%}
+          {%- if product.variants.size > 1 -%}
+            <select class="cc__var" data-var aria-label="Choose an option for {{ product.title | escape }}">
+              {%- for pv in product.variants -%}
+                <option value="{{ pv.id }}" data-p="{{ pv.price | money_without_trailing_zeros }}" data-c="{% if pv.compare_at_price > pv.price %}{{ pv.compare_at_price | money_without_trailing_zeros }}{% endif %}" {% unless pv.available %}disabled{% endunless %} {% if pv.id == v.id %}selected{% endif %}>{{ pv.title | escape }}{% unless pv.available %} (sold out){% endunless %}</option>
+              {%- endfor -%}
+            </select>
+          {%- else -%}
+            <input type="hidden" data-var value="{{ v.id }}">
+          {%- endif -%}
+          <div class="cc__row">
+            <div class="cc__qty"><button type="button" data-minus aria-label="Decrease quantity">&minus;</button><span data-qty>1</span><button type="button" data-plus aria-label="Increase quantity">+</button></div>
+            <button type="button" class="cc__add" data-add>Add to cart</button>
+          </div>
+        {%- else -%}
+          <a class="cc__add cc__view" href="{{ purl }}">View</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </article>

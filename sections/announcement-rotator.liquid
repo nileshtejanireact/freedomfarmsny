@@ -1,0 +1,113 @@
+{%- assign sid = section.id -%}
+{%- capture slides -%}
+  {%- for i in (1..4) -%}
+    {%- assign tk = 'message_' | append: i -%}
+    {%- assign lk = 'link_' | append: i -%}
+    {%- assign ltk = 'link_text_' | append: i -%}
+    {%- assign msg = section.settings[tk] -%}
+    {%- if i == 1 and msg == blank -%}
+      {%- comment -%} Message 1 falls back to the theme's existing top bar text so nothing is lost {%- endcomment -%}
+      <div class="ar__slide"><span class="ar__txt">{{ settings.top_bar_text | split: '[social_buttons' | first }}</span></div>
+    {%- elsif msg != blank -%}
+      <div class="ar__slide"><span class="ar__txt">{{ msg | escape }}{%- if section.settings[lk] != blank and section.settings[ltk] != blank %} <a href="{{ section.settings[lk] }}">{{ section.settings[ltk] | escape }}</a>{%- endif -%}</span></div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign slide_count = slides | split: 'class="ar__slide"' | size | minus: 1 -%}
+
+<div class="ar ar-{{ sid }}" id="ar-{{ sid }}" data-speed="{{ section.settings.speed | times: 1000 }}" data-slide="{{ section.settings.slide_time | times: 1000 }}" data-count="{{ slide_count }}" role="region" aria-label="Announcements" aria-live="off">
+  <style>
+    .ar-{{ sid }} { position: relative; overflow: hidden; width: 100%; text-align: center; }
+    .ar-{{ sid }} .ar__track { display: block; will-change: transform; }
+    .ar-{{ sid }} .ar__slide { display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 0 8px; }
+    .ar-{{ sid }} .ar__txt { display: block; text-align: center; }
+    .ar-{{ sid }} .ar__slide a { text-decoration: none; color: inherit; }
+    @media (prefers-reduced-motion: reduce) { .ar-{{ sid }} .ar__track { transition: none !important; } }
+  </style>
+  <div class="ar__track">{{ slides }}</div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('ar-{{ sid }}');
+    if (!root) return;
+    var track = root.querySelector('.ar__track');
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.ar__slide'));
+    var n = slides.length;
+    if (n < 2) return;
+    var hold = parseInt(root.getAttribute('data-slide'), 10) || 4000;
+    var dur = parseInt(root.getAttribute('data-speed'), 10) || 1200;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // clone the first slide at the end so the loop never jumps backwards
+    var clone = slides[0].cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+
+    var h = 0, i = 0, timer = null, paused = false;
+    function measure() {
+      var all = track.querySelectorAll('.ar__slide');
+      all.forEach(function (s) { s.style.height = 'auto'; });
+      var m = 0;
+      all.forEach(function (s) { m = Math.max(m, s.offsetHeight); });
+      if (!m) { root.style.height = ''; return; }   // not laid out yet: leave it visible and try again later
+      h = m;
+      all.forEach(function (s) { s.style.height = h + 'px'; });
+      root.style.height = h + 'px';
+      track.style.transition = 'none';
+      track.style.transform = 'translateY(' + (-i * h) + 'px)';
+    }
+    function go() {
+      if (paused || document.hidden || !h) { measure(); return schedule(); }
+      i += 1;
+      track.style.transition = 'transform ' + dur + 'ms cubic-bezier(.65,0,.35,1)';
+      track.style.transform = 'translateY(' + (-i * h) + 'px)';
+      if (i === n) {
+        setTimeout(function () {
+          track.style.transition = 'none';
+          i = 0;
+          track.style.transform = 'translateY(0)';
+        }, dur + 40);
+      }
+      schedule();
+    }
+    function schedule() { clearTimeout(timer); timer = setTimeout(go, hold + dur); }
+
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    if (window.ResizeObserver) new ResizeObserver(function () { if (!track.style.transition || track.style.transition === 'none') measure(); }).observe(root.parentNode);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    if (reduce) return;
+    ['mouseenter', 'focusin', 'touchstart'].forEach(function (e) { root.addEventListener(e, function () { paused = true; }, { passive: true }); });
+    ['mouseleave', 'focusout', 'touchend'].forEach(function (e) { root.addEventListener(e, function () { paused = false; }, { passive: true }); });
+    schedule();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Announcement rotator",
+  "settings": [
+    { "type": "paragraph", "content": "Rotates the top bar messages one after another. Leave Message 1 empty to keep using the top bar text from Theme settings." },
+    { "type": "range", "id": "slide_time", "label": "Seconds each message stays", "min": 2, "max": 10, "step": 1, "default": 4 },
+    { "type": "range", "id": "speed", "label": "Slide speed (seconds)", "min": 0.4, "max": 2.5, "step": 0.1, "default": 1.2 },
+    { "type": "header", "content": "Message 1" },
+    { "type": "text", "id": "message_1", "label": "Text", "info": "Empty = use the theme's current top bar text." },
+    { "type": "url", "id": "link_1", "label": "Link" },
+    { "type": "text", "id": "link_text_1", "label": "Link text" },
+    { "type": "header", "content": "Message 2" },
+    { "type": "text", "id": "message_2", "label": "Text", "default": "Born, raised & processed in the USA. Shipping nationwide." },
+    { "type": "url", "id": "link_2", "label": "Link" },
+    { "type": "text", "id": "link_text_2", "label": "Link text" },
+    { "type": "header", "content": "Message 3" },
+    { "type": "text", "id": "message_3", "label": "Text" },
+    { "type": "url", "id": "link_3", "label": "Link" },
+    { "type": "text", "id": "link_text_3", "label": "Link text" },
+    { "type": "header", "content": "Message 4" },
+    { "type": "text", "id": "message_4", "label": "Text" },
+    { "type": "url", "id": "link_4", "label": "Link" },
+    { "type": "text", "id": "link_text_4", "label": "Link text" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,528 @@
+{%- assign sid = section.id -%}
+{%- assign kw_shares = section.settings.kw_shares | downcase | split: ',' -%}
+{%- assign kw_steaks = section.settings.kw_steaks | downcase | split: ',' -%}
+{%- assign kw_ground = section.settings.kw_ground | downcase | split: ',' -%}
+{%- assign kw_roasts = section.settings.kw_roasts | downcase | split: ',' -%}
+{%- assign kw_organ = section.settings.kw_organ | downcase | split: ',' -%}
+{%- assign kw_boxes = section.settings.kw_boxes | downcase | split: ',' -%}
+{%- assign threshold = section.settings.free_ship_threshold | plus: 0 -%}
+{%- assign threshold_label = '$' | append: section.settings.free_ship_threshold -%}
+
+<div class="cc cc-{{ sid }}" id="cc-{{ sid }}" data-threshold="{{ threshold }}">
+  <style>
+    .cc-{{ sid }} {
+      --cc-navy: {{ section.settings.navy }};
+      --cc-red: {{ section.settings.red }};
+      --cc-cream: {{ section.settings.cream }};
+      font-family: Karla, Arial, sans-serif;
+      color: #1c2321;
+      background: #fff;
+      max-width: 100vw;
+      overflow-x: hidden;
+      overflow-x: clip;
+    }
+    .cc-{{ sid }} *, .cc-{{ sid }} *::before, .cc-{{ sid }} *::after { box-sizing: border-box; }
+    .cc-{{ sid }} .cc__wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; min-width: 0; }
+    .cc-{{ sid }} .cc__main, .cc-{{ sid }} .cc__tools { min-width: 0; max-width: 100%; }
+    .cc-{{ sid }} .cc__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; line-height: 1.05; margin: 0; }
+
+    /* hero */
+    .cc-{{ sid }} .cc__hero { position: relative; background: var(--cc-navy); color: var(--cc-cream); overflow: hidden; }
+    .cc-{{ sid }} .cc__hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .3; }
+    .cc-{{ sid }} .cc__hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 12% 20%, rgba(200,35,44,.3), transparent 45%); }
+    .cc-{{ sid }} .cc__hero-in { position: relative; text-align: center; padding: 64px 24px 56px; max-width: 900px; margin: 0 auto; }
+    .cc-{{ sid }} .cc__eyebrow { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 6px; text-transform: uppercase; color: #f2b8bb; margin-bottom: 12px; }
+    .cc-{{ sid }} .cc__title { font-size: 72px; color: var(--cc-cream) !important; margin-bottom: 16px; text-shadow: 0 6px 30px rgba(0,0,0,.4); }
+    .cc-{{ sid }} .cc__intro { font-size: 20px; line-height: 1.5; color: #e9e4d6 !important; max-width: 700px; margin: 0 auto; font-family: Karla, Arial, sans-serif !important; }
+    .cc-{{ sid }} .cc__stripe { height: 8px; background: repeating-linear-gradient(90deg, var(--cc-red) 0 60px, var(--cc-cream) 60px 120px, var(--cc-navy) 120px 180px); }
+
+    /* trust */
+    .cc-{{ sid }} .cc__trust { background: var(--cc-cream); border-bottom: 1px solid #e6dfcc; }
+    .cc-{{ sid }} .cc__trust-g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+    .cc-{{ sid }} .cc__trust-i { display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Oswald, Impact, sans-serif; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 15px; color: var(--cc-navy); text-align: left; line-height: 1.25; }
+    .cc-{{ sid }} .cc__trust-i svg { flex: 0 0 28px; width: 28px !important; height: 28px !important; fill: none !important; stroke: var(--cc-red) !important; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .cc-{{ sid }} .cc__trust-i svg * { fill: none !important; stroke: var(--cc-red) !important; }
+
+    /* free shipping progress */
+    .cc-{{ sid }} .cc__ship { background: #fff; border-bottom: 1px solid #eee; }
+    .cc-{{ sid }} .cc__ship[hidden] { display: none; }
+    .cc-{{ sid }} .cc__ship-in { max-width: 760px; margin: 0 auto; padding: 14px 24px; text-align: center; }
+    .cc-{{ sid }} .cc__ship-t { font-size: 17px; font-weight: 700; color: var(--cc-navy); margin-bottom: 8px; }
+    .cc-{{ sid }} .cc__meter { height: 10px; background: #e8e4da; border-radius: 99px; overflow: hidden; }
+    .cc-{{ sid }} .cc__meter i { display: block; height: 100%; width: 0; background: var(--cc-red); border-radius: 99px; transition: width .4s; }
+    .cc-{{ sid }} .cc__ship.is-done .cc__meter i { background: #2f7d4f; }
+
+    /* tools */
+    .cc-{{ sid }} .cc__main { padding: 40px 0 64px; }
+    .cc-{{ sid }} .cc__tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+    .cc-{{ sid }} .cc__tabs { display: flex; gap: 8px; flex-wrap: wrap; flex: 1 1 0%; min-width: 0; }
+    .cc-{{ sid }} .cc__sort { flex: 0 0 auto; }
+    .cc-{{ sid }} .cc__tab { padding: 10px 16px; border: 2px solid var(--cc-navy); background: #fff; color: var(--cc-navy); font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .cc-{{ sid }} .cc__tab[aria-pressed="true"] { background: var(--cc-navy); color: #fff; }
+    .cc-{{ sid }} .cc__tab--hol { border-color: var(--cc-red); color: var(--cc-red); }
+    .cc-{{ sid }} .cc__tab--hol[aria-pressed="true"] { background: var(--cc-red); color: #fff; }
+    .cc-{{ sid }} .cc__tab small { font-family: Karla, Arial, sans-serif; font-weight: 400; letter-spacing: 0; opacity: .7; margin-left: 6px; font-size: 14px; }
+    .cc-{{ sid }} .cc__sort { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: var(--cc-navy); }
+    .cc-{{ sid }} .cc__sort select { height: 46px; padding: 0 36px 0 14px; border: 2px solid var(--cc-navy); border-radius: 0; background: #fff; color: var(--cc-navy); font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .cc-{{ sid }} .cc__count { margin: 0 0 18px; font-size: 16px; color: #555; }
+
+    /* grid + cards */
+    .cc-{{ sid }} .cc__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+    .cc-{{ sid }} .cc__card { display: flex; flex-direction: column; background: #fff; border: 1px solid #e8e4da; transition: box-shadow .2s, transform .2s; }
+    .cc-{{ sid }} .cc__card:hover { box-shadow: 0 14px 34px rgba(11,26,51,.14); transform: translateY(-3px); }
+    .cc-{{ sid }} .cc__card[hidden] { display: none; }
+    .cc-{{ sid }} .cc__img { position: relative; display: block; aspect-ratio: 1 / 1; background: #f3efe5; overflow: hidden; }
+    .cc-{{ sid }} .cc__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .3s, transform .4s; }
+    .cc-{{ sid }} .cc__img .cc__img2 { position: absolute; inset: 0; opacity: 0; }
+    .cc-{{ sid }} .cc__card:hover .cc__img .cc__img2 { opacity: 1; }
+    .cc-{{ sid }} .cc__badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; z-index: 2; }
+    .cc-{{ sid }} .cc__badge { background: var(--cc-red); color: #fff; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; }
+    .cc-{{ sid }} .cc__badge--out { background: #666; }
+    .cc-{{ sid }} .cc__badge--sub { background: var(--cc-navy); }
+    .cc-{{ sid }} .cc__body { padding: 16px 16px 18px; display: flex; flex-direction: column; flex: 1; }
+    .cc-{{ sid }} .cc__name { display: block; font-size: 18px; font-weight: 700; line-height: 1.3; color: #1c2321 !important; text-decoration: none !important; margin-bottom: 8px; font-family: Karla, Arial, sans-serif !important; text-transform: none !important; }
+    .cc-{{ sid }} .cc__price { font-size: 22px; font-weight: 700; color: var(--cc-navy); margin-bottom: 12px; }
+    .cc-{{ sid }} .cc__price s { font-size: 16px; font-weight: 400; color: #888; margin-left: 8px; }
+    .cc-{{ sid }} .cc__price .cc__sav { color: var(--cc-red); font-size: 14px; font-weight: 700; margin-left: 8px; }
+    .cc-{{ sid }} .cc__buy { margin-top: auto; }
+    .cc-{{ sid }} .cc__var { width: 100%; height: 44px; padding: 0 10px; margin-bottom: 10px; border: 1px solid #bdb7a6; border-radius: 0; background: #fff; color: #1c2321; font-size: 15px; font-family: Karla, Arial, sans-serif; }
+    .cc-{{ sid }} .cc__row { display: flex; gap: 8px; }
+    .cc-{{ sid }} .cc__qty { display: flex; align-items: center; border: 2px solid var(--cc-navy); flex: 0 0 auto; }
+    .cc-{{ sid }} .cc__qty button { width: 30px; height: 44px; border: 0; background: none; color: var(--cc-navy); font-size: 20px; cursor: pointer; line-height: 1; }
+    .cc-{{ sid }} .cc__qty span { min-width: 22px; text-align: center; font-weight: 700; font-size: 17px; }
+    .cc-{{ sid }} .cc__add { flex: 1; height: 48px; white-space: nowrap; padding: 0 6px; border: 2px solid var(--cc-navy); background: var(--cc-navy); color: #fff !important; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none !important; display: flex; align-items: center; justify-content: center; }
+    .cc-{{ sid }} .cc__add:hover { background: var(--cc-red); border-color: var(--cc-red); }
+    .cc-{{ sid }} .cc__add:disabled { opacity: .55; cursor: default; }
+    .cc-{{ sid }} .cc__add.is-done { background: #2f7d4f; border-color: #2f7d4f; }
+    .cc-{{ sid }} .cc__view { width: 100%; background: #fff; color: var(--cc-navy) !important; }
+    .cc-{{ sid }} .cc__empty { text-align: center; padding: 40px 0; font-size: 19px; }
+    .cc-{{ sid }} .cc__pager { margin-top: 36px; text-align: center; font-size: 0; }
+    .cc-{{ sid }} .cc__pager span, .cc-{{ sid }} .cc__pager a { display: inline-block; min-width: 44px; height: 44px; line-height: 40px; margin: 0 4px; padding: 0 14px; border: 2px solid var(--cc-navy); color: var(--cc-navy) !important; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 17px; text-decoration: none !important; background: #fff; }
+    .cc-{{ sid }} .cc__pager span > a { margin: 0; border: 0; min-width: 0; height: auto; line-height: inherit; padding: 0; }
+    .cc-{{ sid }} .cc__pager .current { background: var(--cc-navy); color: #fff !important; }
+
+    /* faq */
+    .cc-{{ sid }} .cc__faq-sec { background: var(--cc-cream); padding: 60px 0; }
+    .cc-{{ sid }} .cc__faq-h { font-size: 38px; color: var(--cc-navy) !important; text-align: center; margin-bottom: 28px; }
+    .cc-{{ sid }} .cc__faq { max-width: 820px; margin: 0 auto; }
+    .cc-{{ sid }} .cc__faq details { border: 1px solid #e0dbcc; background: #fff; margin-bottom: 12px; }
+    .cc-{{ sid }} .cc__faq summary { list-style: none; cursor: pointer; padding: 20px 56px 20px 22px; font-size: 18px; font-weight: 700; position: relative; }
+    .cc-{{ sid }} .cc__faq summary::-webkit-details-marker { display: none; }
+    .cc-{{ sid }} .cc__faq summary::after { content: "+"; position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-size: 26px; color: var(--cc-red); }
+    .cc-{{ sid }} .cc__faq details[open] summary::after { content: "\2212"; }
+    .cc-{{ sid }} .cc__ans { padding: 0 22px 20px; font-size: 16px; line-height: 1.6; color: #444; }
+    .cc-{{ sid }} .cc__ans p { margin: 0; }
+
+    /* sticky cart bar */
+    .cc-{{ sid }} .cc__bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9990; background: var(--cc-navy); color: #fff; transform: translateY(110%); visibility: hidden; transition: transform .25s, visibility 0s .25s; box-shadow: 0 -8px 30px rgba(0,0,0,.25); }
+    .cc-{{ sid }} .cc__bar.is-on { transform: translateY(0); visibility: visible; transition: transform .25s; }
+    .cc-{{ sid }} .cc__bar-in { max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 18px; }
+    .cc-{{ sid }} .cc__bar-t { flex: 1; min-width: 0; }
+    .cc-{{ sid }} .cc__bar-t b { display: block; font-size: 18px; }
+    .cc-{{ sid }} .cc__bar-t small { display: block; font-size: 14px; color: #cfd6e4; margin-top: 2px; }
+    .cc-{{ sid }} .cc__bar a { flex: 0 0 auto; padding: 13px 24px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none !important; }
+    .cc-{{ sid }} .cc__bar .cc__bar-cart { color: #fff !important; border: 2px solid #fff; }
+    .cc-{{ sid }} .cc__bar .cc__bar-go { background: var(--cc-red); color: #fff !important; border: 2px solid var(--cc-red); }
+
+    @media (max-width: 1100px) { .cc-{{ sid }} .cc__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 800px) {
+      .cc-{{ sid }} .cc__hero-in { padding: 44px 20px 40px; }
+      .cc-{{ sid }} .cc__title { font-size: 44px; }
+      .cc-{{ sid }} .cc__intro { font-size: 17px; }
+      .cc-{{ sid }} .cc__trust-g { grid-template-columns: repeat(2, 1fr); padding: 14px 16px; }
+      .cc-{{ sid }} .cc__trust-i { font-size: 13px; justify-content: flex-start; }
+      .cc-{{ sid }} .cc__wrap { padding: 0 14px; }
+      .cc-{{ sid }} .cc__main { padding: 28px 0 48px; }
+      .cc-{{ sid }} .cc__tools { flex-direction: column; align-items: stretch; }
+      .cc-{{ sid }} .cc__tabs { flex: 0 0 auto; width: 100%; min-width: 0; max-width: 100%; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding: 2px 14px 8px 0; margin-right: -14px; width: calc(100% + 14px); -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; overscroll-behavior-x: contain; scrollbar-width: none; }
+      .cc-{{ sid }} .cc__tabs::-webkit-scrollbar { display: none; }
+      .cc-{{ sid }} .cc__tab { flex: 0 0 auto; scroll-snap-align: start; }
+      .cc-{{ sid }} .cc__tab { white-space: nowrap; padding: 10px 16px; font-size: 14px; }
+      .cc-{{ sid }} .cc__sort { justify-content: space-between; }
+      .cc-{{ sid }} .cc__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .cc-{{ sid }} .cc__body { padding: 12px 10px 14px; }
+      .cc-{{ sid }} .cc__name { font-size: 15px; }
+      .cc-{{ sid }} .cc__price { font-size: 18px; }
+      .cc-{{ sid }} .cc__row { flex-direction: column; }
+      .cc-{{ sid }} .cc__qty { justify-content: space-between; }
+      .cc-{{ sid }} .cc__qty button { flex: 1; }
+      .cc-{{ sid }} .cc__add { font-size: 14px; letter-spacing: 1px; height: 44px; flex: 0 0 auto; width: 100%; }
+      .cc-{{ sid }} .cc__badge { font-size: 11px; letter-spacing: 1px; padding: 3px 7px; }
+      .cc-{{ sid }} .cc__faq-h { font-size: 30px; }
+      .cc-{{ sid }} .cc__bar-in { padding: 10px 14px; gap: 10px; flex-wrap: wrap; }
+      .cc-{{ sid }} .cc__bar a { padding: 11px 16px; font-size: 14px; letter-spacing: 1px; }
+      .cc-{{ sid }} .cc__bar .cc__bar-cart { display: none; }
+    }
+  </style>
+
+  <section class="cc__hero">
+    {%- if section.settings.hero_image != blank -%}<div class="cc__hero-bg" style="background-image:url('{{ section.settings.hero_image | image_url: width: 2400 }}')"></div>{%- endif -%}
+    <div class="cc__hero-in">
+      <span class="cc__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <span class="cc__h cc__title" role="heading" aria-level="1">{{ section.settings.heading | default: collection.title | escape }}</span>
+      {%- assign intro_text = '' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'intro' and block.settings.collection_handle == collection.handle and block.settings.text != blank -%}{%- assign intro_text = block.settings.text -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if intro_text == blank -%}{%- assign intro_text = section.settings.intro -%}{%- endif -%}
+      {%- if intro_text != blank -%}<p class="cc__intro">{{ intro_text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="cc__stripe"></div>
+  </section>
+
+  <section class="cc__trust" aria-label="Why Freedom Farms">
+    <div class="cc__trust-g">
+      {%- for i in (1..4) -%}
+        {%- assign tk = 'trust_' | append: i -%}
+        {%- assign t = section.settings[tk] -%}
+        {%- if t != blank -%}
+          {%- case i -%}
+            {%- when 1 -%}{%- capture ic -%}<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>{%- endcapture -%}
+            {%- when 2 -%}{%- capture ic -%}<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z"/>{%- endcapture -%}
+            {%- when 3 -%}{%- capture ic -%}<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>{%- endcapture -%}
+            {%- else -%}{%- capture ic -%}<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>{%- endcapture -%}
+          {%- endcase -%}
+          <div class="cc__trust-i"><svg viewBox="0 0 24 24" aria-hidden="true">{{ ic }}</svg><span>{{ t | escape }}</span></div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  {%- if threshold > 0 -%}
+  <div class="cc__ship" data-ship>
+    <div class="cc__ship-in"><div class="cc__ship-t" data-ship-t>{{ section.settings.free_ship_text | replace: '[amount]', threshold_label | escape }}</div><div class="cc__meter"><i data-ship-bar></i></div></div>
+  </div>
+  {%- endif -%}
+
+  <section class="cc__main">
+    <div class="cc__wrap">
+      {%- paginate collection.products by 50 -%}
+        {%- if collection.products.size == 0 -%}
+          <p class="cc__empty">No products are available right now. Please check back soon.</p>
+        {%- else -%}
+          {%- comment -%} Tabs are built from the "Category tab" blocks (pick products per tab in the theme editor). With no blocks, tabs fall back to matching words in product names. {%- endcomment -%}
+          {%- assign manual = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'tab' -%}{%- continue -%}{%- endif -%}
+            {%- assign bh = block.settings.collection_handle | strip -%}
+            {%- if bh != blank and bh != collection.handle -%}{%- continue -%}{%- endif -%}
+            {%- assign manual = true -%}
+          {%- endfor -%}
+          {%- assign tabmap = '' -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'tab' -%}{%- continue -%}{%- endif -%}
+            {%- assign bh = block.settings.collection_handle | strip -%}
+            {%- if bh != blank and bh != collection.handle -%}{%- continue -%}{%- endif -%}
+            {%- for tp in block.settings.products -%}
+              {%- assign tabmap = tabmap | append: '|' | append: block.id | append: ':' | append: tp.handle | append: '|' -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- assign hol_block = blank -%}
+          {%- assign hol_map = '' -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'holiday_tab' and block.settings.collection_handle == collection.handle -%}
+              {%- assign hol_block = block -%}
+              {%- for hp in block.settings.products -%}{%- assign hol_map = hol_map | append: '|' | append: hp.handle | append: '|' -%}{%- endfor -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign page_handles = '' -%}
+          {%- for product in collection.products -%}{%- assign page_handles = page_handles | append: '|' | append: product.handle | append: '|' -%}{%- endfor -%}
+          {%- assign cat_csv = '' -%}
+          {%- for product in collection.products -%}
+            {%- assign cat = 'other' -%}
+            {%- if manual -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type != 'tab' -%}{%- continue -%}{%- endif -%}
+                {%- assign bh = block.settings.collection_handle | strip -%}
+                {%- if bh != blank and bh != collection.handle -%}{%- continue -%}{%- endif -%}
+                {%- assign needle = '|' | append: block.id | append: ':' | append: product.handle | append: '|' -%}
+                {%- if tabmap contains needle -%}{%- assign cat = block.id -%}{%- break -%}{%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign t = product.title | downcase -%}
+              {%- for k in kw_shares -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'shares' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+              {%- if cat == 'other' -%}{%- for k in kw_organ -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'organ' -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+              {%- if cat == 'other' -%}{%- for k in kw_steaks -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'steaks' -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+              {%- if cat == 'other' -%}{%- for k in kw_ground -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'ground' -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+              {%- if cat == 'other' -%}{%- for k in kw_roasts -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'roasts' -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+              {%- if cat == 'other' -%}{%- for k in kw_boxes -%}{%- assign kk = k | strip -%}{%- if kk != blank and t contains kk -%}{%- assign cat = 'boxes' -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+            {%- endif -%}
+            {%- assign cat_csv = cat_csv | append: cat | append: ',' -%}
+          {%- endfor -%}
+          {%- assign cat_arr = cat_csv | split: ',' -%}
+
+          <div class="cc__tools">
+            <div class="cc__tabs" role="group" aria-label="Filter by type">
+              <button type="button" class="cc__tab" data-f="all" aria-pressed="true">All<small>{{ collection.products.size }}</small></button>
+              {%- if hol_block != blank and hol_block.settings.products.size > 0 -%}
+                <button type="button" class="cc__tab cc__tab--hol" data-f="hol" aria-pressed="false" {{ hol_block.shopify_attributes }}>&#9733; {{ hol_block.settings.title | default: 'Holiday meats' | escape }}<small>{{ hol_block.settings.products.size }}</small></button>
+              {%- endif -%}
+              {%- if manual -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type != 'tab' -%}{%- continue -%}{%- endif -%}
+                  {%- assign bh = block.settings.collection_handle | strip -%}
+                  {%- if bh != blank and bh != collection.handle -%}{%- continue -%}{%- endif -%}
+                  {%- assign n = 0 -%}
+                  {%- for pc in cat_arr -%}{%- if pc == block.id -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                  {%- if n > 0 and block.settings.title != blank -%}
+                    <button type="button" class="cc__tab" data-f="{{ block.id }}" aria-pressed="false" {{ block.shopify_attributes }}>{{ block.settings.title | escape }}<small>{{ n }}</small></button>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- assign n = 0 -%}
+                {%- for pc in cat_arr -%}{%- if pc == 'other' -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                {%- if n > 0 and section.settings.show_more -%}
+                  <button type="button" class="cc__tab" data-f="other" aria-pressed="false">{{ section.settings.lbl_other | escape }}<small>{{ n }}</small></button>
+                {%- endif -%}
+              {%- else -%}
+              {%- assign cat_keys = 'boxes,steaks,ground,roasts,organ,shares,other' | split: ',' -%}
+              {%- for ck in cat_keys -%}
+                {%- assign n = 0 -%}
+                {%- for pc in cat_arr -%}{%- if pc == ck -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                {%- if n > 1 -%}
+                  {%- case ck -%}
+                    {%- when 'boxes' -%}{%- assign lbl = section.settings.lbl_boxes -%}
+                    {%- when 'steaks' -%}{%- assign lbl = section.settings.lbl_steaks -%}
+                    {%- when 'ground' -%}{%- assign lbl = section.settings.lbl_ground -%}
+                    {%- when 'roasts' -%}{%- assign lbl = section.settings.lbl_roasts -%}
+                    {%- when 'organ' -%}{%- assign lbl = section.settings.lbl_organ -%}
+                    {%- when 'shares' -%}{%- assign lbl = section.settings.lbl_shares -%}
+                    {%- else -%}{%- assign lbl = section.settings.lbl_other -%}
+                  {%- endcase -%}
+                  <button type="button" class="cc__tab" data-f="{{ ck }}" aria-pressed="false">{{ lbl | escape }}<small>{{ n }}</small></button>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- endif -%}
+            </div>
+            <label class="cc__sort">Sort
+              <select data-sort>
+                <option value="featured">Featured</option>
+                <option value="low">Price: low to high</option>
+                <option value="high">Price: high to low</option>
+                <option value="save">Biggest savings</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="cc__grid" data-grid>
+            {%- for product in collection.products -%}
+              {%- assign cat = cat_arr[forloop.index0] -%}
+
+              {%- assign is_hol = false -%}
+              {%- if hol_map != blank -%}{%- assign hneedle = '|' | append: product.handle | append: '|' -%}{%- if hol_map contains hneedle -%}{%- assign is_hol = true -%}{%- endif -%}{%- endif -%}
+              {%- render 'cc-card', product: product, cat: cat, idx: forloop.index0, in_collection: collection, extra: false, hol: is_hol -%}
+            {%- endfor -%}
+            {%- if hol_block != blank -%}
+              {%- assign ex_i = collection.products.size -%}
+              {%- for hp in hol_block.settings.products -%}
+                {%- assign hneedle = '|' | append: hp.handle | append: '|' -%}
+                {%- unless page_handles contains hneedle -%}
+                  {%- render 'cc-card', product: hp, cat: 'holiday_extra', idx: ex_i, in_collection: blank, extra: true, hol: true -%}
+                  {%- assign ex_i = ex_i | plus: 1 -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+          {%- if paginate.pages > 1 -%}<div class="cc__pager">{{ paginate | default_pagination }}</div>{%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </section>
+
+  <section class="cc__faq-sec">
+    <div class="cc__wrap">
+      <span class="cc__h cc__faq-h" role="heading" aria-level="2">{%- if section.settings.faq_heading != blank -%}{{ section.settings.faq_heading | escape }}{%- else -%}{{ collection.title | escape }} Questions{%- endif -%}</span>
+      <div class="cc__faq">
+        {%- for i in (1..4) -%}
+          {%- assign fq = 'faq_' | append: i | append: '_q' -%}
+          {%- assign fa = 'faq_' | append: i | append: '_a' -%}
+          {%- if section.settings[fq] != blank -%}
+            <details><summary>{{ section.settings[fq] | escape }}</summary><div class="cc__ans"><p>{{ section.settings[fa] | escape }}</p></div></details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <div class="cc__bar" data-bar aria-hidden="true">
+    <div class="cc__bar-in">
+      <div class="cc__bar-t"><b data-bar-main>Your cart</b><small data-bar-sub></small></div>
+      <a class="cc__bar-cart" href="/cart">View cart</a>
+      <a class="cc__bar-go" href="/checkout">Checkout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('cc-{{ sid }}');
+    if (!root) return;
+    var threshold = parseFloat(root.getAttribute('data-threshold')) || 0;
+    var shipText = {{ section.settings.free_ship_text | json }};
+    var shipDone = {{ section.settings.free_ship_done | json }};
+    var grid = root.querySelector('[data-grid]');
+    var cards = root.querySelectorAll('.cc__card');
+    var fmt = function (cents) { var v = cents / 100; return '$' + (v % 1 === 0 ? v.toFixed(0) : v.toFixed(2)); };
+
+    /* filter + sort */
+    root.querySelectorAll('.cc__tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var f = tab.getAttribute('data-f');
+        root.querySelectorAll('.cc__tab').forEach(function (t) { t.setAttribute('aria-pressed', t === tab ? 'true' : 'false'); });
+        cards.forEach(function (c) {
+          var extra = c.hasAttribute('data-extra');
+          var show = f === 'all' ? !extra : f === 'hol' ? c.getAttribute('data-hol') === '1' : (!extra && c.getAttribute('data-cat') === f);
+          c.hidden = !show;
+        });
+      });
+    });
+    var sortSel = root.querySelector('[data-sort]');
+    if (sortSel && grid) sortSel.addEventListener('change', function () {
+      var list = Array.prototype.slice.call(grid.querySelectorAll('.cc__card')), by = sortSel.value;
+      list.sort(function (a, b) {
+        if (by === 'featured') return a.getAttribute('data-i') - b.getAttribute('data-i');
+        if (by === 'save') return (b.getAttribute('data-save') - a.getAttribute('data-save')) || (a.getAttribute('data-i') - b.getAttribute('data-i'));
+        var d = a.getAttribute('data-price') - b.getAttribute('data-price');
+        return by === 'low' ? d : -d;
+      });
+      list.forEach(function (c) { grid.appendChild(c); });
+    });
+
+    /* variant price + quantity */
+    root.addEventListener('change', function (e) {
+      var sel = e.target.closest('select[data-var]');
+      if (!sel) return;
+      var o = sel.options[sel.selectedIndex], box = sel.closest('.cc__card').querySelector('[data-price-box]');
+      box.innerHTML = '<span data-p>' + o.getAttribute('data-p') + '</span>' + (o.getAttribute('data-c') ? '<s>' + o.getAttribute('data-c') + '</s>' : '');
+    });
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      var card = b.closest('.cc__card');
+      if (!card) return;
+      var q = card.querySelector('[data-qty]');
+      if (b.hasAttribute('data-plus')) q.textContent = Math.min(20, parseInt(q.textContent, 10) + 1);
+      else if (b.hasAttribute('data-minus')) q.textContent = Math.max(1, parseInt(q.textContent, 10) - 1);
+      else if (b.hasAttribute('data-add')) addToCart(card, b);
+    });
+
+    /* cart bar + free shipping progress */
+    var bar = root.querySelector('[data-bar]');
+    var ship = root.querySelector('[data-ship]');
+    function paint(cart) {
+      var total = cart.total_price, count = cart.item_count;
+      if (bar) {
+        bar.classList.toggle('is-on', count > 0);
+        bar.setAttribute('aria-hidden', count > 0 ? 'false' : 'true');
+        root.querySelector('[data-bar-main]').textContent = count + (count === 1 ? ' item' : ' items') + ' in your cart · ' + fmt(total);
+        var sub = root.querySelector('[data-bar-sub]');
+        if (threshold > 0) {
+          var left = threshold * 100 - total;
+          sub.textContent = left > 0 ? 'Add ' + fmt(left) + ' more for free shipping' : shipDone;
+        } else { sub.textContent = ''; }
+      }
+      if (ship && threshold > 0) {
+        var left2 = threshold * 100 - total, pct = Math.max(0, Math.min(100, (total / (threshold * 100)) * 100));
+        ship.classList.toggle('is-done', left2 <= 0);
+        ship.querySelector('[data-ship-bar]').style.width = pct + '%';
+        ship.querySelector('[data-ship-t]').textContent = left2 > 0 ? shipText.replace('[amount]', fmt(left2)) : shipDone;
+      }
+    }
+    function refreshCart() { return fetch('/cart.js', { headers: { 'Accept': 'application/json' } }).then(function (r) { return r.json(); }).then(paint).catch(function () {}); }
+    refreshCart();
+
+    function addToCart(card, btn) {
+      var v = card.querySelector('[data-var]');
+      var id = v && (v.value || v.getAttribute('value'));
+      var qty = parseInt(card.querySelector('[data-qty]').textContent, 10) || 1;
+      if (!id) return;
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Adding...';
+      fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ id: Number(id), quantity: qty }) })
+        .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+        .then(function () { btn.classList.add('is-done'); btn.textContent = 'Added ✓'; return refreshCart(); })
+        .catch(function () { btn.textContent = label; window.location.href = card.querySelector('.cc__name').href; })
+        .then(function () { setTimeout(function () { btn.disabled = false; btn.classList.remove('is-done'); if (btn.textContent.indexOf('Added') === 0) btn.textContent = label; }, 1800); });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection CRO",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Freedom Farms" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave empty to use the collection name." },
+    { "type": "textarea", "id": "intro", "label": "Intro (used when a collection has no Intro block)", "default": "Shipped nationwide to your door." },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "header", "content": "Trust strip" },
+    { "type": "text", "id": "trust_1", "label": "Point 1", "default": "Born, raised & processed in the USA" },
+    { "type": "text", "id": "trust_2", "label": "Point 2", "default": "Shipped nationwide" },
+    { "type": "text", "id": "trust_3", "label": "Point 3", "default": "USDA-inspected processing" },
+    { "type": "text", "id": "trust_4", "label": "Point 4", "default": "Family farmed in Greene, NY" },
+    { "type": "header", "content": "Free shipping progress (raises order value)" },
+    { "type": "text", "id": "free_ship_threshold", "label": "Free shipping above ($)", "info": "Numbers only, for example 200. Leave at 0 to hide the bar. Must match your real free shipping rule." , "default": "0" },
+    { "type": "text", "id": "free_ship_text", "label": "Message while below it", "info": "[amount] becomes the amount left.", "default": "You're [amount] away from free shipping" },
+    { "type": "text", "id": "free_ship_done", "label": "Message once reached", "default": "You've unlocked free shipping" },
+    { "type": "paragraph", "content": "Add \"Category tab\" blocks below and pick the products for each tab. If you add none, tabs are built by matching words in product names (settings below)." },
+    { "type": "header", "content": "Tabs (matched to the product name)" },
+    { "type": "text", "id": "lbl_boxes", "label": "Boxes label", "default": "Boxes & bundles" },
+    { "type": "text", "id": "kw_boxes", "label": "Boxes keywords", "info": "Comma separated words found in product names.", "default": "box,bundle,pack,collection,variety,combo" },
+    { "type": "text", "id": "lbl_steaks", "label": "Steaks label", "default": "Steaks" },
+    { "type": "text", "id": "kw_steaks", "label": "Steaks keywords", "default": "steak,ribeye,strip,filet,tenderloin,sirloin,delmonico,t-bone,porterhouse,flank,skirt" },
+    { "type": "text", "id": "lbl_ground", "label": "Ground label", "default": "Ground & burgers" },
+    { "type": "text", "id": "kw_ground", "label": "Ground keywords", "default": "ground,burger,patt" },
+    { "type": "text", "id": "lbl_roasts", "label": "Roasts label", "default": "Roasts & specialty" },
+    { "type": "text", "id": "kw_roasts", "label": "Roasts keywords", "default": "roast,brisket,rib,stew,chuck,short" },
+    { "type": "text", "id": "lbl_organ", "label": "Organ, meats & bones label", "default": "Organ, Meats & Bones" },
+    { "type": "text", "id": "kw_organ", "label": "Organ, meats & bones keywords", "info": "Checked before steaks and ground, so an organ blend goes here. Use \"bones\" (plural) so bone-in steaks and T-bones stay under Steaks.", "default": "organ,liver,heart,tongue,kidney,tripe,oxtail,bones,marrow,broth,tallow,suet" },
+    { "type": "text", "id": "lbl_shares", "label": "Cow shares label", "default": "Cow shares" },
+    { "type": "text", "id": "kw_shares", "label": "Cow shares keywords", "default": "share,deposit,cow" },
+    { "type": "text", "id": "lbl_other", "label": "Everything else label", "default": "More" },
+    { "type": "checkbox", "id": "show_more", "label": "Show a tab for products not placed in any category tab", "default": true },
+    { "type": "header", "content": "FAQ" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "info": "Empty = the collection name followed by Questions." },
+    { "type": "text", "id": "faq_1_q", "label": "Question 1", "default": "Do you ship nationwide?" },
+    { "type": "textarea", "id": "faq_1_a", "label": "Answer 1", "default": "Yes, we ship throughout the United States." },
+    { "type": "text", "id": "faq_2_q", "label": "Question 2", "default": "Is your meat USDA processed?" },
+    { "type": "textarea", "id": "faq_2_a", "label": "Answer 2", "default": "Yes. All meat is processed in a USDA-inspected facility." },
+    { "type": "text", "id": "faq_3_q", "label": "Question 3", "default": "Can I pick up my order?" },
+    { "type": "textarea", "id": "faq_3_a", "label": "Answer 3", "default": "Yes. Farm pickup is available by appointment." },
+    { "type": "text", "id": "faq_4_q", "label": "Question 4" },
+    { "type": "textarea", "id": "faq_4_a", "label": "Answer 4" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "navy", "label": "Navy", "default": "#0b1a33" },
+    { "type": "color", "id": "red", "label": "Red", "default": "#c8232c" },
+    { "type": "color", "id": "cream", "label": "Cream", "default": "#f7f1e3" }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Category tab",
+      "settings": [
+        { "type": "text", "id": "collection_handle", "label": "Collection handle", "info": "For example beef or pork (the last part of the collection URL). The tab only shows on that collection. Empty = every collection." },
+        { "type": "text", "id": "title", "label": "Tab name", "default": "New tab" },
+        { "type": "product_list", "id": "products", "label": "Products in this tab", "limit": 50 }
+      ]
+    },
+    {
+      "type": "holiday_tab",
+      "name": "Holiday meats tab",
+      "settings": [
+        { "type": "text", "id": "collection_handle", "label": "Collection handle", "info": "For example beef, pork or 100-pasture-raised-chicken. The tab shows on that collection only." },
+        { "type": "text", "id": "title", "label": "Tab name", "default": "Holiday meats" },
+        { "type": "product_list", "id": "products", "label": "Holiday products", "limit": 50, "info": "Products not in this collection are added to the page, but only inside this tab." }
+      ]
+    },
+    {
+      "type": "intro",
+      "name": "Collection intro",
+      "settings": [
+        { "type": "text", "id": "collection_handle", "label": "Collection handle", "info": "For example beef or pork." },
+        { "type": "textarea", "id": "text", "label": "Intro text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

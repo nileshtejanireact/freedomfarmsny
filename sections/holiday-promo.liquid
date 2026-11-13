@@ -1,0 +1,167 @@
+{%- assign sid = section.id -%}
+{%- assign promo = section.settings.collection | default: collections['holiday-gifts'] -%}
+{%- if promo != blank and promo.products_count > 0 -%}
+{%- assign link = promo.url -%}
+<section class="hp hp-{{ sid }}" id="hp-{{ sid }}" aria-label="{{ section.settings.heading | escape }}">
+  <style>
+    .hp-{{ sid }} {
+      --hp-navy: {{ section.settings.navy }};
+      --hp-red: {{ section.settings.red }};
+      --hp-cream: {{ section.settings.cream }};
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      max-width: 100vw;
+      background: var(--hp-navy);
+      color: var(--hp-cream);
+      overflow: hidden;
+      font-family: Karla, Arial, sans-serif;
+    }
+    .hp-{{ sid }} *, .hp-{{ sid }} *::before, .hp-{{ sid }} *::after { box-sizing: border-box; }
+    .hp-{{ sid }}::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 8% 15%, rgba(227, 45, 45, .32), transparent 42%), radial-gradient(circle at 95% 90%, rgba(255, 255, 255, .07), transparent 40%); pointer-events: none; }
+    {%- if section.settings.image != blank -%}
+    .hp-{{ sid }}::after { content: ""; position: absolute; inset: 0; background: url('{{ section.settings.image | image_url: width: 2000 }}') center / cover no-repeat; opacity: .22; pointer-events: none; }
+    {%- endif -%}
+    .hp-{{ sid }} .hp__stripe { height: 10px; background: repeating-linear-gradient(90deg, var(--hp-red) 0 60px, var(--hp-cream) 60px 120px, var(--hp-navy) 120px 180px); position: relative; z-index: 2; }
+    .hp-{{ sid }} .hp__wrap { position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: 52px 24px 56px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; }
+    .hp-{{ sid }} .hp__eyebrow { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 6px; text-transform: uppercase; color: #f2b8bb; margin-bottom: 14px; }
+    .hp-{{ sid }} .hp__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; line-height: 1.02; margin: 0 0 18px; font-size: 64px; color: var(--hp-cream) !important; text-shadow: 0 6px 30px rgba(0, 0, 0, .4); }
+    .hp-{{ sid }} .hp__sub { font-size: 21px; line-height: 1.5; color: #e9e4d6 !important; margin: 0 0 26px; font-family: Karla, Arial, sans-serif !important; max-width: 520px; }
+    .hp-{{ sid }} .hp__timer { display: none; margin: 0 0 26px; }
+    .hp-{{ sid }} .hp__timer.is-on { display: block; }
+    .hp-{{ sid }} .hp__timer-l { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: #f2b8bb; margin-bottom: 8px; }
+    .hp-{{ sid }} .hp__units { display: flex; gap: 8px; }
+    .hp-{{ sid }} .hp__unit { min-width: 68px; text-align: center; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .18); padding: 8px 8px 6px; }
+    .hp-{{ sid }} .hp__unit b { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; color: #fff; }
+    .hp-{{ sid }} .hp__unit span { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #f2b8bb; }
+    .hp-{{ sid }} a.hp__btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 22px 46px; background: #e32d2d; color: #fff !important; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none !important; box-shadow: 0 10px 28px rgba(227, 45, 45, .4); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .hp-{{ sid }} a.hp__btn::after { content: "\2192"; font-size: 28px; line-height: 1; transition: transform .18s ease; }
+    .hp-{{ sid }} a.hp__btn:hover, .hp-{{ sid }} a.hp__btn:focus-visible { background: #c92222; transform: translateY(-3px); box-shadow: 0 14px 34px rgba(227, 45, 45, .55); }
+    .hp-{{ sid }} a.hp__btn:hover::after { transform: translateX(6px); }
+    .hp-{{ sid }} a.hp__btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    .hp-{{ sid }} .hp__note { margin: 16px 0 0; font-size: 16px; color: #cfd6e4 !important; font-family: Karla, Arial, sans-serif !important; }
+    .hp-{{ sid }} .hp__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .hp-{{ sid }} .hp__card { display: flex; flex-direction: column; background: #fff; color: #1c2321; text-decoration: none !important; transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 10px 30px rgba(0, 0, 0, .28); }
+    .hp-{{ sid }} .hp__card:hover { transform: translateY(-4px); box-shadow: 0 16px 38px rgba(0, 0, 0, .4); }
+    .hp-{{ sid }} .hp__img { position: relative; display: block; aspect-ratio: 5 / 4; background: #f3efe5; overflow: hidden; }
+    .hp-{{ sid }} .hp__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .hp-{{ sid }} .hp__card:hover .hp__img img { transform: scale(1.05); }
+    .hp-{{ sid }} .hp__tag { position: absolute; top: 10px; left: 10px; background: var(--hp-red); color: #fff; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; }
+    .hp-{{ sid }} .hp__body { padding: 14px 16px 16px; }
+    .hp-{{ sid }} .hp__name { display: block; font-size: 17px; font-weight: 700; line-height: 1.3; color: #1c2321 !important; font-family: Karla, Arial, sans-serif !important; text-transform: none !important; }
+    .hp-{{ sid }} .hp__price { display: block; margin-top: 6px; font-size: 19px; font-weight: 700; color: var(--hp-navy); }
+    .hp-{{ sid }} .hp__price s { font-size: 14px; font-weight: 400; color: #888; margin-left: 6px; }
+
+    @media (max-width: 1000px) {
+      .hp-{{ sid }} .hp__wrap { grid-template-columns: 1fr; gap: 32px; padding: 48px 20px 52px; text-align: center; }
+      .hp-{{ sid }} .hp__h { font-size: 46px; }
+      .hp-{{ sid }} .hp__sub { margin-left: auto; margin-right: auto; font-size: 18px; }
+      .hp-{{ sid }} .hp__units { justify-content: center; }
+      .hp-{{ sid }} a.hp__btn { display: flex; width: 100%; max-width: 460px; margin: 0 auto; padding: 20px 18px; font-size: 21px; }
+      .hp-{{ sid }} .hp__grid { text-align: left; }
+    }
+    @media (max-width: 480px) {
+      .hp-{{ sid }} .hp__h { font-size: 38px; }
+      .hp-{{ sid }} .hp__grid { gap: 12px; }
+      .hp-{{ sid }} .hp__body { padding: 10px 10px 12px; }
+      .hp-{{ sid }} .hp__name { font-size: 15px; }
+      .hp-{{ sid }} .hp__price { font-size: 17px; }
+      .hp-{{ sid }} .hp__unit { min-width: 60px; }
+    }
+  </style>
+
+  <div class="hp__stripe"></div>
+  <div class="hp__wrap">
+    <div class="hp__copy">
+      <span class="hp__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <span class="hp__h" role="heading" aria-level="2">{{ section.settings.heading | escape }}</span>
+      <p class="hp__sub">{{ section.settings.subheading | escape }}</p>
+
+      {%- if section.settings.countdown_end != blank -%}
+        {%- assign tz = 'now' | date: '%z' -%}
+        <div class="hp__timer" data-end="{{ section.settings.countdown_end | strip | replace: ' ', 'T' }}:00{{ tz | slice: 0, 3 }}:{{ tz | slice: 3, 2 }}">
+          <span class="hp__timer-l">{{ section.settings.countdown_label | escape }}</span>
+          <div class="hp__units">
+            <div class="hp__unit"><b data-d>00</b><span>Days</span></div>
+            <div class="hp__unit"><b data-h>00</b><span>Hours</span></div>
+            <div class="hp__unit"><b data-m>00</b><span>Mins</span></div>
+            <div class="hp__unit"><b data-s>00</b><span>Secs</span></div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <a class="hp__btn" href="{{ link }}">{{ section.settings.button_text | escape }}</a>
+      {%- if section.settings.note != blank -%}<p class="hp__note">{{ section.settings.note | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="hp__grid">
+      {%- for product in promo.products limit: section.settings.product_count -%}
+        {%- assign on_sale = false -%}
+        {%- if product.compare_at_price > product.price and product.price > 0 -%}{%- assign on_sale = true -%}{%- endif -%}
+        <a class="hp__card" href="{{ product.url | within: promo }}">
+          <span class="hp__img">
+            {%- if product.featured_image != blank -%}
+              <img src="{{ product.featured_image | image_url: width: 500 }}" srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 500 }} 500w" sizes="(max-width: 1000px) 45vw, 22vw" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="500" height="500">
+            {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}
+            {%- if on_sale and product.available -%}<span class="hp__tag">Save {{ product.compare_at_price | minus: product.price | money_without_trailing_zeros }}</span>
+            {%- elsif product.available == false -%}<span class="hp__tag" style="background:#666">Sold out</span>{%- endif -%}
+          </span>
+          <span class="hp__body">
+            <span class="hp__name">{{ product.title | escape }}</span>
+            <span class="hp__price">{%- if product.price_varies -%}From&nbsp;{%- endif -%}{{ product.price | money_without_trailing_zeros }}{%- if on_sale -%}<s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="hp__stripe"></div>
+</section>
+
+{%- if section.settings.countdown_end != blank -%}
+<script>
+  (function () {
+    var root = document.getElementById('hp-{{ sid }}');
+    var box = root && root.querySelector('.hp__timer');
+    if (!box) return;
+    var end = Date.parse(box.getAttribute('data-end'));
+    if (isNaN(end)) return;
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    (function tick() {
+      var left = end - Date.now();
+      if (left <= 0) { box.classList.remove('is-on'); return; }
+      box.classList.add('is-on');
+      box.querySelector('[data-d]').textContent = pad(Math.floor(left / 864e5));
+      box.querySelector('[data-h]').textContent = pad(Math.floor(left / 36e5) % 24);
+      box.querySelector('[data-m]').textContent = pad(Math.floor(left / 6e4) % 60);
+      box.querySelector('[data-s]').textContent = pad(Math.floor(left / 1e3) % 60);
+      setTimeout(tick, 1000);
+    })();
+  })();
+</script>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Holiday gifts promo",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to use the collection with the handle holiday-gifts." },
+    { "type": "range", "id": "product_count", "label": "Products to show", "min": 2, "max": 8, "step": 2, "default": 4 },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Holiday Gift Guide" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Holiday Gifts, Shipped to Their Door" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Premium farm-raised cuts for everyone on your list, shipped nationwide." },
+    { "type": "text", "id": "button_text", "label": "Button", "default": "Shop Holiday Gifts" },
+    { "type": "text", "id": "note", "label": "Small line under the button", "info": "Leave empty to hide.", "default": "Shipped nationwide · USDA-inspected processing" },
+    { "type": "header", "content": "Countdown (optional)" },
+    { "type": "text", "id": "countdown_end", "label": "Ends at", "info": "Format: 2026-12-24 23:59 (store time zone). Leave empty to hide the timer." },
+    { "type": "text", "id": "countdown_label", "label": "Timer label", "default": "Holiday orders close in" },
+    { "type": "header", "content": "Style" },
+    { "type": "image_picker", "id": "image", "label": "Background image (optional)" },
+    { "type": "color", "id": "navy", "label": "Navy", "default": "#0b1a33" },
+    { "type": "color", "id": "red", "label": "Red", "default": "#c8232c" },
+    { "type": "color", "id": "cream", "label": "Cream", "default": "#f7f1e3" }
+  ],
+  "presets": [{ "name": "Holiday gifts promo" }]
+}
+{% endschema %}
