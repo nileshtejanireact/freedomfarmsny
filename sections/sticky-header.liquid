@@ -4,6 +4,10 @@
   /* The wrapper keeps the header's original height in the page (so nothing jumps); the inner block is pinned to the top. */
   .ff-head { position: relative; z-index: 300; }
   .ff-head__in { position: fixed; top: 0; left: 0; right: 0; z-index: 300; }
+  /* only the bars themselves take clicks, never the empty space the theme adds under the header */
+  .ff-head__in { pointer-events: none; }
+  .ff-head__in > * { pointer-events: auto; }
+  .ff-head__in.is-stuck .main-header { margin-bottom: 0 !important; }
   html { scroll-padding-top: calc(var(--ff-head-h, 120px) + 12px); }
   .ff-head__in .main-header { transition: box-shadow .2s ease; }
   .ff-head__in.is-stuck .main-header { box-shadow: {% if section.settings.shadow %}0 6px 20px rgba(0, 0, 0, .13){% else %}none{% endif %}; }
