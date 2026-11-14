@@ -2519,24 +2519,6 @@
           "section_padding_left": ""
         }
       },
-      "c9fd8d76-538f-420d-a2ff-c94848d37329": {
-        "type": "custom-content",
-        "settings": {
-          "row_stretch": "stretch_row_content_no_spaces",
-          "code": "<h1 style=\"text-align:center; font-size:42px; color:black; font-weight:700; width: 100%; display: block;\">100% Farm Fresh Meats. Made In America.</h1>",
-          "section_bg_color": "",
-          "section_border_color": "",
-          "section_border_style": "solid",
-          "section_border": "",
-          "section_margin_top": "",
-          "section_margin_bottom": "-30px",
-          "section_padding_top": "20px",
-          "section_padding_right": "",
-          "section_padding_bottom": "",
-          "section_padding_left": "",
-          "hidden_section": false
-        }
-      },
       "32795284-defe-40cb-8b6c-8858fff6bb27": {
         "type": "gl_rich_text",
         "blocks": {
@@ -2712,39 +2694,6 @@
           "enable_button": "show",
           "enable_post_categories": "show",
           "enable_post_date": "hide",
-          "section_bg_color": "",
-          "section_border_color": "",
-          "section_border_style": "solid",
-          "section_border": "",
-          "section_margin_top": "",
-          "section_margin_bottom": "",
-          "section_padding_top": "",
-          "section_padding_right": "",
-          "section_padding_bottom": "",
-          "section_padding_left": ""
-        }
-      },
-      "ef02df17-52ef-45d3-8031-daef62f4bd08": {
-        "type": "gl_section_image_text_7",
-        "settings": {
-          "row_stretch": "stretch_row_content_no_spaces",
-          "full_height": false,
-          "columns_position": "middle",
-          "equal_height": true,
-          "content_position": "middle",
-          "title": "At Freedom Farms you are buying farm raised meats from real farmers. Raised right here in the good old USA. American farmers, feeding great Americans. Family owned and operated in Upstate New York-Shipping Meats Nationwide. Make Meat Great Again.",
-          "sub_title": "",
-          "text_after_title": "",
-          "title_style": "default",
-          "title_color": "black",
-          "title_size": "default",
-          "subtitle_font": "default",
-          "title_align": "center",
-          "button_label": "SHOP NOW",
-          "button_link": "shopify://collections",
-          "button_label_2": "",
-          "button_link_2": "",
-          "button_note": "Shipped nationwide  ·  USDA-inspected processing  ·  Family owned and operated",
           "section_bg_color": "",
           "section_border_color": "",
           "section_border_style": "solid",
@@ -3238,12 +3187,15 @@
       "holiday_promo_home": {
         "type": "holiday-promo",
         "settings": {}
+      },
+      "brand_statement_home": {
+        "type": "brand-statement",
+        "settings": {}
       }
     },
     "content_for_index": [
       "1547774880206",
-      "c9fd8d76-538f-420d-a2ff-c94848d37329",
-      "ef02df17-52ef-45d3-8031-daef62f4bd08",
+      "brand_statement_home",
       "holiday_promo_home",
       "e52c83f2-28cb-4318-923c-e7d237747dd2",
       "9ec010c0-2180-47b1-9674-88c319202336",

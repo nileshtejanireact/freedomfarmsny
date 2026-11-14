@@ -1,0 +1,130 @@
+{%- assign sid = section.id -%}
+<section class="bs bs-{{ sid }}" id="bs-{{ sid }}" aria-label="{{ section.settings.line_1 | escape }} {{ section.settings.line_2 | escape }}">
+  <style>
+    .bs-{{ sid }} {
+      --bs-navy: {{ section.settings.navy }};
+      --bs-red: {{ section.settings.red }};
+      --bs-cream: {{ section.settings.cream }};
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      max-width: 100vw;
+      background: var(--bs-cream);
+      font-family: Karla, Arial, sans-serif;
+      color: #1c2321;
+      overflow: hidden;
+      padding: 70px 24px 76px;
+    }
+    .bs-{{ sid }} *, .bs-{{ sid }} *::before, .bs-{{ sid }} *::after { box-sizing: border-box; }
+    {%- if section.settings.image != blank -%}
+    .bs-{{ sid }}::before { content: ""; position: absolute; inset: 0; background: url('{{ section.settings.image | image_url: width: 2000 }}') center / cover no-repeat; opacity: .10; pointer-events: none; }
+    {%- endif -%}
+    .bs-{{ sid }} .bs__in { position: relative; max-width: 1100px; margin: 0 auto; text-align: center; }
+    .bs-{{ sid }} .bs__stars { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 22px; color: var(--bs-red); font-size: 20px; letter-spacing: 12px; }
+    .bs-{{ sid }} .bs__stars::before, .bs-{{ sid }} .bs__stars::after { content: ""; width: 90px; height: 3px; background: var(--bs-red); border-radius: 2px; }
+    .bs-{{ sid }} .bs__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.02; margin: 0; font-size: 72px; color: var(--bs-navy) !important; }
+    .bs-{{ sid }} .bs__h span { display: block; }
+    .bs-{{ sid }} .bs__h .bs__red { color: var(--bs-red) !important; }
+    .bs-{{ sid }} .bs__body { max-width: 840px; margin: 26px auto 0; font-size: 22px; line-height: 1.7; color: #33332e !important; font-family: Karla, Arial, sans-serif !important; }
+    .bs-{{ sid }} .bs__tag { margin: 22px 0 0; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 3px; text-transform: uppercase; color: var(--bs-red) !important; }
+    .bs-{{ sid }} .bs__cta { margin-top: 34px; }
+    .bs-{{ sid }} a.bs__btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-width: 360px; padding: 24px 56px; background: #e32d2d; color: #fff !important; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none !important; box-shadow: 0 10px 28px rgba(227, 45, 45, .38); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .bs-{{ sid }} a.bs__btn::after { content: "\2192"; font-size: 30px; line-height: 1; transition: transform .18s ease; }
+    .bs-{{ sid }} a.bs__btn:hover, .bs-{{ sid }} a.bs__btn:focus-visible { background: #c92222; transform: translateY(-3px); box-shadow: 0 14px 34px rgba(227, 45, 45, .5); }
+    .bs-{{ sid }} a.bs__btn:hover::after { transform: translateX(6px); }
+    .bs-{{ sid }} a.bs__btn:focus-visible { outline: 3px solid var(--bs-navy); outline-offset: 3px; }
+    .bs-{{ sid }} .bs__proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 54px; }
+    .bs-{{ sid }} .bs__card { background: #fff; border: 1px solid #e8e1cf; border-radius: 10px; padding: 24px 16px 22px; box-shadow: 0 6px 20px rgba(11, 26, 51, .07); transition: transform .2s ease, box-shadow .2s ease; }
+    .bs-{{ sid }} .bs__card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(11, 26, 51, .13); }
+    .bs-{{ sid }} .bs__ic { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: #fdecec; margin-bottom: 14px; }
+    .bs-{{ sid }} .bs__ic svg { width: 32px !important; height: 32px !important; fill: none !important; stroke: var(--bs-red) !important; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bs-{{ sid }} .bs__ic svg * { fill: none !important; stroke: var(--bs-red) !important; }
+    .bs-{{ sid }} .bs__lbl { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 19px; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.25; color: var(--bs-navy) !important; }
+    .bs-{{ sid }} .bs__sub { display: block; margin-top: 6px; font-size: 15px; line-height: 1.4; color: #5a5a52 !important; font-family: Karla, Arial, sans-serif !important; }
+    @media (max-width: 1000px) {
+      .bs-{{ sid }} { padding: 52px 20px 58px; }
+      .bs-{{ sid }} .bs__h { font-size: 48px; }
+      .bs-{{ sid }} .bs__body { font-size: 19px; }
+      .bs-{{ sid }} .bs__tag { font-size: 24px; }
+      .bs-{{ sid }} .bs__proof { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; }
+    }
+    @media (max-width: 600px) {
+      .bs-{{ sid }} .bs__h { font-size: 36px; }
+      .bs-{{ sid }} .bs__stars::before, .bs-{{ sid }} .bs__stars::after { width: 40px; }
+      .bs-{{ sid }} .bs__body { font-size: 17px; line-height: 1.65; }
+      .bs-{{ sid }} a.bs__btn { display: flex; width: 100%; min-width: 0; padding: 20px 18px; font-size: 22px; }
+      .bs-{{ sid }} .bs__proof { gap: 12px; }
+      .bs-{{ sid }} .bs__card { padding: 18px 10px 16px; }
+      .bs-{{ sid }} .bs__ic { width: 52px; height: 52px; }
+      .bs-{{ sid }} .bs__ic svg { width: 26px !important; height: 26px !important; }
+      .bs-{{ sid }} .bs__lbl { font-size: 15px; letter-spacing: 1px; }
+      .bs-{{ sid }} .bs__sub { font-size: 13px; }
+    }
+  </style>
+
+  <div class="bs__in">
+    <div class="bs__stars" aria-hidden="true">&#9733; &#9733; &#9733;</div>
+    <span class="bs__h" role="heading" aria-level="2">
+      <span>{{ section.settings.line_1 | escape }}</span>
+      {%- if section.settings.line_2 != blank -%}<span class="bs__red">{{ section.settings.line_2 | escape }}</span>{%- endif -%}
+    </span>
+    {%- if section.settings.body != blank -%}<p class="bs__body">{{ section.settings.body | escape }}</p>{%- endif -%}
+    {%- if section.settings.tagline != blank -%}<p class="bs__tag">{{ section.settings.tagline | escape }}</p>{%- endif -%}
+    {%- if section.settings.button_text != blank -%}
+      <div class="bs__cta"><a class="bs__btn" href="{{ section.settings.button_link | default: '/collections' }}">{{ section.settings.button_text | escape }}</a></div>
+    {%- endif -%}
+
+    <div class="bs__proof">
+      {%- for i in (1..4) -%}
+        {%- assign tk = 'proof_' | append: i -%}
+        {%- assign sk = 'proof_' | append: i | append: '_sub' -%}
+        {%- assign t = section.settings[tk] -%}
+        {%- if t != blank -%}
+          {%- case i -%}
+            {%- when 1 -%}{%- capture ic -%}<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>{%- endcapture -%}
+            {%- when 2 -%}{%- capture ic -%}<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z"/>{%- endcapture -%}
+            {%- when 3 -%}{%- capture ic -%}<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>{%- endcapture -%}
+            {%- else -%}{%- capture ic -%}<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>{%- endcapture -%}
+          {%- endcase -%}
+          <div class="bs__card">
+            <span class="bs__ic"><svg viewBox="0 0 24 24" aria-hidden="true">{{ ic }}</svg></span>
+            <span class="bs__lbl">{{ t | escape }}</span>
+            {%- if section.settings[sk] != blank -%}<span class="bs__sub">{{ section.settings[sk] | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand statement",
+  "settings": [
+    { "type": "header", "content": "Headline" },
+    { "type": "text", "id": "line_1", "label": "Headline, first line", "default": "100% Farm Fresh Meats." },
+    { "type": "text", "id": "line_2", "label": "Headline, second line (red)", "default": "Made In America." },
+    { "type": "header", "content": "Text" },
+    { "type": "textarea", "id": "body", "label": "Paragraph", "default": "At Freedom Farms you are buying farm raised meats from real farmers. Raised right here in the good old USA. American farmers, feeding great Americans. Family owned and operated in Upstate New York. Shipping meats nationwide." },
+    { "type": "text", "id": "tagline", "label": "Tagline (red, under the paragraph)", "default": "Make Meat Great Again." },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Shop Now" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Empty = all collections." },
+    { "type": "header", "content": "Proof cards" },
+    { "type": "text", "id": "proof_1", "label": "Card 1", "default": "Born, raised & processed in the USA" },
+    { "type": "text", "id": "proof_1_sub", "label": "Card 1 detail" },
+    { "type": "text", "id": "proof_2", "label": "Card 2", "default": "Shipped nationwide" },
+    { "type": "text", "id": "proof_2_sub", "label": "Card 2 detail" },
+    { "type": "text", "id": "proof_3", "label": "Card 3", "default": "USDA-inspected processing" },
+    { "type": "text", "id": "proof_3_sub", "label": "Card 3 detail" },
+    { "type": "text", "id": "proof_4", "label": "Card 4", "default": "Family owned and operated" },
+    { "type": "text", "id": "proof_4_sub", "label": "Card 4 detail" },
+    { "type": "header", "content": "Style" },
+    { "type": "image_picker", "id": "image", "label": "Faint background photo (optional)" },
+    { "type": "color", "id": "navy", "label": "Navy", "default": "#0b1a33" },
+    { "type": "color", "id": "red", "label": "Red", "default": "#c8232c" },
+    { "type": "color", "id": "cream", "label": "Background", "default": "#fdf5ea" }
+  ],
+  "presets": [{ "name": "Brand statement" }]
+}
+{% endschema %}
