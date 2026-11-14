@@ -2329,7 +2329,9 @@
             "settings": {
               "block_image": "shopify://shop_images/44.jpg",
               "image_alignment_one": "center",
-              "image_style_one": "default"
+              "image_style_one": "default",
+              "asset_file": "founders-barn.jpg",
+              "asset_alt": "Dana and Lauren Cavalea, founders of Freedom Farms, standing in front of a red barn"
             }
           }
         },

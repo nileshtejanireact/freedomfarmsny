@@ -30,7 +30,9 @@
               <div class="spb_single_image gl_mb_0 spb_content_element gl_align_{{ block.settings.image_alignment_one }}">
                 <figure class="spb_wrapper gl_figure">
                   <div class="pr gl_single_image-wrapper gl_box_border_grey {{ block.settings.image_style_one }}">
-                    {%- if block.settings.block_image != blank -%}
+                    {%- if block.settings.asset_file != blank -%}
+                    <img src="{{ block.settings.asset_file | asset_url }}" class="w__100 attachment-shop_catalog size-shop_catalog" alt="{{ block.settings.asset_alt | escape }}" width="776" height="542" loading="lazy" style="display:block;width:100%;height:auto">
+                    {%- elsif block.settings.block_image != blank -%}
                     {%- assign image = block.settings.block_image -%}
                     {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                     <img src="{{ image | img_url: '50x50' }}" data-src="{{ img_url }}" data-widths="[157, 270, 303, 370, 377, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}"  data-sizes="auto" class="lazyload w__100 attachment-shop_catalog size-shop_catalog" alt="{{image.alt}}" >
@@ -295,6 +297,17 @@
               "type": "image_picker",
               "id": "block_image",
               "label": "Image"
+            },
+            {
+              "type": "text",
+              "id": "asset_file",
+              "label": "Image from theme files (optional)",
+              "info": "File name of a picture uploaded to the theme's assets, for example founders-barn.jpg. When filled in, it is shown instead of the image above."
+            },
+            {
+              "type": "text",
+              "id": "asset_alt",
+              "label": "Description of that picture (for accessibility)"
             },
             {
            "type": "select",
