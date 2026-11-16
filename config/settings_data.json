@@ -2156,153 +2156,6 @@
           "hidden_section": false
         }
       },
-      "c7a9f602-58a9-494a-9125-a2bdadc6b4ca": {
-        "type": "gl_section_Information",
-        "blocks": {
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-0": {
-            "type": "information",
-            "settings": {
-              "banner_width": "4",
-              "image": "shopify://shop_images/icon-1.png",
-              "svg_link": "",
-              "banner_content": "<h4>Order Your Meat Share or Meat Box</h4>\n<p>Choose an eight, quarter,<b><a href=\"https://wearefreedomfarms.com/products/half-cow-box\" style=\"color:#2B00ff;\"> half</a></b> or <b><a href=\"https://wearefreedomfarms.com/products/whole-cow\" style=\"color:#2B00ff;\"> whole cow</a></b> or pig- OR order one of our smaller portioned meat boxes!</p>",
-              "banner_btn_title": "",
-              "banner_link": "",
-              "button_style": "hover",
-              "button_design": "style_1",
-              "banner_alignment": "center",
-              "banner_vertical_alignment": "top",
-              "box_style": "base",
-              "banner_color": "dark",
-              "block_border_color": "",
-              "block_border_style": "solid",
-              "block_border": "",
-              "block_margin_top": "",
-              "block_margin_bottom": "",
-              "block_padding_top": "",
-              "block_padding_right": "",
-              "block_padding_bottom": "",
-              "block_padding_left": ""
-            }
-          },
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-1": {
-            "type": "information",
-            "settings": {
-              "banner_width": "4",
-              "image": "shopify://shop_images/icon-2.png",
-              "svg_link": "",
-              "banner_content": "<h4>We Ship Nationwide or You Pick Up Your Box at the Farm</h4>\n<p>When your order is ready we will either ship it directly to your home or you can pick-up at the farm!</p>",
-              "banner_btn_title": "",
-              "banner_link": "",
-              "button_style": "hover",
-              "button_design": "style_1",
-              "banner_alignment": "center",
-              "banner_vertical_alignment": "top",
-              "box_style": "base",
-              "banner_color": "dark",
-              "block_border_color": "",
-              "block_border_style": "solid",
-              "block_border": "",
-              "block_margin_top": "",
-              "block_margin_bottom": "",
-              "block_padding_top": "",
-              "block_padding_right": "",
-              "block_padding_bottom": "",
-              "block_padding_left": ""
-            }
-          },
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-2": {
-            "type": "information",
-            "settings": {
-              "banner_width": "4",
-              "image": "shopify://shop_images/icon-3.png",
-              "svg_link": "",
-              "banner_content": "<h4>Enjoy Clean, Fresh, Farm Raised Meat</h4>\n<p>All of our meats are free of added hormones and antibiotics and other bad stuff — allowing you to enjoy clean, fresh meat </p>",
-              "banner_btn_title": "",
-              "banner_link": "",
-              "button_style": "hover",
-              "button_design": "style_1",
-              "banner_alignment": "center",
-              "banner_vertical_alignment": "top",
-              "box_style": "base",
-              "banner_color": "dark",
-              "block_border_color": "",
-              "block_border_style": "solid",
-              "block_border": "",
-              "block_margin_top": "",
-              "block_margin_bottom": "",
-              "block_padding_top": "",
-              "block_padding_right": "",
-              "block_padding_bottom": "",
-              "block_padding_left": ""
-            }
-          }
-        },
-        "block_order": [
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-0",
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-1",
-          "c7a9f602-58a9-494a-9125-a2bdadc6b4ca-1685009483e8362074-2"
-        ],
-        "settings": {
-          "title": "",
-          "row_stretch": "default",
-          "button_text": "",
-          "link": "",
-          "section_bg_color": "",
-          "section_margin_top": "10px",
-          "section_margin_bottom": "",
-          "section_padding_top": "",
-          "section_padding_right": "",
-          "section_padding_bottom": "50px",
-          "section_padding_left": ""
-        }
-      },
-      "00dba304-f714-4053-bb24-27b23a88d380": {
-        "type": "gl_rich_text",
-        "blocks": {
-          "00dba304-f714-4053-bb24-27b23a88d380-1685004164562c35ca-0": {
-            "type": "text",
-            "settings": {
-              "home_page_richtext": "<h2>Stock your freezer with a click</h2>",
-              "color_scheme": "dark",
-              "text_align": "center",
-              "body_bg": "#ffffff",
-              "margin": "",
-              "padding": "",
-              "body_bg_repeat": "default",
-              "body_bg_size": "default",
-              "body_bg_position": "default",
-              "block_width": "12",
-              "offset_width": "none",
-              "block_width_medium": "12",
-              "hide_medium": "off",
-              "offset_width_Small": "none",
-              "block_width_Small": "12",
-              "hide_Small": "off",
-              "offset_width_Extra": "none",
-              "block_width_Extra": "12",
-              "hide_Extra": "off"
-            }
-          }
-        },
-        "block_order": [
-          "00dba304-f714-4053-bb24-27b23a88d380-1685004164562c35ca-0"
-        ],
-        "settings": {
-          "row_stretch": "default",
-          "section_bg_color": "",
-          "section_border_color": "",
-          "section_border_style": "solid",
-          "section_border": "",
-          "section_margin_top": "",
-          "section_margin_bottom": "",
-          "section_padding_top": "",
-          "section_padding_right": "",
-          "section_padding_bottom": "",
-          "section_padding_left": "",
-          "hidden_section": false
-        }
-      },
       "55a29b22-bb25-419e-9b23-d45f775c7732": {
         "type": "gl_section_image_text_6",
         "blocks": {
@@ -2328,10 +2181,10 @@
             "type": "image",
             "settings": {
               "block_image": "shopify://shop_images/44.jpg",
-              "image_alignment_one": "center",
-              "image_style_one": "default",
               "asset_file": "founders-barn.jpg",
-              "asset_alt": "Dana and Lauren Cavalea, founders of Freedom Farms, standing in front of a red barn"
+              "asset_alt": "Dana and Lauren Cavalea, founders of Freedom Farms, standing in front of a red barn",
+              "image_alignment_one": "center",
+              "image_style_one": "default"
             }
           }
         },
@@ -2519,103 +2372,6 @@
           "section_padding_right": "",
           "section_padding_bottom": "",
           "section_padding_left": ""
-        }
-      },
-      "32795284-defe-40cb-8b6c-8858fff6bb27": {
-        "type": "gl_rich_text",
-        "blocks": {
-          "32795284-defe-40cb-8b6c-8858fff6bb27-1686126205d176f492-0": {
-            "type": "text",
-            "disabled": true,
-            "settings": {
-              "home_page_richtext": "<h1><strong>We Are Freedom Farms</strong></h1>",
-              "color_scheme": "dark",
-              "text_align": "center",
-              "body_bg": "#ffffff",
-              "margin": "",
-              "padding": "",
-              "body_bg_repeat": "default",
-              "body_bg_size": "default",
-              "body_bg_position": "default",
-              "block_width": "12",
-              "offset_width": "none",
-              "block_width_medium": "12",
-              "hide_medium": "off",
-              "offset_width_Small": "none",
-              "block_width_Small": "12",
-              "hide_Small": "off",
-              "offset_width_Extra": "none",
-              "block_width_Extra": "12",
-              "hide_Extra": "off"
-            }
-          },
-          "custom_html_jCGFHL": {
-            "type": "custom_html",
-            "settings": {
-              "code": "<h2 style=\" font-size:48px;color:#000000\"><strong>We Are Freedom Farms</strong></h2>",
-              "color_scheme": "default",
-              "text_align": "center",
-              "body_bg": "rgba(0,0,0,0)",
-              "margin": "",
-              "padding": "",
-              "body_bg_repeat": "default",
-              "body_bg_size": "default",
-              "body_bg_position": "default",
-              "block_width": "12",
-              "offset_width": "none",
-              "block_width_medium": "12",
-              "hide_medium": "off",
-              "offset_width_Small": "none",
-              "block_width_Small": "12",
-              "hide_Small": "off",
-              "offset_width_Extra": "none",
-              "block_width_Extra": "12",
-              "hide_Extra": "off"
-            }
-          },
-          "custom_html_LpzLNd": {
-            "type": "custom_html",
-            "settings": {
-              "code": "<img src=\"https://cdn.shopify.com/s/files/1/0529/2376/0823/files/Seen.png?v=1752277550\" alt=\"Descriptive Alt Text\" width=\"600\" height=\"200\">",
-              "color_scheme": "default",
-              "text_align": "center",
-              "body_bg": "#ffffff",
-              "margin": "",
-              "padding": "",
-              "body_bg_repeat": "default",
-              "body_bg_size": "default",
-              "body_bg_position": "default",
-              "block_width": "12",
-              "offset_width": "none",
-              "block_width_medium": "12",
-              "hide_medium": "off",
-              "offset_width_Small": "none",
-              "block_width_Small": "12",
-              "hide_Small": "off",
-              "offset_width_Extra": "none",
-              "block_width_Extra": "12",
-              "hide_Extra": "off"
-            }
-          }
-        },
-        "block_order": [
-          "32795284-defe-40cb-8b6c-8858fff6bb27-1686126205d176f492-0",
-          "custom_html_jCGFHL",
-          "custom_html_LpzLNd"
-        ],
-        "settings": {
-          "row_stretch": "default",
-          "section_bg_color": "",
-          "section_border_color": "",
-          "section_border_style": "solid",
-          "section_border": "",
-          "section_margin_top": "",
-          "section_margin_bottom": "",
-          "section_padding_top": "",
-          "section_padding_right": "",
-          "section_padding_bottom": "",
-          "section_padding_left": "",
-          "hidden_section": false
         }
       },
       "8335f2ae-d6d0-41b1-a2d2-0ed3384b7210": {
@@ -3193,6 +2949,76 @@
       "brand_statement_home": {
         "type": "brand-statement",
         "settings": {}
+      },
+      "press_strip_home": {
+        "type": "press-strip",
+        "blocks": {
+          "logo_newsmax": {
+            "type": "logo",
+            "settings": {
+              "asset_file": "press-newsmax.png",
+              "alt": "Newsmax",
+              "size": 100
+            }
+          },
+          "logo_fox": {
+            "type": "logo",
+            "settings": {
+              "asset_file": "press-foxnews.png",
+              "alt": "Fox News Channel",
+              "size": 170
+            }
+          },
+          "logo_nypost": {
+            "type": "logo",
+            "settings": {
+              "asset_file": "press-nypost.png",
+              "alt": "New York Post",
+              "size": 100
+            }
+          }
+        },
+        "block_order": [
+          "logo_newsmax",
+          "logo_fox",
+          "logo_nypost"
+        ],
+        "settings": {}
+      },
+      "how_it_works_home": {
+        "type": "how-it-works",
+        "blocks": {
+          "step_1": {
+            "type": "step",
+            "settings": {
+              "title": "Order Your Meat Share or Meat Box",
+              "text": "<p>Choose an eight, quarter, <a href=\"/products/half-cow-box\"><strong>half</strong></a> or <a href=\"/products/whole-cow\"><strong>whole cow</strong></a> or pig- OR order one of our smaller portioned meat boxes!</p>",
+              "icon": "box"
+            }
+          },
+          "step_2": {
+            "type": "step",
+            "settings": {
+              "title": "We Ship Nationwide or You Pick Up Your Box at the Farm",
+              "text": "<p>When your order is ready we will either ship it directly to your home or you can pick-up at the farm!</p>",
+              "icon": "truck"
+            }
+          },
+          "step_3": {
+            "type": "step",
+            "settings": {
+              "title": "Enjoy Clean, Fresh, Farm Raised Meat",
+              "text": "<p>All of our meats are free of added hormones and antibiotics and other bad stuff — allowing you to enjoy clean, fresh meat</p>",
+              "icon": "shield"
+            }
+          }
+        },
+        "block_order": [
+          "step_1",
+          "step_2",
+          "step_3"
+        ],
+        "settings": {}
       }
     },
     "content_for_index": [
@@ -3203,11 +3029,10 @@
       "9ec010c0-2180-47b1-9674-88c319202336",
       "9a4a48f5-2e99-4651-bae6-96bcf3bc4899",
       "302240d8-df60-43fc-97d3-927474372927",
-      "32795284-defe-40cb-8b6c-8858fff6bb27",
+      "press_strip_home",
       "3e0e5542-5442-4ec2-bef7-38f604125c2d",
       "8335f2ae-d6d0-41b1-a2d2-0ed3384b7210",
-      "00dba304-f714-4053-bb24-27b23a88d380",
-      "c7a9f602-58a9-494a-9125-a2bdadc6b4ca",
+      "how_it_works_home",
       "0328b425-edd0-4e2d-b9b8-066a6b97b13c",
       "55a29b22-bb25-419e-9b23-d45f775c7732",
       "f48f4a38-5bf0-41d9-8025-4de309862ec7",

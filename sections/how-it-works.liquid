@@ -1,0 +1,134 @@
+{%- assign sid = section.id -%}
+<section class="hw hw-{{ sid }}" id="hw-{{ sid }}" aria-label="{{ section.settings.heading | escape }}">
+  <style>
+    .hw-{{ sid }} {
+      --hw-navy: {{ section.settings.navy }};
+      --hw-red: {{ section.settings.red }};
+      --hw-bg: {{ section.settings.bg }};
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      max-width: 100vw;
+      background: var(--hw-bg);
+      font-family: Karla, Arial, sans-serif;
+      padding: 72px 24px 80px;
+      overflow: hidden;
+    }
+    .hw-{{ sid }} *, .hw-{{ sid }} *::before, .hw-{{ sid }} *::after { box-sizing: border-box; }
+    .hw-{{ sid }} .hw__in { max-width: 1180px; margin: 0 auto; text-align: center; }
+    .hw-{{ sid }} .hw__eyebrow { display: flex; align-items: center; justify-content: center; gap: 16px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 6px; text-transform: uppercase; color: var(--hw-red); margin-bottom: 14px; }
+    .hw-{{ sid }} .hw__eyebrow::before, .hw-{{ sid }} .hw__eyebrow::after { content: ""; width: 70px; height: 3px; background: var(--hw-red); border-radius: 2px; }
+    .hw-{{ sid }} .hw__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.05; margin: 0 0 84px; font-size: 56px; color: var(--hw-navy) !important; }
+    .hw-{{ sid }} .hw__h, .hw-{{ sid }} .hw__t { text-wrap: balance; }
+    .hw-{{ sid }} .hw__grid { position: relative; display: grid; grid-template-columns: repeat({{ section.blocks.size | at_least: 1 | at_most: 4 }}, minmax(0, 1fr)); gap: 28px; text-align: center; }
+    .hw-{{ sid }} .hw__grid::before { content: ""; position: absolute; top: 0; left: 16%; right: 16%; border-top: 3px dashed #e6b4b4; z-index: 0; }
+    .hw-{{ sid }} .hw__step { position: relative; z-index: 1; background: #fff; border: 1px solid #ece5d2; border-radius: 16px; padding: 62px 28px 36px; box-shadow: 0 10px 30px rgba(11, 26, 51, .08); transition: transform .22s ease, box-shadow .22s ease; }
+    .hw-{{ sid }} .hw__step:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(11, 26, 51, .15); }
+    .hw-{{ sid }} .hw__num { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); width: 76px; height: 76px; border-radius: 50%; background: var(--hw-red); color: #fff; display: flex; align-items: center; justify-content: center; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 38px; line-height: 1; box-shadow: 0 0 0 9px var(--hw-bg), 0 10px 22px rgba(200, 35, 44, .35); }
+    .hw-{{ sid }} .hw__ic { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: #fdecec; margin-bottom: 18px; }
+    .hw-{{ sid }} .hw__ic svg { width: 32px !important; height: 32px !important; fill: none !important; stroke: var(--hw-red) !important; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .hw-{{ sid }} .hw__ic svg * { fill: none !important; stroke: var(--hw-red) !important; }
+    .hw-{{ sid }} .hw__t { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 27px; letter-spacing: .8px; text-transform: uppercase; line-height: 1.15; color: var(--hw-navy) !important; margin: 0 0 14px; }
+    .hw-{{ sid }} .hw__body, .hw-{{ sid }} .hw__body p { font-size: 19px; line-height: 1.6; color: #3d3d37 !important; margin: 0 !important; font-family: Karla, Arial, sans-serif !important; }
+    .hw-{{ sid }} .hw__body a { color: var(--hw-red) !important; font-weight: 700; text-decoration: underline !important; text-underline-offset: 3px; }
+    .hw-{{ sid }} .hw__body a:hover { color: #9b1a22 !important; }
+    .hw-{{ sid }} .hw__body a { position: relative; }
+    .hw-{{ sid }} .hw__body a::after { content: ""; position: absolute; left: -8px; right: -8px; top: -14px; bottom: -14px; }
+    .hw-{{ sid }} .hw__cta { margin-top: 56px; }
+    .hw-{{ sid }} a.hw__btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-width: 340px; padding: 22px 52px; background: #e32d2d; color: #fff !important; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none !important; box-shadow: 0 10px 28px rgba(227, 45, 45, .36); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .hw-{{ sid }} a.hw__btn::after { content: "\2192"; font-size: 28px; line-height: 1; transition: transform .18s ease; }
+    .hw-{{ sid }} a.hw__btn:hover, .hw-{{ sid }} a.hw__btn:focus-visible { background: #c92222; transform: translateY(-3px); box-shadow: 0 14px 34px rgba(227, 45, 45, .5); }
+    .hw-{{ sid }} a.hw__btn:hover::after { transform: translateX(6px); }
+    .hw-{{ sid }} a.hw__btn:focus-visible { outline: 3px solid var(--hw-navy); outline-offset: 3px; }
+    @media (max-width: 900px) {
+      .hw-{{ sid }} { padding: 54px 18px 60px; }
+      .hw-{{ sid }} .hw__h { font-size: 38px; margin-bottom: 70px; }
+      .hw-{{ sid }} .hw__eyebrow { font-size: 14px; letter-spacing: 4px; gap: 10px; }
+      .hw-{{ sid }} .hw__eyebrow::before, .hw-{{ sid }} .hw__eyebrow::after { width: 34px; }
+      .hw-{{ sid }} .hw__grid { grid-template-columns: 1fr; gap: 50px; max-width: 520px; margin: 0 auto; }
+      .hw-{{ sid }} .hw__step { padding: 56px 22px 28px; }
+      .hw-{{ sid }} .hw__ic { width: 54px; height: 54px; margin-bottom: 12px; }
+      .hw-{{ sid }} .hw__ic svg { width: 28px !important; height: 28px !important; }
+      .hw-{{ sid }} .hw__num { width: 68px; height: 68px; top: -34px; font-size: 34px; }
+      .hw-{{ sid }} .hw__grid::before { display: none; }
+      .hw-{{ sid }} .hw__t { font-size: 23px; margin-bottom: 10px; }
+      .hw-{{ sid }} .hw__body, .hw-{{ sid }} .hw__body p { font-size: 17px; }
+      .hw-{{ sid }} .hw__cta { margin-top: 44px; }
+      .hw-{{ sid }} a.hw__btn { display: flex; width: 100%; max-width: 460px; min-width: 0; margin: 0 auto; padding: 20px 18px; font-size: 21px; }
+    }
+    @media (max-width: 420px) {
+      .hw-{{ sid }} .hw__h { font-size: 33px; }
+    }
+  </style>
+
+  <div class="hw__in">
+    {%- if section.settings.eyebrow != blank -%}<div class="hw__eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+    <span class="hw__h" role="heading" aria-level="2">{{ section.settings.heading | escape }}</span>
+
+    <div class="hw__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.settings.icon -%}
+          {%- when 'truck' -%}{%- capture ic -%}<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z"/>{%- endcapture -%}
+          {%- when 'shield' -%}{%- capture ic -%}<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>{%- endcapture -%}
+          {%- when 'home' -%}{%- capture ic -%}<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>{%- endcapture -%}
+          {%- when 'leaf' -%}{%- capture ic -%}<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l8-8"/>{%- endcapture -%}
+          {%- when 'clock' -%}{%- capture ic -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>{%- endcapture -%}
+          {%- else -%}{%- capture ic -%}<path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/>{%- endcapture -%}
+        {%- endcase -%}
+        <div class="hw__step" {{ block.shopify_attributes }}>
+          <span class="hw__num" aria-hidden="true">{{ forloop.index }}</span>
+          <span class="hw__ic"><svg viewBox="0 0 24 24" aria-hidden="true">{{ ic }}</svg></span>
+          <span class="hw__t" role="heading" aria-level="3">{{ block.settings.title | escape }}</span>
+          <div class="hw__body">{{ block.settings.text }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.button_text != blank -%}
+      <div class="hw__cta"><a class="hw__btn" href="{{ section.settings.button_link | default: '/collections' }}">{{ section.settings.button_text | escape }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How it works",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "info": "Leave empty to hide.", "default": "How it works" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stock your freezer with a click" },
+    { "type": "header", "content": "Button under the steps" },
+    { "type": "text", "id": "button_text", "label": "Button text", "info": "Leave empty to hide.", "default": "Start Your Order" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Empty = all collections." },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "navy", "label": "Heading colour", "default": "#0b1a33" },
+    { "type": "color", "id": "red", "label": "Accent", "default": "#c8232c" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#fdf5ea" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "New step" },
+        { "type": "richtext", "id": "text", "label": "Text", "info": "Links are allowed." },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "box",
+          "options": [
+            { "value": "box", "label": "Box" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "home", "label": "House" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "clock", "label": "Clock" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "How it works" }]
+}
+{% endschema %}
