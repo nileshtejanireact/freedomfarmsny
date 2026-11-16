@@ -2999,7 +2999,7 @@
           "step_2": {
             "type": "step",
             "settings": {
-              "title": "We Ship Nationwide or You Pick Up Your Box at the Farm",
+              "title": "We ship nationwide or you CAN pickup your box at the farm",
               "text": "<p>When your order is ready we will either ship it directly to your home or you can pick-up at the farm!</p>",
               "icon": "truck"
             }
