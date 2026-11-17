@@ -2696,7 +2696,8 @@
             "type": "intro",
             "settings": {
               "collection_handle": "beef",
-              "text": "Grass-fed beef from our family farm in Greene, NY, shipped nationwide to your door."
+              "text": "Family owned. Shipped nationwide.",
+              "heading": "American Beef"
             }
           },
           "pork_shares": {
