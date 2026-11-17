@@ -2976,14 +2976,25 @@
               "alt": "New York Post",
               "size": 100
             }
+          },
+          "logo_wabc": {
+            "type": "logo",
+            "settings": {
+              "asset_file": "press-wabc.png",
+              "alt": "77 WABC Talk Radio",
+              "size": 125
+            }
           }
         },
         "block_order": [
           "logo_newsmax",
           "logo_fox",
-          "logo_nypost"
+          "logo_nypost",
+          "logo_wabc"
         ],
-        "settings": {}
+        "settings": {
+          "logo_height": 44
+        }
       },
       "how_it_works_home": {
         "type": "how-it-works",
