@@ -1,0 +1,196 @@
+{%- assign sid = section.id -%}
+<div class="fs fs-{{ sid }}" id="fs-{{ sid }}">
+  <style>
+    .fs-{{ sid }} { --navy: {{ section.settings.navy }}; --red: {{ section.settings.red }}; --cream: {{ section.settings.cream }}; font-family: Karla, Arial, sans-serif; color: #1c2321; }
+    .fs-{{ sid }} *, .fs-{{ sid }} *::before, .fs-{{ sid }} *::after { box-sizing: border-box; }
+    .fs-{{ sid }} .fs__full { position: relative; width: 100vw; margin-left: calc(50% - 50vw); max-width: 100vw; overflow: hidden; }
+    .fs-{{ sid }} .fs__in { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .fs-{{ sid }} .fs__eyebrow { display: flex; align-items: center; gap: 16px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 6px; text-transform: uppercase; color: var(--red); margin-bottom: 14px; }
+    .fs-{{ sid }} .fs__eyebrow::before { content: ""; width: 60px; height: 3px; background: var(--red); border-radius: 2px; }
+    .fs-{{ sid }} .fs__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.05; margin: 0 0 22px; font-size: 52px; color: var(--navy) !important; }
+    .fs-{{ sid }} .fs__h, .fs-{{ sid }} .fs__q { text-wrap: balance; }
+    .fs-{{ sid }} .fs__hero { background: var(--navy) center / cover no-repeat; padding: 110px 0 100px; color: #fff; }
+    .fs-{{ sid }} .fs__hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,26,51,.94) 0%, rgba(11,26,51,.78) 55%, rgba(11,26,51,.45) 100%); }
+    .fs-{{ sid }} .fs__hero .fs__in { position: relative; }
+    .fs-{{ sid }} .fs__q { display: block !important; visibility: visible !important; opacity: 1 !important; max-width: 860px; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; line-height: 1.12; font-size: 48px; color: #fff !important; margin: 0 0 26px; }
+    .fs-{{ sid }} .fs__author { margin: 0; font-family: Oswald, Impact, sans-serif; font-size: 20px; letter-spacing: 3px; text-transform: uppercase; color: #ffd9d9 !important; }
+    .fs-{{ sid }} .fs__author small { display: block; margin-top: 6px; font-family: Karla, Arial, sans-serif; font-size: 16px; letter-spacing: 1px; color: #cfd6e4 !important; }
+    .fs-{{ sid }} .fs__btns { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+    .fs-{{ sid }} a.fs__btn { display: inline-flex; align-items: center; justify-content: center; padding: 18px 38px; background: #e32d2d; color: #fff !important; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none !important; box-shadow: 0 10px 26px rgba(227,45,45,.35); transition: transform .18s, background .18s; }
+    .fs-{{ sid }} a.fs__btn:hover { background: #c92222; transform: translateY(-3px); }
+    .fs-{{ sid }} a.fs__btn--ghost { background: transparent; border: 2px solid #fff; box-shadow: none; }
+    .fs-{{ sid }} a.fs__btn--ghost:hover { background: rgba(255,255,255,.12); }
+    .fs-{{ sid }} .fs__stats { background: #fff; border-bottom: 1px solid #ece5d2; }
+    .fs-{{ sid }} .fs__stats .fs__in { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .fs-{{ sid }} .fs__stat { padding: 30px 14px; text-align: center; border-left: 1px solid #efe9d8; }
+    .fs-{{ sid }} .fs__stat:first-child { border-left: 0; }
+    .fs-{{ sid }} .fs__num { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 40px; line-height: 1; color: var(--red) !important; }
+    .fs-{{ sid }} .fs__lbl { display: block; margin-top: 8px; font-family: Oswald, Impact, sans-serif; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: var(--navy) !important; }
+    .fs-{{ sid }} .fs__story { background: var(--cream); padding: 88px 0; }
+    .fs-{{ sid }} .fs__story .fs__in { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); gap: 64px; align-items: start; }
+    .fs-{{ sid }} .fs__text p, .fs-{{ sid }} .fs__text { font-size: 20px; line-height: 1.75; color: #2b2b27 !important; font-family: Karla, Arial, sans-serif !important; }
+    .fs-{{ sid }} .fs__text p { margin: 0 0 22px; }
+    .fs-{{ sid }} .fs__text strong { color: var(--red) !important; }
+    .fs-{{ sid }} .fs__text a { color: var(--red) !important; text-decoration: underline; text-underline-offset: 3px; }
+    .fs-{{ sid }} .fs__callout { display: flex; gap: 16px; align-items: flex-start; margin: 34px 0; padding: 22px 24px; background: #fff; border-left: 5px solid var(--red); border-radius: 8px; box-shadow: 0 8px 24px rgba(11,26,51,.08); }
+    .fs-{{ sid }} .fs__star { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .fs-{{ sid }} .fs__callout span.t { font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 24px; line-height: 1.25; letter-spacing: .6px; text-transform: uppercase; color: var(--navy) !important; }
+    .fs-{{ sid }} .fs__photo { position: sticky; top: 110px; }
+    .fs-{{ sid }} .fs__photo img { display: block; width: 100%; border-radius: 22px; box-shadow: 0 24px 50px rgba(11,26,51,.22); }
+    .fs-{{ sid }} .fs__values { background: #fff; padding: 84px 0; text-align: center; }
+    .fs-{{ sid }} .fs__values .fs__eyebrow { justify-content: center; }
+    .fs-{{ sid }} .fs__values .fs__eyebrow::after { content: ""; width: 60px; height: 3px; background: var(--red); border-radius: 2px; }
+    .fs-{{ sid }} .fs__grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; margin-top: 40px; }
+    .fs-{{ sid }} .fs__card { background: var(--cream); border: 1px solid #ece5d2; border-radius: 16px; padding: 34px 26px; box-shadow: 0 8px 24px rgba(11,26,51,.06); }
+    .fs-{{ sid }} .fs__ic { display: inline-flex; width: 64px; height: 64px; border-radius: 50%; background: #fdecec; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 28px; color: var(--red); }
+    .fs-{{ sid }} .fs__ct { display: block; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: .8px; text-transform: uppercase; color: var(--navy) !important; margin-bottom: 10px; }
+    .fs-{{ sid }} .fs__cp { display: block; font-size: 18px; line-height: 1.6; color: #3d3d37 !important; }
+    .fs-{{ sid }} .fs__cta { background: var(--navy); color: #fff; padding: 84px 0; text-align: center; }
+    .fs-{{ sid }} .fs__cta .fs__h { color: #fff !important; }
+    .fs-{{ sid }} .fs__cta p { max-width: 680px; margin: 0 auto; font-size: 20px; line-height: 1.6; color: #d8deea !important; }
+    .fs-{{ sid }} .fs__cta .fs__btns { justify-content: center; }
+    @media (max-width: 900px) {
+      .fs-{{ sid }} .fs__hero { padding: 70px 0 64px; }
+      .fs-{{ sid }} .fs__q { font-size: 28px; }
+      .fs-{{ sid }} .fs__h { font-size: 36px; }
+      .fs-{{ sid }} .fs__author { font-size: 16px; letter-spacing: 2px; }
+      .fs-{{ sid }} .fs__stats .fs__in { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .fs-{{ sid }} .fs__stat:nth-child(odd) { border-left: 0; }
+      .fs-{{ sid }} .fs__stat:nth-child(n+3) { border-top: 1px solid #efe9d8; }
+      .fs-{{ sid }} .fs__num { font-size: 32px; }
+      .fs-{{ sid }} .fs__story, .fs-{{ sid }} .fs__values, .fs-{{ sid }} .fs__cta { padding: 56px 0; }
+      .fs-{{ sid }} .fs__story .fs__in { grid-template-columns: 1fr; gap: 32px; }
+      .fs-{{ sid }} .fs__photo { position: static; order: -1; }
+      .fs-{{ sid }} .fs__text p, .fs-{{ sid }} .fs__text { font-size: 18px; }
+      .fs-{{ sid }} .fs__callout span.t { font-size: 20px; }
+      .fs-{{ sid }} .fs__grid { grid-template-columns: 1fr; }
+      .fs-{{ sid }} .fs__btns { flex-direction: column; }
+      .fs-{{ sid }} a.fs__btn { width: 100%; }
+    }
+  </style>
+
+  <section class="fs__full fs__hero" style="{% if section.settings.hero_image != blank %}background-image:url('{{ section.settings.hero_image | image_url: width: 2200 }}'){% elsif section.settings.hero_asset != blank %}background-image:url('{{ section.settings.hero_asset | asset_url }}'){% endif %}">
+    <div class="fs__in">
+      <div class="fs__eyebrow" style="color:#ff8a8a">{{ section.settings.eyebrow | escape }}</div>
+      <span class="fs__q" role="heading" aria-level="1">&ldquo;{{ section.settings.quote | escape }}&rdquo;</span>
+      <p class="fs__author">{{ section.settings.author | escape }}<small>{{ section.settings.author_sub | escape }}</small></p>
+      <div class="fs__btns">
+        {%- if section.settings.btn_text != blank -%}<a class="fs__btn" href="{{ section.settings.btn_link | default: '/collections' }}">{{ section.settings.btn_text | escape }}</a>{%- endif -%}
+        <a class="fs__btn fs__btn--ghost" href="#fs-story-{{ sid }}">Read Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="fs__full fs__stats">
+    <div class="fs__in">
+      {%- for i in (1..4) -%}
+        {%- assign nk = 'stat_' | append: i -%}{%- assign lk = 'stat_' | append: i | append: '_label' -%}
+        {%- if section.settings[nk] != blank -%}<div class="fs__stat"><span class="fs__num">{{ section.settings[nk] | escape }}</span><span class="fs__lbl">{{ section.settings[lk] | escape }}</span></div>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  <section class="fs__full fs__story" id="fs-story-{{ sid }}">
+    <div class="fs__in">
+      <div>
+        <div class="fs__eyebrow">{{ section.settings.story_eyebrow | escape }}</div>
+        <span class="fs__h" role="heading" aria-level="2">{{ section.settings.story_title | escape }}</span>
+        <div class="fs__text">{{ section.settings.story_1 }}</div>
+        <div class="fs__callout"><span class="fs__star" aria-hidden="true">&#9733;</span><span class="t">{{ section.settings.callout | escape }}</span></div>
+        <div class="fs__text">{{ section.settings.story_2 }}</div>
+      </div>
+      <div class="fs__photo">
+        {%- if section.settings.story_image != blank -%}
+          <img src="{{ section.settings.story_image | image_url: width: 1000 }}" alt="{{ section.settings.story_image.alt | default: 'Freedom Farms' | escape }}" loading="lazy">
+        {%- elsif section.settings.story_asset != blank -%}
+          <img src="{{ section.settings.story_asset | asset_url }}" alt="Freedom Farms" loading="lazy">
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <section class="fs__full fs__values">
+    <div class="fs__in">
+      <div class="fs__eyebrow">{{ section.settings.values_eyebrow | escape }}</div>
+      <span class="fs__h" role="heading" aria-level="2">{{ section.settings.values_title | escape }}</span>
+      <div class="fs__grid">
+        {%- for block in section.blocks -%}
+          <div class="fs__card" {{ block.shopify_attributes }}>
+            <span class="fs__ic" aria-hidden="true">{{ block.settings.icon | escape }}</span>
+            <span class="fs__ct">{{ block.settings.title | escape }}</span>
+            <span class="fs__cp">{{ block.settings.text | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <section class="fs__full fs__cta">
+    <div class="fs__in">
+      <span class="fs__h" role="heading" aria-level="2">{{ section.settings.cta_title | escape }}</span>
+      <p>{{ section.settings.cta_text | escape }}</p>
+      <div class="fs__btns">
+        <a class="fs__btn" href="/collections/beef">Shop Beef</a>
+        <a class="fs__btn" href="/collections/pork">Shop Pork</a>
+        <a class="fs__btn" href="/collections/100-pasture-raised-chicken">Shop Chicken</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Farm story",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero photo" },
+    { "type": "text", "id": "hero_asset", "label": "Hero photo from theme files (optional)" },
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Our Story" },
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "Our goal is to produce and source the best meats for our customers and their families. Born, raised, and processed in the USA." },
+    { "type": "text", "id": "author", "label": "Author", "default": "Dana & Lauren Cavalea" },
+    { "type": "text", "id": "author_sub", "label": "Author detail", "default": "(and Rocco & Lucci, the bulldogs!)" },
+    { "type": "text", "id": "btn_text", "label": "Button text", "default": "Shop Now" },
+    { "type": "url", "id": "btn_link", "label": "Button link" },
+    { "type": "header", "content": "Numbers strip" },
+    { "type": "text", "id": "stat_1", "label": "Number 1", "default": "270" },
+    { "type": "text", "id": "stat_1_label", "label": "Label 1", "default": "Acre farm" },
+    { "type": "text", "id": "stat_2", "label": "Number 2", "default": "100%" },
+    { "type": "text", "id": "stat_2_label", "label": "Label 2", "default": "Born, raised & processed in USA" },
+    { "type": "text", "id": "stat_3", "label": "Number 3", "default": "NY" },
+    { "type": "text", "id": "stat_3_label", "label": "Label 3", "default": "Upstate New York" },
+    { "type": "text", "id": "stat_4", "label": "Number 4", "default": "50" },
+    { "type": "text", "id": "stat_4_label", "label": "Label 4", "default": "States shipped nationwide" },
+    { "type": "header", "content": "Story" },
+    { "type": "text", "id": "story_eyebrow", "label": "Small heading", "default": "Who we are" },
+    { "type": "text", "id": "story_title", "label": "Title", "default": "Our Journey" },
+    { "type": "richtext", "id": "story_1", "label": "Text before callout", "default": "<p>Freedom Farms was started by Dana & Lauren Cavalea. The two met in high school and eventually went their separate ways for college and the years that followed.</p><p>About a decade later the two reunited and have been on a journey ever since. Lauren spent her career working in news for ABC News, while Coach Dana Cavalea became a World Champion Coach for the New York Yankees.</p>" },
+    { "type": "text", "id": "callout", "label": "Callout", "default": "What do you get when a professional sports coach and a news aficionado get together?" },
+    { "type": "richtext", "id": "story_2", "label": "Text after callout", "default": "<p>You get <strong>Freedom Farms.</strong> A 270 acre farm in Upstate NY shipping meats nationwide. We are a PRO-AMERICA, PRO-FREEDOM farm that loves America and we are 100% committed to keeping American farms being farmed by Americans!</p><p>Together with the farm's mascots, Rocco & Lucci, and Santino (our English Bulldogs), Gunner and Bullet, the farm is worked daily and filled with energy, producing the best and healthiest <a href=\"/collections/beef\"><strong>local grass fed beef</strong></a> in New York.</p>" },
+    { "type": "image_picker", "id": "story_image", "label": "Story photo" },
+    { "type": "text", "id": "story_asset", "label": "Story photo from theme files (optional)" },
+    { "type": "header", "content": "Values" },
+    { "type": "text", "id": "values_eyebrow", "label": "Small heading", "default": "What we stand for" },
+    { "type": "text", "id": "values_title", "label": "Title", "default": "Farmed By Americans" },
+    { "type": "header", "content": "Closing banner" },
+    { "type": "text", "id": "cta_title", "label": "Title", "default": "Stock Your Freezer With Freedom" },
+    { "type": "textarea", "id": "cta_text", "label": "Text", "default": "Family owned and operated. Farm raised meats, shipped nationwide." },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "navy", "label": "Navy", "default": "#0b1a33" },
+    { "type": "color", "id": "red", "label": "Red", "default": "#c8232c" },
+    { "type": "color", "id": "cream", "label": "Background", "default": "#fdf5ea" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value card",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Symbol", "default": "★" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Farm story" }]
+}
+{% endschema %}
