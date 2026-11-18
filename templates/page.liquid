@@ -1,3 +1,4 @@
+{%- if page.handle == 'contact-us' -%}{%- section 'contact-page' -%}{%- else -%}
 <div class="main-page-wrapper">
    <!-- MAIN CONTENT AREA -->
    {%- include 'page_heading', page_title:page.title -%}
@@ -9,3 +10,5 @@
       </div>
    </div>
 </div>
+
+{%- endif -%}
