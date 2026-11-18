@@ -43,6 +43,7 @@
     .cp-{{ sid }} .cp__list li { position: relative; padding: 0 0 16px 40px; font-size: 19px; line-height: 1.55; color: #2b2b27; }
     .cp-{{ sid }} .cp__list li::before { content: "\2605"; position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; }
     .cp-{{ sid }} .cp__list li.warn::before { content: "!"; background: var(--red); font-weight: 700; font-size: 15px; }
+    .cp-{{ sid }} .cp__list li.bold { font-weight: 700; color: var(--navy); }
     .cp-{{ sid }} .cp__list strong { color: var(--navy); }
     .cp-{{ sid }} .cp__sign { margin: 8px 0 0; padding: 22px 24px; background: var(--cream); border-left: 5px solid var(--red); border-radius: 8px; font-size: 19px; line-height: 1.6; color: #2b2b27 !important; }
     .cp-{{ sid }} .cp__sign b { display: block; margin-top: 8px; font-family: Oswald, Impact, sans-serif; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; color: var(--navy) !important; }
@@ -121,7 +122,7 @@
         <ul class="cp__list">
           {%- for i in (1..6) -%}
             {%- assign k = 'point_' | append: i -%}
-            {%- if section.settings[k] != blank -%}<li{% if section.settings[k] contains '!' and i > 3 %} class="warn"{% endif %}>{{ section.settings[k] }}</li>{%- endif -%}
+            {%- if section.settings[k] != blank -%}<li{% if section.settings[k] contains '!' and i > 3 %} class="warn"{% elsif i == 4 %} class="bold"{% endif %}>{{ section.settings[k] }}</li>{%- endif -%}
           {%- endfor -%}
         </ul>
         <p class="cp__sign">{{ section.settings.signoff | escape }}<b>{{ section.settings.signer | escape }}</b></p>
