@@ -1,5 +1,8 @@
-{%- if collection.handle == 'beef' or collection.handle == 'pork' or collection.handle == '100-pasture-raised-chicken' -%}
+{%- assign cro_list = 'beef,pork,100-pasture-raised-chicken,beef-pork-blowout,bulk-meats,burger-bash-sale,fatboy-steaks,hams,holiday-farm-to-table-meat-box-gifts,holiday-gifts,pastured-lamb,porterhouse,steaks,summer-bbq-stock-up-box,t-bone-porterhouse,turkey,valentines-day-steak-dinner' | split: ',' -%}
+{%- if cro_list contains collection.handle -%}
   {%- section 'collection-cro' -%}
+{%- elsif collection.handle == 'italian-collection' -%}
+  {%- section 'collection-italian' -%}
 {%- else -%}
 {%- assign view_not_default = false -%}
 {%- assign limit = settings.products_per_page | plus:0 -%}{%- if settings.shop_show_per_page -%}{%- assign limit = 12 -%}{%- endif -%}
