@@ -113,6 +113,8 @@
     .cc-{{ sid }} .cc__ans { padding: 0 22px 20px; font-size: 16px; line-height: 1.6; color: #444; }
     .cc-{{ sid }} .cc__ans p { margin: 0; }
 
+    .cc-{{ sid }} .cc__tabs:has(.cc__tab:only-child) { display: none; }
+    .cc-{{ sid }} .cc__sort { margin-left: auto; }
     /* sticky cart bar */
     .cc-{{ sid }} .cc__bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9990; background: var(--cc-navy); color: #fff; transform: translateY(110%); visibility: hidden; transition: transform .25s, visibility 0s .25s; box-shadow: 0 -8px 30px rgba(0,0,0,.25); }
     .cc-{{ sid }} .cc__bar.is-on { transform: translateY(0); visibility: visible; transition: transform .25s; }
@@ -285,7 +287,7 @@
               {%- for ck in cat_keys -%}
                 {%- assign n = 0 -%}
                 {%- for pc in cat_arr -%}{%- if pc == ck -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
-                {%- if n > 1 -%}
+                {%- if n > 1 and n < collection.products.size -%}
                   {%- case ck -%}
                     {%- when 'boxes' -%}{%- assign lbl = section.settings.lbl_boxes -%}
                     {%- when 'steaks' -%}{%- assign lbl = section.settings.lbl_steaks -%}

@@ -1,0 +1,337 @@
+{%- assign sid = section.id -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,500;1,700&family=Pinyon+Script&display=swap" rel="stylesheet">
+
+{%- comment -%}
+  Sort every product in the collection into a group by keywords in its title, handle, type or tags.
+  Order of checks matters (first match wins): cheese, antipasti, sausage, meatballs, sauce. Everything else lands in "more".
+  Merchants can also force a group by adding a tag: cheese, antipasti, sausage, meatballs or sauce.
+{%- endcomment -%}
+{%- assign kw_cheese = 'cheese,mozzarella,grana,pecorino,reggiano,parmigiano,parmesan,ricotta,provolone' | split: ',' -%}
+{%- assign kw_antipasti = 'antipasti,mortadella,prosciutto,soppress,sopress,pancetta,capicola,coppa,salami,cured,guanciale,bresaola' | split: ',' -%}
+{%- assign kw_sausage = 'sausage,salsiccia' | split: ',' -%}
+{%- assign kw_meatballs = 'ground,burger,meatball,polpette,patty,patties,meatloaf,veal' | split: ',' -%}
+{%- assign kw_sauce = 'rib,oxtail,bone,braciol,osso,buco,bucco,shank,gravy,sauce,sugo,stew,neck,brisket,cheek' | split: ',' -%}
+{%- assign group_keys = 'sauce,sausage,meatballs,antipasti,cheese,more' | split: ',' -%}
+{%- assign map = '' -%}
+{%- for product in collection.products -%}
+  {%- assign hay = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | downcase -%}
+  {%- assign tagstr = product.tags | join: ' ' | downcase -%}
+  {%- assign hay = ' ' | append: hay | append: ' ' | append: tagstr | replace: '-', ' ' -%}
+  {%- assign g = 'more' -%}
+  {%- for k in kw_sauce -%}{%- assign kk = ' ' | append: k -%}{%- if hay contains kk -%}{%- assign g = 'sauce' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- for k in kw_meatballs -%}{%- assign kk = ' ' | append: k -%}{%- if hay contains kk -%}{%- assign g = 'meatballs' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- for k in kw_sausage -%}{%- assign kk = ' ' | append: k -%}{%- if hay contains kk -%}{%- assign g = 'sausage' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- for k in kw_antipasti -%}{%- assign kk = ' ' | append: k -%}{%- if hay contains kk -%}{%- assign g = 'antipasti' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- for k in kw_cheese -%}{%- assign kk = ' ' | append: k -%}{%- if hay contains kk -%}{%- assign g = 'cheese' -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- assign map = map | append: product.handle | append: '=' | append: g | append: '|' -%}
+{%- endfor -%}
+{%- assign map_pairs = map | split: '|' -%}
+
+<div class="it it-{{ sid }}" id="it-{{ sid }}">
+  <style>
+    .it-{{ sid }} { --green: {{ section.settings.green }}; --red: {{ section.settings.red }}; --cream: {{ section.settings.cream }}; --ink: #231b14; --gold: #b08236; --paper: #fbf4e2; font-family: Karla, Arial, sans-serif; color: var(--ink); }
+    .it-{{ sid }} *, .it-{{ sid }} *::before, .it-{{ sid }} *::after { box-sizing: border-box; }
+    .it-{{ sid }} .it__full { position: relative; width: 100vw; margin-left: calc(50% - 50vw); max-width: 100vw; overflow: hidden; }
+    .it-{{ sid }} .it__in { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+    .it-{{ sid }} .it__flag { height: 10px; background: linear-gradient(90deg, var(--green) 0 33.33%, #fff 33.33% 66.66%, var(--red) 66.66% 100%); }
+    .it-{{ sid }} .it__h, .it-{{ sid }} .it__serif { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important; }
+    .it-{{ sid }} .it__script { display: block; font-family: 'Pinyon Script', 'Snell Roundhand', cursive !important; font-weight: 400; line-height: 1.1; color: var(--red) !important; }
+    .it-{{ sid }} .it__h { display: block !important; visibility: visible !important; opacity: 1 !important; font-weight: 800; line-height: 1.08; margin: 0; letter-spacing: .3px; text-wrap: balance; }
+    .it-{{ sid }} .it__orn { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 0; color: var(--red); font-size: 18px; }
+    .it-{{ sid }} .it__orn::before, .it-{{ sid }} .it__orn::after { content: ""; width: 90px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold)); }
+    .it-{{ sid }} .it__orn::after { background: linear-gradient(270deg, transparent, var(--gold)); }
+    /* gingham tablecloth strips */
+    .it-{{ sid }} .it__cloth { height: 34px; background-color: #fdf9ef; background-image: linear-gradient(90deg, rgba(200,40,58,.55) 50%, transparent 50%), linear-gradient(rgba(200,40,58,.55) 50%, transparent 50%); background-size: 34px 34px; position: relative; }
+    .it-{{ sid }} .it__cloth::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(200,40,58,.0), rgba(200,40,58,.0)); }
+    /* hero */
+    .it-{{ sid }} .it__hero { background: radial-gradient(1000px 460px at 50% -10%, rgba(255,255,255,.1), transparent 62%), linear-gradient(180deg, #123d27 0%, #0b281a 100%); color: #fff; text-align: center; padding: 78px 0 84px; }
+    .it-{{ sid }} .it__hero .it__in { position: relative; }
+    .it-{{ sid }} .it__frame { max-width: 880px; margin: 0 auto; padding: 46px 40px 50px; border: 2px solid rgba(243,217,164,.55); outline: 1px solid rgba(243,217,164,.35); outline-offset: 7px; border-radius: 4px; }
+    .it-{{ sid }} .it__est { font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 6px; text-transform: uppercase; color: #f3d9a4 !important; }
+    .it-{{ sid }} .it__hero .it__script { font-size: 54px; color: #f3d9a4 !important; margin: 10px 0 0; }
+    .it-{{ sid }} .it__title { font-size: 72px; color: #fff !important; margin-top: 2px; }
+    .it-{{ sid }} .it__lede { max-width: 640px; margin: 22px auto 0; font-size: 21px; line-height: 1.6; color: #e3ece6 !important; font-family: Karla, Arial, sans-serif !important; }
+    .it-{{ sid }} .it__hero .it__orn { color: #f3d9a4; margin-top: 22px; }
+    .it-{{ sid }} a.it__btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 28px; padding: 18px 44px; background: var(--red); color: #fff !important; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 2.2px; text-transform: uppercase; text-decoration: none !important; box-shadow: 0 10px 26px rgba(200,40,58,.4); transition: transform .18s, background .18s; }
+    .it-{{ sid }} a.it__btn:hover { background: #a91f30; transform: translateY(-3px); }
+    /* menu nav */
+    .it-{{ sid }} .it__menu { background: var(--paper); border-bottom: 1px solid #e6d8b8; padding: 40px 0 34px; text-align: center; }
+    .it-{{ sid }} .it__menu .it__script { font-size: 38px; }
+    .it-{{ sid }} .it__menu .it__h { font-size: 34px; color: var(--green) !important; }
+    .it-{{ sid }} .it__tiles { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px; margin-top: 26px; }
+    .it-{{ sid }} a.it__tile { display: block; padding: 6px 6px 10px; text-decoration: none !important; transition: transform .18s; }
+    .it-{{ sid }} a.it__tile:hover { transform: translateY(-4px); }
+    .it-{{ sid }} .it__circle { display: flex; align-items: center; justify-content: center; width: 112px; height: 112px; margin: 0 auto 10px; border-radius: 50%; overflow: hidden; background: var(--green); border: 3px solid #fffdf5; box-shadow: 0 0 0 2px var(--gold), 0 8px 18px rgba(60,40,10,.2); }
+    .it-{{ sid }} .it__circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .it-{{ sid }} .it__circle em { font-style: normal; font-size: 30px; color: #f3d9a4; }
+    .it-{{ sid }} .it__tile i { display: block; font-family: 'Pinyon Script', cursive; font-style: normal; font-size: 30px; line-height: 1.1; color: var(--red) !important; }
+    .it-{{ sid }} .it__tile b { display: block; margin-top: 4px; font-family: Oswald, Impact, sans-serif; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: var(--green) !important; }
+    /* sections */
+    .it-{{ sid }} .it__sec { padding: 70px 0 20px; background: var(--paper); scroll-margin-top: 90px; }
+    .it-{{ sid }} .it__sec:nth-of-type(even) { background: #f6ecd3; }
+    .it-{{ sid }} .it__shead { text-align: center; margin-bottom: 36px; }
+    .it-{{ sid }} .it__shead .it__script { font-size: 52px; }
+    .it-{{ sid }} .it__shead .it__h { font-size: 46px; color: var(--green) !important; text-transform: uppercase; letter-spacing: 2px; }
+    .it-{{ sid }} .it__sdesc { margin: 12px auto 0; max-width: 640px; font-size: 19px; line-height: 1.55; color: #5a4a30 !important; font-style: italic; }
+    .it-{{ sid }} .it__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; padding-bottom: 54px; }
+    .it-{{ sid }} .it__card { position: relative; flex: 0 1 calc((100% - 52px) / 3); max-width: calc((100% - 52px) / 3); display: flex; flex-direction: column; background: #fffdf6; border: 1px solid #dfcfa6; border-radius: 4px; overflow: hidden; box-shadow: 0 10px 28px rgba(60,40,10,.1); transition: transform .2s, box-shadow .2s; }
+    .it-{{ sid }} .it__card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(60,40,10,.17); }
+    .it-{{ sid }} .it__img { display: block; position: relative; background: #fff; overflow: hidden; border-bottom: 3px solid var(--gold); }
+    .it-{{ sid }} .it__img img { width: 100%; height: auto; display: block; transition: transform .35s; }
+    .it-{{ sid }} .it__card:hover .it__img img { transform: scale(1.04); }
+    .it-{{ sid }} .it__tag { position: absolute; left: 12px; top: 12px; padding: 6px 12px; background: var(--green); color: #fff !important; border-radius: 3px; font-family: Oswald, Impact, sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; }
+    .it-{{ sid }} .it__tag--out { background: #6b6b62; }
+    .it-{{ sid }} .it__body { display: flex; flex-direction: column; flex: 1; padding: 22px 22px 24px; }
+    .it-{{ sid }} .it__name { display: block; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 25px; line-height: 1.2; color: var(--ink) !important; text-decoration: none !important; }
+    .it-{{ sid }} .it__use { display: block; margin-top: 8px; font-size: 16px; font-style: italic; line-height: 1.5; color: #7a5a1c !important; }
+    .it-{{ sid }} .it__price { margin: 14px 0 16px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 28px; color: var(--green) !important; }
+    .it-{{ sid }} .it__price s { margin-left: 10px; font-size: 18px; color: #9a9184 !important; font-weight: 400; }
+    .it-{{ sid }} .it__buy { margin-top: auto; }
+    .it-{{ sid }} .it__var { display: block; width: 100%; height: 48px; margin: 0 0 12px; padding: 0 14px; font: 17px Karla, Arial, sans-serif; color: var(--ink); background: #fff; border: 2px solid #e0d4b6; border-radius: 4px; }
+    .it-{{ sid }} .it__add { display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px; background: var(--red); color: #fff !important; border: 0; border-radius: 4px; font-family: Oswald, Impact, sans-serif; font-weight: 700; font-size: 19px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none !important; cursor: pointer; transition: background .18s; }
+    .it-{{ sid }} .it__add:hover { background: #a91f30; }
+    .it-{{ sid }} .it__add.is-done { background: var(--green); }
+    .it-{{ sid }} .it__add[disabled] { opacity: .7; cursor: wait; }
+    .it-{{ sid }} .it__cartlink { display: none; margin-top: 10px; text-align: center; font-size: 16px; }
+    .it-{{ sid }} .it__cartlink a { color: var(--green) !important; font-weight: 700; text-decoration: underline !important; }
+    .it-{{ sid }} .it__card.is-added .it__cartlink { display: block; }
+    .it-{{ sid }} .it__soon { flex: 1 1 100%; text-align: center; padding: 34px 24px; border: 2px dashed #d3bf8d; border-radius: 4px; background: rgba(255,253,245,.7); }
+    .it-{{ sid }} .it__soon .it__script { font-size: 38px; }
+    .it-{{ sid }} .it__soon span.l { display: block; margin-top: 8px; font-size: 18px; line-height: 1.55; color: #5a4a30 !important; }
+    /* story bands (photo + solid panel) */
+    .it-{{ sid }} .it__band { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+    .it-{{ sid }} .it__band > div { min-width: 0; }
+    .it-{{ sid }} .it__ph { background: #2b2b2b center / cover no-repeat; filter: sepia(.6) contrast(1.05) saturate(.8); min-height: 320px; }
+    .it-{{ sid }} .it__pn { display: flex; flex-direction: column; justify-content: center; padding: 56px 64px; color: #fff; }
+    .it-{{ sid }} .it__pn--dark { background: #2b2b2b; }
+    .it-{{ sid }} .it__pn--brick { background: #a05050; }
+    .it-{{ sid }} .it__pn--green { background: #2f7d5b; }
+    .it-{{ sid }} .it__pn .it__bh { display: block !important; font-family: Oswald, Impact, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 52px; line-height: 1.05; text-transform: uppercase; letter-spacing: 1px; color: #fff !important; margin: 0 0 20px; }
+    .it-{{ sid }} .it__pn p { margin: 0 0 16px; font-size: 20px; line-height: 1.65; color: #f4efe6 !important; font-family: Karla, Arial, sans-serif !important; }
+    .it-{{ sid }} .it__pn p:last-child { margin-bottom: 0; }
+    /* close */
+    .it-{{ sid }} .it__close { background: linear-gradient(180deg, #123d27, #0b281a); color: #fff; text-align: center; padding: 76px 0 80px; }
+    .it-{{ sid }} .it__close .it__script { font-size: 84px; color: #f3d9a4 !important; }
+    .it-{{ sid }} .it__close p { max-width: 640px; margin: 14px auto 0; font-size: 20px; line-height: 1.6; color: #dbe7df !important; }
+    @media (max-width: 1000px) {
+      .it-{{ sid }} .it__card { flex-basis: calc((100% - 26px) / 2); max-width: calc((100% - 26px) / 2); }
+      .it-{{ sid }} .it__tiles { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+    @media (max-width: 700px) {
+      .it-{{ sid }} .it__hero { padding: 48px 0 56px; }
+      .it-{{ sid }} .it__frame { padding: 30px 18px 34px; outline-offset: 5px; margin: 0 6px; }
+      .it-{{ sid }} .it__hero .it__script { font-size: 40px; }
+      .it-{{ sid }} .it__title { font-size: 40px; }
+      .it-{{ sid }} .it__lede { font-size: 18px; }
+      .it-{{ sid }} .it__est { font-size: 12px; letter-spacing: 4px; }
+      .it-{{ sid }} a.it__btn { width: 100%; }
+      .it-{{ sid }} .it__menu { padding: 30px 0 26px; }
+      .it-{{ sid }} .it__menu .it__h { font-size: 26px; }
+      .it-{{ sid }} .it__tiles { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      .it-{{ sid }} a.it__tile:last-child { grid-column: 1 / -1; }
+      .it-{{ sid }} .it__sec { padding: 48px 0 10px; }
+      .it-{{ sid }} .it__shead .it__script { font-size: 40px; }
+      .it-{{ sid }} .it__shead .it__h { font-size: 32px; }
+      .it-{{ sid }} .it__sdesc { font-size: 17px; }
+      .it-{{ sid }} .it__grid { gap: 20px; padding-bottom: 40px; }
+      .it-{{ sid }} .it__card { flex-basis: 100%; max-width: 100%; }
+      .it-{{ sid }} .it__band { grid-template-columns: 1fr; min-height: 0; }
+      .it-{{ sid }} .it__band .it__ph { min-height: 260px; order: -1; }
+      .it-{{ sid }} .it__pn { padding: 40px 24px; }
+      .it-{{ sid }} .it__pn .it__bh { font-size: 36px; }
+      .it-{{ sid }} .it__pn p { font-size: 18px; }
+      .it-{{ sid }} .it__close { padding: 52px 0 56px; }
+      .it-{{ sid }} .it__close .it__script { font-size: 60px; }
+      .it-{{ sid }} .it__close p { font-size: 18px; }
+    }
+  </style>
+
+  <div class="it__full it__flag"></div>
+
+  <section class="it__full it__hero">
+    <div class="it__in">
+      <div class="it__frame">
+        <div class="it__est">{{ section.settings.eyebrow | escape }}</div>
+        <span class="it__script">{{ section.settings.script | escape }}</span>
+        <span class="it__h it__title" role="heading" aria-level="1">{{ section.settings.heading | escape }}</span>
+        <p class="it__lede">{{ section.settings.intro | escape }}</p>
+        <div class="it__orn" aria-hidden="true">&#9733;</div>
+        <a class="it__btn" href="#it-sauce-{{ sid }}">See The Menu</a>
+      </div>
+    </div>
+  </section>
+  <div class="it__full it__cloth" aria-hidden="true"></div>
+
+  <section class="it__full it__menu">
+    <div class="it__in">
+      <span class="it__script">Il Menu</span>
+      <span class="it__h" role="heading" aria-level="2">{{ section.settings.menu_title | escape }}</span>
+      <div class="it__tiles">
+        {%- assign tile_keys = 'sauce,sausage,meatballs,antipasti,cheese' | split: ',' -%}
+        {%- assign tile_it = 'Salsa e Sugo,Salsicce,Polpette,Antipasti,Formaggi' | split: ',' -%}
+        {%- assign tile_en = 'Sauce & Gravy,Sausage,Meatballs,Antipasti Meats,Cheese' | split: ',' -%}
+        {%- for tk in tile_keys -%}
+          {%- assign tile_img = blank -%}
+          {%- for pair in map_pairs -%}
+            {%- assign kv = pair | split: '=' -%}
+            {%- if kv[1] == tk and tile_img == blank -%}{%- assign tp = all_products[kv[0]] -%}{%- if tp.featured_image != blank -%}{%- assign tile_img = tp.featured_image -%}{%- endif -%}{%- endif -%}
+          {%- endfor -%}
+          <a class="it__tile" href="#it-{{ tk }}-{{ sid }}">
+            <span class="it__circle">{%- if tile_img != blank -%}<img src="{{ tile_img | image_url: width: 240 }}" alt="" loading="lazy" width="120" height="120">{%- else -%}<em>&#9733;</em>{%- endif -%}</span>
+            <i>{{ tile_it[forloop.index0] }}</i><b>{{ tile_en[forloop.index0] }}</b>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- for gk in group_keys -%}
+    {%- case gk -%}
+      {%- when 'sauce' -%}{%- assign g_script = 'Salsa e Sugo' -%}{%- assign g_title = 'Sauce & Gravy' -%}{%- assign g_desc = 'Pork ribs, braciole, osso buco and the slow-cooked cuts that make Sunday gravy.' -%}{%- assign g_soon = 'Pork ribs, braciole, osso buco' -%}
+      {%- when 'sausage' -%}{%- assign g_script = 'Salsicce' -%}{%- assign g_title = 'Sausage' -%}{%- assign g_desc = 'Hot and sweet Italian sausage, made for the pan, the grill and the pot of sauce.' -%}{%- assign g_soon = 'Hot and sweet Italian sausage' -%}
+      {%- when 'meatballs' -%}{%- assign g_script = 'Polpette' -%}{%- assign g_title = 'Meatballs' -%}{%- assign g_desc = 'Ground beef, ground pork and ground veal for the meatballs you grew up on.' -%}{%- assign g_soon = 'Ground beef, ground pork and ground veal' -%}
+      {%- when 'antipasti' -%}{%- assign g_script = 'Antipasti' -%}{%- assign g_title = 'Antipasti Meats' -%}{%- assign g_desc = 'Cured meats for the board: the way every great Italian meal begins.' -%}{%- assign g_soon = 'Mortadella, prosciutto, sopressata, pancetta, capicola and Genoa salami' -%}
+      {%- when 'cheese' -%}{%- assign g_script = 'Formaggi' -%}{%- assign g_title = 'Cheese' -%}{%- assign g_desc = 'The finishing touch on every plate.' -%}{%- assign g_soon = 'Mozzarella, Grana Padano, Pecorino and Parmigiano Reggiano' -%}
+      {%- else -%}{%- assign g_script = 'Dalla Fattoria' -%}{%- assign g_title = 'More From The Farm' -%}{%- assign g_desc = 'More farm raised favorites for the Sunday table.' -%}{%- assign g_soon = '' -%}
+    {%- endcase -%}
+    {%- assign count = 0 -%}
+    {%- for pair in map_pairs -%}{%- assign kv = pair | split: '=' -%}{%- if kv[1] == gk -%}{%- assign count = count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if count > 0 or g_soon != blank -%}
+    <section class="it__full it__sec" id="it-{{ gk }}-{{ sid }}">
+      <div class="it__in">
+        <div class="it__shead">
+          <span class="it__script">{{ g_script }}</span>
+          <span class="it__h" role="heading" aria-level="2">{{ g_title }}</span>
+          <div class="it__orn" aria-hidden="true">&#9733;</div>
+          <p class="it__sdesc">{{ g_desc }}</p>
+        </div>
+        <div class="it__grid">
+          {%- if count == 0 -%}
+            <div class="it__soon"><span class="it__script">In Arrivo</span><span class="l">Coming soon: {{ g_soon }}.</span></div>
+          {%- else -%}
+            {%- for product in collection.products -%}
+              {%- assign mine = false -%}
+              {%- for pair in map_pairs -%}{%- assign kv = pair | split: '=' -%}{%- if kv[0] == product.handle and kv[1] == gk -%}{%- assign mine = true -%}{%- endif -%}{%- endfor -%}
+              {%- if mine -%}
+                {%- assign v = product.selected_or_first_available_variant -%}
+                {%- case product.handle -%}
+                  {%- when 'short-ribs' -%}{%- assign use = 'Braise for Sunday gravy and ragù' -%}
+                  {%- when 'beef-oxtail' -%}{%- assign use = 'Slow-cooked until fall-apart tender' -%}
+                  {%- when 'sweet-sausage-links-rope-sausage' -%}{%- assign use = 'Sausage & peppers, grilled or in sauce' -%}
+                  {%- when 'beef-soup-bones' -%}{%- assign use = 'The base for brodo and soups' -%}
+                  {%- when 'best-grass-fed-burger-box-1' -%}{%- assign use = 'Polpette, meatloaf and burgers' -%}
+                  {%- when 'beef-variety-box' -%}{%- assign use = 'A little of everything for the table' -%}
+                  {%- else -%}{%- assign use = '' -%}
+                {%- endcase -%}
+                <article class="it__card">
+                  <a class="it__img" href="{{ product.url | within: collection }}" tabindex="-1" aria-hidden="true">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 700 }}" srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 700 }} 700w" sizes="(max-width: 700px) 92vw, (max-width: 1000px) 46vw, 380px" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="700" height="700">
+                    {%- endif -%}
+                    {%- unless product.available -%}<span class="it__tag it__tag--out">Sold out</span>{%- elsif v.compare_at_price > v.price -%}<span class="it__tag">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>{%- endunless -%}
+                  </a>
+                  <div class="it__body">
+                    <a class="it__name" href="{{ product.url | within: collection }}">{{ product.title | escape }}</a>
+                    {%- if use != blank -%}<span class="it__use">{{ use }}</span>{%- endif -%}
+                    <div class="it__price"><span data-p>{{ v.price | money_without_trailing_zeros }}</span>{%- if v.compare_at_price > v.price -%}<s>{{ v.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}</div>
+                    <div class="it__buy">
+                      {%- if product.available -%}
+                        {%- if product.variants.size > 1 -%}
+                          <select class="it__var" data-var aria-label="Choose an option for {{ product.title | escape }}">
+                            {%- for pv in product.variants -%}<option value="{{ pv.id }}" data-p="{{ pv.price | money_without_trailing_zeros }}" {% unless pv.available %}disabled{% endunless %} {% if pv.id == v.id %}selected{% endif %}>{{ pv.title | escape }}{% unless pv.available %} (sold out){% endunless %}</option>{%- endfor -%}
+                          </select>
+                        {%- else -%}<input type="hidden" data-var value="{{ v.id }}">{%- endif -%}
+                        <button type="button" class="it__add" data-add>Add to cart</button>
+                        <div class="it__cartlink"><a href="/cart">View cart</a> &middot; <a href="/checkout">Checkout</a></div>
+                      {%- else -%}
+                        <a class="it__add" href="{{ product.url | within: collection }}">View</a>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <section class="it__full it__band">
+    <div class="it__ph" style="background-image:url('{{ 'farm-story.jpg' | asset_url }}'); background-position: center 30%"></div>
+    <div class="it__pn it__pn--dark">
+      <span class="it__bh" role="heading" aria-level="2">{{ section.settings.band1_title | escape }}</span>
+      <p>{{ section.settings.band1_text_1 | escape }}</p>
+      <p>{{ section.settings.band1_text_2 | escape }}</p>
+    </div>
+  </section>
+  <section class="it__full it__band">
+    <div class="it__pn it__pn--brick">
+      <span class="it__bh" role="heading" aria-level="2">{{ section.settings.band2_title | escape }}</span>
+      <p>{{ section.settings.band2_text | escape }}</p>
+    </div>
+    <div class="it__ph" style="background-image:url('{{ 'farm-hero.png' | asset_url }}')"></div>
+  </section>
+
+  <div class="it__full it__cloth" aria-hidden="true"></div>
+  <section class="it__full it__close">
+    <div class="it__in">
+      <span class="it__script">{{ section.settings.close_title | escape }}</span>
+      <p>{{ section.settings.close_text | escape }}</p>
+      <a class="it__btn" href="#it-sauce-{{ sid }}">Back To The Menu</a>
+    </div>
+  </section>
+  <div class="it__full it__flag"></div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('it-{{ sid }}');
+      if (!root) return;
+      root.addEventListener('change', function (e) {
+        var s = e.target.closest('[data-var]'); if (!s || s.tagName !== 'SELECT') return;
+        var card = s.closest('.it__card'), o = s.options[s.selectedIndex], p = card.querySelector('[data-p]');
+        if (p && o.getAttribute('data-p')) p.textContent = o.getAttribute('data-p');
+      });
+      root.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-add]'); if (!b) return;
+        var card = b.closest('.it__card'), v = card.querySelector('[data-var]');
+        b.disabled = true; var old = b.textContent; b.textContent = 'Adding...';
+        fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: +v.value, quantity: 1 }] }) })
+          .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+          .then(function () { b.textContent = 'Added ✓'; b.classList.add('is-done'); card.classList.add('is-added'); b.disabled = false; try { document.dispatchEvent(new CustomEvent('cart:refresh')); } catch (x) {} })
+          .catch(function () { b.textContent = old; b.disabled = false; window.location.href = card.querySelector('.it__name').href; });
+      });
+    })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "Italian collection",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Freedom Farms · Est. 2020" },
+    { "type": "text", "id": "script", "label": "Script line", "default": "Benvenuti alla Tavola" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Il Mercato Italiano" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Sunday dinner the way it used to be. Farm raised American meats for the Italian table. Family owned. Shipped nationwide." },
+    { "type": "header", "content": "Menu" },
+    { "type": "text", "id": "menu_title", "label": "Menu title", "default": "What's On The Table" },
+    { "type": "header", "content": "Story bands" },
+    { "type": "text", "id": "band1_title", "label": "Band 1 title", "default": "Family Owned. Farm Raised." },
+    { "type": "textarea", "id": "band1_text_1", "label": "Band 1 text", "default": "Freedom Farms was started by Dana & Lauren Cavalea, and is still family owned and operated today." },
+    { "type": "textarea", "id": "band1_text_2", "label": "Band 1 text (second paragraph)", "default": "A 270 acre farm in Upstate New York, shipping meats nationwide to tables like yours." },
+    { "type": "text", "id": "band2_title", "label": "Band 2 title", "default": "Born, Raised & Processed In The USA" },
+    { "type": "textarea", "id": "band2_text", "label": "Band 2 text", "default": "Everything we send out is born, raised and processed right here in America. The way it should be." },
+    { "type": "header", "content": "Closing banner" },
+    { "type": "text", "id": "close_title", "label": "Script title", "default": "Buon Appetito!" },
+    { "type": "textarea", "id": "close_text", "label": "Text", "default": "Born, raised and processed in the USA. Family owned and operated. Stock your freezer for the Sunday table." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "green", "label": "Green", "default": "#0f5a35" },
+    { "type": "color", "id": "red", "label": "Red", "default": "#b8283a" },
+    { "type": "color", "id": "cream", "label": "Background", "default": "#faf3e3" }
+  ],
+  "presets": [{ "name": "Italian collection" }]
+}
+{% endschema %}
