@@ -1,5 +1,16 @@
 {%- assign sid = section.id -%}
 {%- capture slides -%}
+  {%- for i in (1..2) -%}
+    {%- assign pk = 'promo_' | append: i -%}
+    {%- assign pmsg = section.settings[pk] -%}
+    {%- if pmsg != blank -%}
+      {%- assign plk = 'promo_link_' | append: i -%}
+      {%- assign pltk = 'promo_link_text_' | append: i -%}
+      {%- assign psk = 'promo_start_' | append: i -%}
+      {%- assign pek = 'promo_end_' | append: i -%}
+      <div class="ar__slide ar__slide--sched" data-start="{{ section.settings[psk] | escape }}" data-end="{{ section.settings[pek] | escape }}"><span class="ar__txt">{{ pmsg | escape }}{%- if section.settings[plk] != blank and section.settings[pltk] != blank %} <a href="{{ section.settings[plk] }}">{{ section.settings[pltk] | escape }}</a>{%- endif -%}</span></div>
+    {%- endif -%}
+  {%- endfor -%}
   {%- for i in (1..4) -%}
     {%- assign tk = 'message_' | append: i -%}
     {%- assign lk = 'link_' | append: i -%}
@@ -21,6 +32,7 @@
     .ar-{{ sid }} .ar__track { display: block; will-change: transform; }
     .ar-{{ sid }} .ar__slide { display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 0 8px; }
     .ar-{{ sid }} .ar__txt { display: block; text-align: center; }
+    .ar-{{ sid }} .ar__slide--sched { display: none; }
     .ar-{{ sid }} .ar__slide a { text-decoration: none; color: inherit; }
     @media (prefers-reduced-motion: reduce) { .ar-{{ sid }} .ar__track { transition: none !important; } }
   </style>
@@ -32,6 +44,13 @@
     var root = document.getElementById('ar-{{ sid }}');
     if (!root) return;
     var track = root.querySelector('.ar__track');
+    // Scheduled promo messages: show only between start and end (times in UTC ISO, e.g. 2026-11-27T05:00:00Z)
+    var now = Date.now();
+    Array.prototype.forEach.call(track.querySelectorAll('.ar__slide--sched'), function (s) {
+      var st = Date.parse(s.getAttribute('data-start') || '') || 0;
+      var en = Date.parse(s.getAttribute('data-end') || '') || Infinity;
+      if (now >= st && now <= en) s.classList.remove('ar__slide--sched'); else s.parentNode.removeChild(s);
+    });
     var slides = Array.prototype.slice.call(track.querySelectorAll('.ar__slide'));
     var n = slides.length;
     if (n < 2) return;
@@ -92,6 +111,19 @@
     { "type": "paragraph", "content": "Rotates the top bar messages one after another. Leave Message 1 empty to keep using the top bar text from Theme settings." },
     { "type": "range", "id": "slide_time", "label": "Seconds each message stays", "min": 2, "max": 10, "step": 1, "default": 4 },
     { "type": "range", "id": "speed", "label": "Slide speed (seconds)", "min": 0.4, "max": 2.5, "step": 0.1, "default": 1.2 },
+    { "type": "header", "content": "Scheduled promo 1" },
+    { "type": "paragraph", "content": "Shows first in the rotation, only between Start and End. Times are UTC: midnight EST = 05:00 UTC, e.g. 2026-11-27T05:00:00Z. Leave Start/End empty to show it always." },
+    { "type": "text", "id": "promo_1", "label": "Text" },
+    { "type": "url", "id": "promo_link_1", "label": "Link" },
+    { "type": "text", "id": "promo_link_text_1", "label": "Link text" },
+    { "type": "text", "id": "promo_start_1", "label": "Start (UTC)" },
+    { "type": "text", "id": "promo_end_1", "label": "End (UTC)" },
+    { "type": "header", "content": "Scheduled promo 2" },
+    { "type": "text", "id": "promo_2", "label": "Text" },
+    { "type": "url", "id": "promo_link_2", "label": "Link" },
+    { "type": "text", "id": "promo_link_text_2", "label": "Link text" },
+    { "type": "text", "id": "promo_start_2", "label": "Start (UTC)" },
+    { "type": "text", "id": "promo_end_2", "label": "End (UTC)" },
     { "type": "header", "content": "Message 1" },
     { "type": "text", "id": "message_1", "label": "Text", "info": "Empty = use the theme's current top bar text." },
     { "type": "url", "id": "link_1", "label": "Link" },
