@@ -1,15 +1,16 @@
 {% comment %}
   bf-free-chicken.liquid — Freedom Farms Black Friday
   ------------------------------------------------------------
-  When qualifying items in the cart reach $269 (free chicken & gift cards
+  When qualifying items in the cart reach $299 (free chicken & gift cards
   don't count), this auto-adds ONE 10lb Chicken Breast as a one-time item
   and applies code BLACKFRIDAY so it becomes $0.
-  Drops back under $269 -> the auto-added chicken is removed again.
+  Drops back under $299 -> the auto-added chicken is removed again.
   If the customer deletes the free chicken themselves, it is not re-added.
   Turn off: set bf_enabled to false (or remove the render line in theme.liquid).
 {% endcomment %}
 {%- assign bf_enabled = true -%}
-{%- assign bf_threshold = 26900 -%}
+{%- assign bf_threshold = 29900 -%}
+{%- assign bf_start = '2026-11-27T05:00:00Z' -%}{%- comment -%} midnight EST Nov 27 {%- endcomment -%}
 {%- assign bf_variant = 44984120475831 -%}
 {%- assign bf_code = 'BLACKFRIDAY' -%}
 {%- assign bf_filet_threshold = 49900 -%}
@@ -49,7 +50,7 @@
     }).then(function (r) { return r.json(); }).finally(function () { own--; });
   }
   var GIFTS = [
-    { v: V, min: MIN, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $269+ order' },
+    { v: V, min: MIN, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $299+ order' },
     { v: {{ bf_filet_variant }}, min: {{ bf_filet_threshold }}, key: 'bfFiletRemoved', name: '(2) Filet Mignon Steaks', prop: 'FREE with $499+ order' }
   ];
   var GIFT_IDS = GIFTS.map(function (g) { return g.v; });
@@ -86,7 +87,9 @@
     try { document.dispatchEvent(new CustomEvent('cart:refresh')); } catch (e) {}
   }
 
+  var START = Date.parse({{ bf_start | json }});
   function sync() {
+    if (Date.now() < START) return;   // deal not started yet
     if (busy) return; busy = true;
     req('/cart.js').then(function (cart) {
       var q = qualifying(cart), adds = [], removes = [], added = [], removed = [];
