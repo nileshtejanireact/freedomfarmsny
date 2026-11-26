@@ -350,6 +350,14 @@
   // Sticky bar after the hero (mobile)
   var sticky = root.querySelector('[data-sticky]'), hero = root.querySelector('.bfl__hero');
   if (window.IntersectionObserver) new IntersectionObserver(function (e) { sticky.classList.toggle('is-on', !e[0].isIntersecting); }).observe(hero);
+  // Sit above the theme's mobile bottom toolbar (Shop / Cart / My account) instead of covering it
+  function lift() {
+    var tb = document.querySelector('.basel-toolbar'), h = 0;
+    if (tb) { var cs = getComputedStyle(tb); if (cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position === 'fixed') h = tb.offsetHeight; }
+    sticky.style.bottom = h + 'px';
+    root.style.paddingBottom = window.innerWidth < 750 ? (70 + h) + 'px' : '';
+  }
+  lift(); window.addEventListener('resize', lift); window.addEventListener('load', lift);
 
   // Variant price + add to cart
   root.addEventListener('change', function (e) {
