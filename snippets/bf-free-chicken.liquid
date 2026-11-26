@@ -16,10 +16,10 @@
 {%- assign bf_filet_threshold = 49900 -%}
 {%- assign bf_filet_variant = 58334916772023 -%}
 {%- comment -%} Hide the "BLACK FRIDAY GIFT" variant everywhere customers pick options {%- endcomment -%}
-<style>.basel-swatch[data-value^="black-friday-gift"],[data-value^="black-friday-gift"],[data-option-value^="BLACK FRIDAY GIFT"]{display:none!important}</style>
+<style>.basel-swatch[data-value^="black-friday-gift"],[data-value^="black-friday-gift"],[data-option-value^="BLACK FRIDAY GIFT"],[data-value^="cyber-monday-gift"],[data-option-value^="CYBER MONDAY GIFT"]{display:none!important}</style>
 <script>
 (function(){
-  function strip(root){ if(root && root.querySelectorAll) root.querySelectorAll('option').forEach(function(o){ if(/^\s*BLACK FRIDAY GIFT/i.test(o.textContent)) o.remove(); }); }
+  function strip(root){ if(root && root.querySelectorAll) root.querySelectorAll('option').forEach(function(o){ if(/^\s*(BLACK FRIDAY|CYBER MONDAY) GIFT/i.test(o.textContent)) o.remove(); }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ strip(document); }); else strip(document);
   try { new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1) strip(n.tagName==='OPTION'?n.parentNode:n); }); }); }).observe(document.documentElement,{childList:true,subtree:true}); } catch(e){}
 })();
