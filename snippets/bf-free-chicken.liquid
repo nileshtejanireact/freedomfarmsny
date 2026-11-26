@@ -12,6 +12,17 @@
 {%- assign bf_threshold = 26900 -%}
 {%- assign bf_variant = 44984120475831 -%}
 {%- assign bf_code = 'BLACKFRIDAY' -%}
+{%- assign bf_filet_threshold = 49900 -%}
+{%- assign bf_filet_variant = 58334916772023 -%}
+{%- comment -%} Hide the "BLACK FRIDAY GIFT" variant everywhere customers pick options {%- endcomment -%}
+<style>.basel-swatch[data-value^="black-friday-gift"],[data-value^="black-friday-gift"],[data-option-value^="BLACK FRIDAY GIFT"]{display:none!important}</style>
+<script>
+(function(){
+  function strip(root){ if(root && root.querySelectorAll) root.querySelectorAll('option').forEach(function(o){ if(/^\s*BLACK FRIDAY GIFT/i.test(o.textContent)) o.remove(); }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ strip(document); }); else strip(document);
+  try { new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1) strip(n.tagName==='OPTION'?n.parentNode:n); }); }); }).observe(document.documentElement,{childList:true,subtree:true}); } catch(e){}
+})();
+</script>
 {%- if bf_enabled -%}
 <style>
   .bfc-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);z-index:2147483000;background:#13294b;color:#fff;font:600 15px/1.35 Karla,Arial,sans-serif;padding:14px 20px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100vw - 32px);text-align:center;transition:transform .35s ease;border-bottom:4px solid #b22234}
@@ -37,10 +48,16 @@
       body: body ? JSON.stringify(body) : undefined
     }).then(function (r) { return r.json(); }).finally(function () { own--; });
   }
-  function isFree(it) { return it.variant_id === V && it.properties && it.properties._bf_free; }
+  var GIFTS = [
+    { v: V, min: MIN, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $269+ order' },
+    { v: {{ bf_filet_variant }}, min: {{ bf_filet_threshold }}, key: 'bfFiletRemoved', name: '(2) Filet Mignon Steaks', prop: 'FREE with $499+ order' }
+  ];
+  var GIFT_IDS = GIFTS.map(function (g) { return g.v; });
+  function isFreeOf(g) { return function (it) { return it.variant_id === g.v && it.properties && it.properties._bf_free; }; }
+  function isFree(it) { return GIFT_IDS.indexOf(it.variant_id) > -1 && it.properties && it.properties._bf_free; }
   function qualifying(cart) {
     return cart.items.reduce(function (s, it) {
-      return (it.variant_id === V || it.gift_card) ? s : s + it.final_line_price;
+      return (GIFT_IDS.indexOf(it.variant_id) > -1 || it.gift_card) ? s : s + it.final_line_price;
     }, 0);
   }
   function codes(cart) { return (cart.discount_codes || []).map(function (d) { return d.code; }); }
@@ -72,39 +89,31 @@
   function sync() {
     if (busy) return; busy = true;
     req('/cart.js').then(function (cart) {
-      var q = qualifying(cart), free = cart.items.filter(isFree);
-      var hasChicken = cart.items.some(function (it) { return it.variant_id === V; });
-      var steps = Promise.resolve(cart), changed = false;
-
-      if (q >= MIN) {
-        if (window.__bfLast && !free.length) ss(KEY_REMOVED, '1'); // customer deleted it
-        if (!hasChicken && ss(KEY_REMOVED) !== '1') {
-          steps = steps.then(function () {
-            return req('/cart/add.js', { items: [{ id: V, quantity: 1, properties: { _bf_free: '1', 'Black Friday': 'FREE with $269+ order' } }] });
-          });
-          changed = 'added';
-        }
-        if (hasChicken || changed) {
-          if (codes(cart).indexOf(CODE) === -1) {
-            steps = steps.then(function () { return req('/cart/update.js', { discount: codes(cart).concat(CODE).join(',') }); });
-            changed = changed || 'code';
-          }
-        }
-        if (free.length) ss(KEY_REMOVED, null);
-      } else {
-        if (free.length) {
-          steps = steps.then(function () { return req('/cart/change.js', { id: free[0].key, quantity: 0 }); });
-          changed = 'removed';
-        }
+      var q = qualifying(cart), adds = [], removes = [], added = [], removed = [];
+      window.__bfLast = window.__bfLast || {};
+      GIFTS.forEach(function (g) {
+        var free = cart.items.filter(isFreeOf(g));
+        var has = cart.items.some(function (it) { return it.variant_id === g.v; });
+        if (q >= g.min) {
+          if (window.__bfLast[g.v] && !free.length) ss(g.key, '1');      // customer deleted it
+          if (free.length) ss(g.key, null);
+          if (!has && ss(g.key) !== '1') { adds.push({ id: g.v, quantity: 1, properties: { _bf_free: '1', 'Black Friday': g.prop } }); added.push(g.name); }
+        } else if (free.length) { removes.push(free[0].key); removed.push(g.name); }
+      });
+      var steps = Promise.resolve(), changed = adds.length || removes.length;
+      removes.forEach(function (k) { steps = steps.then(function () { return req('/cart/change.js', { id: k, quantity: 0 }); }); });
+      if (adds.length) steps = steps.then(function () { return req('/cart/add.js', { items: adds }); });
+      var chickenIn = adds.some(function (a) { return a.id === V; }) || cart.items.some(function (it) { return it.variant_id === V; });
+      if (q >= MIN && chickenIn && codes(cart).indexOf(CODE) === -1) {
+        steps = steps.then(function () { return req('/cart/update.js', { discount: codes(cart).concat(CODE).join(',') }); });
+        changed = true;
       }
       return steps.then(function () { return changed ? req('/cart.js') : cart; }).then(function (c) {
-        if (changed) {
-          if (changed === 'added') toast('🎉 Your <b>FREE 10 lbs of Chicken Breast</b> was added!<br><small>Black Friday deal on orders $269+</small>');
-          if (changed === 'removed') toast('Your cart is under $269, so the free chicken was removed.');
-          refreshUI(c);
-        }
+        if (added.length) toast('🎉 Your <b>FREE ' + added.join(' + ') + '</b> ' + (added.length > 1 ? 'were' : 'was') + ' added!<br><small>Black Friday deal</small>');
+        else if (removed.length) toast('Your cart dropped below the Black Friday minimum, so the free ' + removed.join(' + ') + ' ' + (removed.length > 1 ? 'were' : 'was') + ' removed.');
+        if (changed) refreshUI(c);
         bar(c);
-        window.__bfLast = c.items.filter(isFree).length > 0;
+        GIFTS.forEach(function (g) { window.__bfLast[g.v] = c.items.some(isFreeOf(g)); });
       });
     }).catch(function () {}).finally(function () { busy = false; });
   }
