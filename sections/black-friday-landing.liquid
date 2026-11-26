@@ -1,0 +1,414 @@
+{%- comment -%}
+  Black Friday landing page (SMS destination).
+  Deal: $299+ = FREE 10lb chicken breast; $499+ = + FREE (2) filet steaks.
+  Free gifts are added automatically by snippets/bf-free-chicken.liquid.
+{%- endcomment -%}
+{%- assign sid = section.id -%}
+{%- assign s = section.settings -%}
+{%- assign t1 = s.tier1_amount | times: 100 -%}
+{%- assign t2 = s.tier2_amount | times: 100 -%}
+{%- capture hero_img -%}{%- if s.hero_image != blank -%}{{ s.hero_image | image_url: width: 2000 }}{%- else -%}{{ 'farm-hero.png' | asset_url }}{%- endif -%}{%- endcapture -%}
+{%- assign skip_handles = 'chicken-breast-copy' | split: ',' -%}
+
+<div class="bfl bfl-{{ sid }}" id="bfl-{{ sid }}" data-start="{{ s.start | escape }}" data-end="{{ s.end | escape }}" data-t1="{{ t1 }}" data-t2="{{ t2 }}">
+<style>
+  .bfl-{{ sid }}{--navy:#13294b;--navy2:#0b1a33;--red:#b22234;--gold:#ffd36b;--cream:#f7f3ea;--ink:#1c2330;--muted:#5d6675;
+    width:100vw;margin-left:calc(50% - 50vw);background:var(--cream);color:var(--ink);font-family:Karla,Arial,sans-serif;overflow:hidden}
+  .bfl-{{ sid }} *{box-sizing:border-box}
+  .bfl-{{ sid }} .bfl__in{max-width:1200px;margin:0 auto;padding:0 16px}
+  .bfl-{{ sid }} .bfl__h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.02em;line-height:1.02;display:block}
+  .bfl-{{ sid }} .bfl__btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font:700 16px/1 Oswald,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:17px 30px;border-radius:6px;text-decoration:none;border:0;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 6px 0 #7d1624}
+  .bfl-{{ sid }} .bfl__btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 #7d1624;color:#fff}
+  .bfl-{{ sid }} .bfl__btn--ghost{background:transparent;border:2px solid #fff;box-shadow:none}
+  .bfl-{{ sid }} .bfl__btn--ghost:hover{box-shadow:none;background:rgba(255,255,255,.1)}
+
+  /* HERO */
+  .bfl-{{ sid }} .bfl__hero{position:relative;color:#fff;text-align:center;padding:64px 0 56px;background:var(--navy2) url('{{ hero_img }}') center/cover no-repeat}
+  .bfl-{{ sid }} .bfl__hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,26,51,.86),rgba(11,26,51,.72) 55%,rgba(11,26,51,.94))}
+  .bfl-{{ sid }} .bfl__hero>*{position:relative}
+  .bfl-{{ sid }} .bfl__flag{height:8px;background:repeating-linear-gradient(90deg,var(--red) 0 40px,#fff 40px 80px)}
+  .bfl-{{ sid }} .bfl__kick{display:inline-block;background:var(--red);font:700 14px/1 Oswald,Impact,sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:9px 16px;border-radius:40px;margin-bottom:18px}
+  .bfl-{{ sid }} .bfl__title{font-size:clamp(54px,11vw,132px);color:#fff;text-shadow:0 4px 0 var(--red)}
+  .bfl-{{ sid }} .bfl__sub{font:600 clamp(18px,2.6vw,26px)/1.35 Karla,Arial,sans-serif;max-width:760px;margin:16px auto 0;color:#e9edf5}
+  .bfl-{{ sid }} .bfl__sub b{color:var(--gold)} .bfl-{{ sid }} .bfl__sub p{color:#e9edf5!important} .bfl-{{ sid }} .bfl__auto p{color:inherit} .bfl-{{ sid }} .bfl__sub p,.bfl-{{ sid }} .bfl__auto p{margin:0}
+  .bfl-{{ sid }} .bfl__cd{display:flex;justify-content:center;gap:10px;margin:28px 0 8px}
+  .bfl-{{ sid }} .bfl__cd div{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:8px;min-width:76px;padding:10px 6px}
+  .bfl-{{ sid }} .bfl__cd b{display:block;font:700 34px/1 Oswald,Impact,sans-serif}
+  .bfl-{{ sid }} .bfl__cd span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+  .bfl-{{ sid }} .bfl__cdl{font:700 13px/1 Oswald,Impact,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:22px}
+  .bfl-{{ sid }} .bfl__cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px}
+
+  /* DEAL LADDER */
+  .bfl-{{ sid }} .bfl__deal{padding:56px 0 24px}
+  .bfl-{{ sid }} .bfl__eyebrow{font:700 13px/1 Oswald,Impact,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--red);text-align:center;display:block}
+  .bfl-{{ sid }} .bfl__sec-t{font-size:clamp(32px,5vw,52px);color:var(--navy);text-align:center;margin:10px 0 30px}
+  .bfl-{{ sid }} .bfl__tiers{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .bfl-{{ sid }} .bfl__tier{position:relative;background:#fff;border-radius:14px;padding:30px 26px 26px;box-shadow:0 10px 30px rgba(19,41,75,.12);border-top:8px solid var(--navy);text-align:center}
+  .bfl-{{ sid }} .bfl__tier--big{border-top-color:var(--red);background:var(--navy);color:#fff}
+  .bfl-{{ sid }} .bfl__ribbon{position:absolute;top:-19px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font:700 12px/1 Oswald,Impact,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:8px 14px;border-radius:30px;white-space:nowrap}
+  .bfl-{{ sid }} .bfl__spend{font:600 15px/1 Karla,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+  .bfl-{{ sid }} .bfl__amt{font-size:64px;color:var(--red);margin:6px 0 10px}
+  .bfl-{{ sid }} .bfl__tier--big .bfl__amt{color:var(--gold)}
+  .bfl-{{ sid }} .bfl__get{font:700 22px/1.25 Oswald,Impact,sans-serif;text-transform:uppercase}
+  .bfl-{{ sid }} .bfl__val{display:inline-block;margin-top:12px;background:rgba(178,34,52,.1);color:var(--red);font-weight:700;padding:7px 12px;border-radius:6px}
+  .bfl-{{ sid }} .bfl__tier--big .bfl__val{background:rgba(255,211,107,.16);color:var(--gold)}
+  .bfl-{{ sid }} .bfl__auto{text-align:center;margin:22px auto 0;max-width:720px;color:var(--muted);font-size:16px}
+  .bfl-{{ sid }} .bfl__auto b{color:var(--navy)}
+
+  /* METER */
+  .bfl-{{ sid }} .bfl__meter{background:var(--navy);color:#fff;border-radius:12px;padding:16px 18px;margin:28px auto 0;max-width:820px}
+  .bfl-{{ sid }} .bfl__mtxt{font:600 16px/1.35 Karla,Arial,sans-serif;text-align:center}
+  .bfl-{{ sid }} .bfl__mtxt b{color:var(--gold)}
+  .bfl-{{ sid }} .bfl__track{position:relative;height:12px;background:rgba(255,255,255,.18);border-radius:12px;margin:14px 0 22px}
+  .bfl-{{ sid }} .bfl__fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--gold),#ffb02e);border-radius:12px;transition:width .5s}
+  .bfl-{{ sid }} .bfl__mark{position:absolute;top:-5px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--navy);border:3px solid rgba(255,255,255,.45)}
+  .bfl-{{ sid }} .bfl__mark.is-on{background:var(--gold);border-color:#fff}
+  .bfl-{{ sid }} .bfl__mark span{position:absolute;top:24px;left:50%;transform:translateX(-50%);font:700 11px/1.2 Oswald,Impact,sans-serif;letter-spacing:.06em;white-space:nowrap;color:#cfd6e3}
+  .bfl-{{ sid }} .bfl__sticky{position:fixed;left:0;right:0;bottom:0;z-index:2147482000;background:var(--navy);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.2);display:none;align-items:center;gap:12px;transform:translateY(110%);transition:transform .3s}
+  .bfl-{{ sid }} .bfl__sticky.is-on{transform:none}
+  .bfl-{{ sid }} .bfl__sticky .bfl__mtxt{flex:1;text-align:left;font-size:14px}
+  .bfl-{{ sid }} .bfl__sticky a{flex:none;background:var(--red);color:#fff;font:700 13px/1 Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:12px 14px;border-radius:6px;text-decoration:none}
+
+  /* PRODUCT SECTIONS */
+  .bfl-{{ sid }} .bfl__nav{position:sticky;top:0;z-index:20;background:var(--cream);border-bottom:1px solid #e3dccb;margin-top:40px}
+  .bfl-{{ sid }} .bfl__nav .bfl__in{display:flex;gap:8px;justify-content:center;padding-top:10px;padding-bottom:10px;overflow-x:auto}
+  .bfl-{{ sid }} .bfl__nav a{flex:none;font:700 14px/1 Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);text-decoration:none;padding:11px 18px;border:2px solid var(--navy);border-radius:40px}
+  .bfl-{{ sid }} .bfl__nav a:hover{background:var(--navy);color:#fff}
+  .bfl-{{ sid }} .bfl__cat{padding:48px 0 8px;scroll-margin-top:70px}
+  .bfl-{{ sid }} .bfl__cat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;border-bottom:3px solid var(--navy);padding-bottom:12px}
+  .bfl-{{ sid }} .bfl__cat-t{font-size:clamp(30px,4.4vw,46px);color:var(--navy)}
+  .bfl-{{ sid }} .bfl__cat-s{color:var(--muted);margin-top:6px;font-size:16px}
+  .bfl-{{ sid }} .bfl__all{flex:none;color:var(--red);font:700 14px/1 Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+  .bfl-{{ sid }} .bfl__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .bfl-{{ sid }} .bfl__card{background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 16px rgba(19,41,75,.08);transition:transform .2s,box-shadow .2s}
+  .bfl-{{ sid }} .bfl__card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(19,41,75,.14)}
+  .bfl-{{ sid }} .bfl__img{position:relative;display:block;aspect-ratio:1/1;background:#eee}
+  .bfl-{{ sid }} .bfl__img img{width:100%;height:100%;object-fit:cover;display:block}
+  .bfl-{{ sid }} .bfl__tag{position:absolute;left:10px;top:10px;background:var(--red);color:#fff;font:700 11px/1 Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:7px 9px;border-radius:4px}
+  .bfl-{{ sid }} .bfl__tag--gold{background:var(--gold);color:var(--navy)}
+  .bfl-{{ sid }} .bfl__body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .bfl-{{ sid }} .bfl__name{font:700 15px/1.3 Karla,Arial,sans-serif;color:var(--ink);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:39px}
+  .bfl-{{ sid }} .bfl__price{font:700 20px/1 Oswald,Impact,sans-serif;color:var(--navy)}
+  .bfl-{{ sid }} .bfl__price s{font:400 14px/1 Karla,Arial,sans-serif;color:var(--muted);margin-left:6px}
+  .bfl-{{ sid }} .bfl__var{width:100%;padding:9px 10px;border:1px solid #d5d9e0;border-radius:6px;font:14px Karla,Arial,sans-serif;background:#fff;color:var(--ink)}
+  .bfl-{{ sid }} .bfl__add{margin-top:auto;width:100%;background:var(--navy);color:#fff;border:0;border-radius:6px;padding:13px 10px;font:700 14px/1 Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+  .bfl-{{ sid }} .bfl__add:hover{background:var(--red)}
+  .bfl-{{ sid }} .bfl__add.is-done{background:#1f7a3f}
+  .bfl-{{ sid }} .bfl__cat--bundles{background:var(--navy);color:#fff;margin-top:40px;padding:48px 0 52px}
+  .bfl-{{ sid }} .bfl__cat--bundles .bfl__cat-head{border-color:var(--gold)}
+  .bfl-{{ sid }} .bfl__cat--bundles .bfl__cat-t{color:#fff}
+  .bfl-{{ sid }} .bfl__cat--bundles .bfl__cat-s{color:#cfd6e3}
+  .bfl-{{ sid }} .bfl__cat--bundles .bfl__all{color:var(--gold)}
+
+  /* HOW + FAQ */
+  .bfl-{{ sid }} .bfl__how{padding:56px 0}
+  .bfl-{{ sid }} .bfl__steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:st}
+  .bfl-{{ sid }} .bfl__step{background:#fff;border-radius:12px;padding:26px 22px;text-align:center;box-shadow:0 4px 16px rgba(19,41,75,.08)}
+  .bfl-{{ sid }} .bfl__step:before{counter-increment:st;content:counter(st);display:inline-flex;width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font:700 22px/1 Oswald,Impact,sans-serif;margin-bottom:12px}
+  .bfl-{{ sid }} .bfl__step .bfl__h{font-size:22px;color:var(--navy);margin-bottom:8px}
+  .bfl-{{ sid }} .bfl__step p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+  .bfl-{{ sid }} .bfl__faq{max-width:820px;margin:44px auto 0}
+  .bfl-{{ sid }} .bfl__faq details{background:#fff;border-radius:10px;margin-bottom:10px;box-shadow:0 2px 10px rgba(19,41,75,.06)}
+  .bfl-{{ sid }} .bfl__faq summary{cursor:pointer;list-style:none;padding:18px 20px;font:700 17px/1.3 Karla,Arial,sans-serif;color:var(--navy);display:flex;justify-content:space-between;gap:12px}
+  .bfl-{{ sid }} .bfl__faq summary::-webkit-details-marker{display:none}
+  .bfl-{{ sid }} .bfl__faq summary:after{content:"+";font:700 22px/1 Oswald,Impact,sans-serif;color:var(--red)}
+  .bfl-{{ sid }} .bfl__faq details[open] summary:after{content:"–"}
+  .bfl-{{ sid }} .bfl__faq details p{margin:0;padding:0 20px 18px;color:var(--muted);line-height:1.5}
+  .bfl-{{ sid }} .bfl__close{background:var(--red);color:#fff;text-align:center;padding:52px 0}
+  .bfl-{{ sid }} .bfl__close .bfl__h{font-size:clamp(32px,5vw,54px)}
+  .bfl-{{ sid }} .bfl__close p{font-size:18px;margin:12px 0 24px;color:#fff!important}
+  .bfl-{{ sid }} .bfl__close .bfl__btn{background:var(--navy);box-shadow:0 6px 0 var(--navy2)}
+  .bfl-{{ sid }} .bfl__ended{display:none;background:var(--navy);color:#fff;text-align:center;padding:14px 16px;font-weight:700}
+
+  @media (max-width:980px){.bfl-{{ sid }} .bfl__grid{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:749px){
+    .bfl-{{ sid }} .bfl__hero{padding:44px 0 40px}
+    .bfl-{{ sid }} .bfl__cd div{min-width:64px}
+    .bfl-{{ sid }} .bfl__cd b{font-size:26px}
+    .bfl-{{ sid }} .bfl__tiers,.bfl-{{ sid }} .bfl__steps{grid-template-columns:1fr}
+    .bfl-{{ sid }} .bfl__tiers{gap:30px}
+    .bfl-{{ sid }} .bfl__grid{grid-template-columns:repeat(2,1fr);gap:12px}
+    .bfl-{{ sid }} .bfl__body{padding:10px 10px 12px;gap:8px}
+    .bfl-{{ sid }} .bfl__name{font-size:14px;min-height:36px}
+    .bfl-{{ sid }} .bfl__add{padding:12px 6px;font-size:13px}
+    .bfl-{{ sid }} .bfl__cat-head{flex-direction:column;align-items:flex-start;gap:8px}
+    .bfl-{{ sid }} .bfl__nav .bfl__in{justify-content:flex-start}
+    .bfl-{{ sid }} .bfl__sticky{display:flex}
+    .bfl-{{ sid }}{padding-bottom:70px}
+  }
+</style>
+
+  <div class="bfl__ended" data-ended>Our Black Friday deal has ended — thank you, America! Everything below is still available at our everyday farm prices.</div>
+
+  {%- comment -%} HERO {%- endcomment -%}
+  <section class="bfl__hero">
+    <div class="bfl__in">
+      <span class="bfl__kick">{{ s.kicker | escape }}</span>
+      <span class="bfl__h bfl__title" role="heading" aria-level="1">{{ s.title | escape }}</span>
+      <div class="bfl__sub">{{ s.subtitle }}</div>
+      <div class="bfl__cdl" data-cd-label>Deal starts in</div>
+      <div class="bfl__cd" data-cd aria-live="off">
+        <div><b data-d>00</b><span>Days</span></div><div><b data-h>00</b><span>Hours</span></div><div><b data-m>00</b><span>Mins</span></div><div><b data-s>00</b><span>Secs</span></div>
+      </div>
+      <div class="bfl__cta">
+        <a class="bfl__btn" href="#bfl-bundles-{{ sid }}">Shop the deal</a>
+        <a class="bfl__btn bfl__btn--ghost" href="#bfl-deal-{{ sid }}">See how it works</a>
+      </div>
+    </div>
+  </section>
+  <div class="bfl__flag" aria-hidden="true"></div>
+
+  {%- comment -%} DEAL LADDER {%- endcomment -%}
+  <section class="bfl__deal" id="bfl-deal-{{ sid }}">
+    <div class="bfl__in">
+      <span class="bfl__eyebrow">The Black Friday deal</span>
+      <span class="bfl__h bfl__sec-t" role="heading" aria-level="2">Spend more. Get more meat free.</span>
+      <div class="bfl__tiers">
+        <div class="bfl__tier">
+          <div class="bfl__spend">Spend</div>
+          <span class="bfl__h bfl__amt">${{ s.tier1_amount }}+</span>
+          <div class="bfl__get">{{ s.tier1_gift | escape }}</div>
+          <span class="bfl__val">{{ s.tier1_value | escape }}</span>
+        </div>
+        <div class="bfl__tier bfl__tier--big">
+          <span class="bfl__ribbon">Best deal</span>
+          <div class="bfl__spend">Spend</div>
+          <span class="bfl__h bfl__amt">${{ s.tier2_amount }}+</span>
+          <div class="bfl__get">{{ s.tier2_gift | escape }}</div>
+          <span class="bfl__val">{{ s.tier2_value | escape }}</span>
+        </div>
+      </div>
+      <div class="bfl__auto">{{ s.auto_note }}</div>
+
+      <div class="bfl__meter" data-meter>
+        <div class="bfl__mtxt" data-mtxt>Add <b>${{ s.tier1_amount }}</b> of meat to unlock your <b>FREE chicken breast</b>.</div>
+        <div class="bfl__track">
+          <div class="bfl__fill" data-fill></div>
+          <div class="bfl__mark" data-mark1 style="left:{{ s.tier1_amount | times: 100 | divided_by: s.tier2_amount }}%"><span>${{ s.tier1_amount }} · Chicken</span></div>
+          <div class="bfl__mark" data-mark2 style="left:100%"><span>${{ s.tier2_amount }} · + Filets</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} PRODUCT SECTIONS {%- endcomment -%}
+  {%- capture cats -%}bundles,beef,pork,chicken{%- endcapture -%}
+  <nav class="bfl__nav" aria-label="Shop by category"><div class="bfl__in">
+    {%- for c in (1..4) -%}
+      {%- assign key = cats | split: ',' | slice: forloop.index0 | first -%}
+      {%- assign ck = 'col_' | append: key -%}
+      {%- assign tk = 'title_' | append: key -%}
+      {%- assign has = false -%}{%- if s[ck] != blank -%}{%- assign has = true -%}{%- endif -%}{%- if key == 'bundles' and s.bundle_products.size > 0 -%}{%- assign has = true -%}{%- endif -%}
+      {%- if has -%}<a href="#bfl-{{ key }}-{{ sid }}">{% if key == 'bundles' %}Bundles{% else %}{{ s[tk] | escape }}{% endif %}</a>{%- endif -%}
+    {%- endfor -%}
+  </div></nav>
+
+  {%- assign seen = ',' -%}
+  {%- for c in (1..4) -%}
+    {%- assign key = cats | split: ',' | slice: forloop.index0 | first -%}
+    {%- assign ck = 'col_' | append: key -%}
+    {%- assign tk = 'title_' | append: key -%}
+    {%- assign stk = 'sub_' | append: key -%}
+    {%- assign col = s[ck] -%}
+    {%- if key == 'bundles' and s.bundle_products.size > 0 -%}{%- assign list = s.bundle_products -%}{%- assign col = blank -%}{%- elsif col != blank -%}{%- assign list = col.products -%}{%- else -%}{%- assign list = blank -%}{%- endif -%}
+    {%- if list != blank -%}
+    <section class="bfl__cat{% if key == 'bundles' %} bfl__cat--bundles{% endif %}" id="bfl-{{ key }}-{{ sid }}">
+      <div class="bfl__in">
+        <div class="bfl__cat-head">
+          <div>
+            <span class="bfl__h bfl__cat-t" role="heading" aria-level="2">{{ s[tk] | escape }}</span>
+            {%- if s[stk] != blank -%}<div class="bfl__cat-s">{{ s[stk] | escape }}</div>{%- endif -%}
+          </div>
+          {%- if col != blank -%}<a class="bfl__all" href="{{ col.url }}">View all {{ col.products_count }} →</a>{%- endif -%}
+        </div>
+        <div class="bfl__grid">
+          {%- assign shown = 0 -%}
+          {%- for pass in (1..2) -%}
+          {%- for product in list -%}
+            {%- if shown >= s.per_cat and key != 'bundles' -%}{%- break -%}{%- endif -%}
+            {%- unless product.available -%}{%- continue -%}{%- endunless -%}
+            {%- assign is_dep = false -%}{%- if product.title contains 'Deposit' or product.title contains 'DEPOSIT' -%}{%- assign is_dep = true -%}{%- endif -%}
+            {%- if pass == 1 and is_dep -%}{%- continue -%}{%- endif -%}
+            {%- if pass == 2 and is_dep == false -%}{%- continue -%}{%- endif -%}
+            {%- assign hkey = ',' | append: product.handle | append: ',' -%}
+            {%- if seen contains hkey -%}{%- continue -%}{%- endif -%}
+            {%- if skip_handles contains product.handle or product.gift_card? -%}{%- continue -%}{%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}{%- assign seen = seen | append: product.handle | append: ',' -%}
+            {%- assign v = product.selected_or_first_available_variant -%}
+            {%- if v.title contains 'GIFT' -%}{%- assign v = product.variants.first -%}{%- endif -%}
+            <article class="bfl__card">
+              <a class="bfl__img" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+                {%- if product.featured_image != blank -%}
+                  <img src="{{ product.featured_image | image_url: width: 600 }}" srcset="{{ product.featured_image | image_url: width: 360 }} 360w, {{ product.featured_image | image_url: width: 600 }} 600w" sizes="(max-width: 749px) 50vw, 25vw" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600" height="600">
+                {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}
+                {%- if v.price >= t1 -%}<span class="bfl__tag bfl__tag--gold">Unlocks free chicken</span>{%- elsif v.compare_at_price > v.price -%}<span class="bfl__tag">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>{%- endif -%}
+              </a>
+              <div class="bfl__body">
+                <a class="bfl__name" href="{{ product.url }}">{{ product.title | escape }}</a>
+                <div class="bfl__price" data-price>{{ v.price | money_without_trailing_zeros }}{%- if v.compare_at_price > v.price -%}<s>{{ v.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}</div>
+                {%- assign real_variants = 0 -%}
+                {%- for pv in product.variants -%}{%- unless pv.title contains ' GIFT - ' -%}{%- assign real_variants = real_variants | plus: 1 -%}{%- endunless -%}{%- endfor -%}
+                {%- if real_variants > 1 -%}
+                  <select class="bfl__var" data-var aria-label="Choose an option for {{ product.title | escape }}">
+                    {%- for pv in product.variants -%}
+                      {%- if pv.title contains ' GIFT - ' -%}{%- continue -%}{%- endif -%}
+                      <option value="{{ pv.id }}" data-price="{{ pv.price | money_without_trailing_zeros }}" {% unless pv.available %}disabled{% endunless %} {% if pv.id == v.id %}selected{% endif %}>{{ pv.title | escape }} — {{ pv.price | money_without_trailing_zeros }}</option>
+                    {%- endfor -%}
+                  </select>
+                {%- else -%}
+                  <input type="hidden" data-var value="{{ v.id }}">
+                {%- endif -%}
+                <button type="button" class="bfl__add" data-add>Add to cart</button>
+              </div>
+            </article>
+          {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} HOW IT WORKS + FAQ {%- endcomment -%}
+  <section class="bfl__how">
+    <div class="bfl__in">
+      <span class="bfl__eyebrow">Simple as 1-2-3</span>
+      <span class="bfl__h bfl__sec-t" role="heading" aria-level="2">How to claim your free meat</span>
+      <div class="bfl__steps">
+        <div class="bfl__step"><span class="bfl__h">Fill your freezer</span><p>Shop beef, pork, chicken and bundles. Everything counts toward the deal.</p></div>
+        <div class="bfl__step"><span class="bfl__h">Hit ${{ s.tier1_amount }} or ${{ s.tier2_amount }}</span><p>Your free chicken breast (and filets at ${{ s.tier2_amount }}+) drops into your cart automatically.</p></div>
+        <div class="bfl__step"><span class="bfl__h">Check out</span><p>Code <b>{{ s.code | escape }}</b> is applied for you. Your free meat ships with your order.</p></div>
+      </div>
+      <div class="bfl__faq">
+        <details><summary>When does the Black Friday deal end?</summary><p>{{ s.faq_when | escape }}</p></details>
+        <details><summary>Do I need a code?</summary><p>No — once your cart reaches ${{ s.tier1_amount }}, the free chicken is added and code {{ s.code | escape }} is applied automatically. If you ever need it, the code is {{ s.code | escape }}.</p></details>
+        <details><summary>Does my free item count toward the ${{ s.tier1_amount }}?</summary><p>No — the minimum is based on the meat you buy. Free items and gift cards don't count toward it.</p></details>
+        <details><summary>Can I use it with a subscription?</summary><p>Yes. Your subscription box counts toward the minimum, and the free gift ships with your first order. It's one free gift per customer.</p></details>
+        <details><summary>Where does the meat come from?</summary><p>{{ s.faq_where | escape }}</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="bfl__close">
+    <div class="bfl__in">
+      <span class="bfl__h" role="heading" aria-level="2">Stock the freezer. Support American farms.</span>
+      <p>Free meat on every order of ${{ s.tier1_amount }}+ — this weekend only.</p>
+      <a class="bfl__btn" href="#bfl-bundles-{{ sid }}">Shop Black Friday</a>
+    </div>
+  </section>
+
+  <div class="bfl__sticky" data-sticky>
+    <div class="bfl__mtxt" data-mtxt>Add <b>${{ s.tier1_amount }}</b> to unlock <b>FREE chicken</b></div>
+    <a href="/cart">View cart</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('bfl-{{ sid }}');
+  if (!root) return;
+  var START = Date.parse(root.dataset.start) || 0, END = Date.parse(root.dataset.end) || Infinity;
+  var T1 = +root.dataset.t1, T2 = +root.dataset.t2;
+  var fmt = function (c) { var v = c / 100; return '$' + (v % 1 === 0 ? v.toFixed(0) : v.toFixed(2)); };
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  // Countdown
+  var lab = root.querySelector('[data-cd-label]'), cd = root.querySelector('[data-cd]');
+  function tick() {
+    var now = Date.now(), target, label;
+    if (now < START) { target = START; label = 'Deal starts in'; }
+    else if (now <= END) { target = END; label = 'Deal ends in'; }
+    else { lab.textContent = 'This deal has ended'; cd.style.display = 'none'; root.querySelector('[data-ended]').style.display = 'block'; return; }
+    var d = Math.max(0, Math.floor((target - now) / 1000));
+    lab.textContent = label;
+    cd.querySelector('[data-d]').textContent = pad(Math.floor(d / 86400));
+    cd.querySelector('[data-h]').textContent = pad(Math.floor(d % 86400 / 3600));
+    cd.querySelector('[data-m]').textContent = pad(Math.floor(d % 3600 / 60));
+    cd.querySelector('[data-s]').textContent = pad(d % 60);
+    setTimeout(tick, 1000);
+  }
+  tick();
+
+  // Cart meter (free gifts and gift cards don't count)
+  function paint(cart) {
+    var q = cart.items.reduce(function (s, it) { return (it.gift_card || (it.properties && it.properties._bf_free)) ? s : s + it.final_line_price; }, 0);
+    var msg;
+    if (q >= T2) msg = '🎉 You unlocked it all: <b>FREE chicken breast + 2 FREE filets!</b>';
+    else if (q >= T1) msg = '✅ <b>FREE chicken unlocked!</b> Add <b>' + fmt(T2 - q) + '</b> more for <b>2 FREE filets</b>';
+    else if (q > 0) msg = 'You\'re <b>' + fmt(T1 - q) + '</b> away from <b>FREE 10 lbs chicken breast</b>';
+    else msg = 'Add <b>' + fmt(T1) + '</b> of meat to unlock your <b>FREE chicken breast</b>';
+    root.querySelectorAll('[data-mtxt]').forEach(function (el) { el.innerHTML = msg; });
+    root.querySelector('[data-fill]').style.width = Math.min(100, q / T2 * 100) + '%';
+    root.querySelector('[data-mark1]').classList.toggle('is-on', q >= T1);
+    root.querySelector('[data-mark2]').classList.toggle('is-on', q >= T2);
+  }
+  function refresh() { return fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(paint).catch(function () {}); }
+  refresh();
+  document.addEventListener('cart:refresh', function () { setTimeout(refresh, 300); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
+
+  // Sticky bar after the hero (mobile)
+  var sticky = root.querySelector('[data-sticky]'), hero = root.querySelector('.bfl__hero');
+  if (window.IntersectionObserver) new IntersectionObserver(function (e) { sticky.classList.toggle('is-on', !e[0].isIntersecting); }).observe(hero);
+
+  // Variant price + add to cart
+  root.addEventListener('change', function (e) {
+    var sel = e.target.closest('[data-var]'); if (!sel || sel.tagName !== 'SELECT') return;
+    var o = sel.options[sel.selectedIndex], p = sel.closest('.bfl__card').querySelector('[data-price]');
+    if (o && p) p.textContent = o.getAttribute('data-price');
+  });
+  root.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-add]'); if (!btn) return;
+    var card = btn.closest('.bfl__card'), id = card.querySelector('[data-var]').value;
+    btn.disabled = true; btn.textContent = 'Adding…';
+    fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: Number(id), quantity: 1 }) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function () { btn.classList.add('is-done'); btn.textContent = 'Added ✓'; return refresh(); })
+      .catch(function () { window.location.href = card.querySelector('.bfl__name').href; })
+      .then(function () { setTimeout(function () { btn.disabled = false; btn.classList.remove('is-done'); btn.textContent = 'Add to cart'; }, 1600); setTimeout(refresh, 2500); });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Black Friday landing",
+  "settings": [
+    { "type": "header", "content": "Timing (UTC — midnight EST = 05:00)" },
+    { "type": "text", "id": "start", "label": "Deal start", "default": "2026-11-27T05:00:00Z" },
+    { "type": "text", "id": "end", "label": "Deal end", "default": "2026-11-29T04:59:59Z" },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image", "info": "Empty = farm photo" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Freedom Farms · This weekend only" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Black Friday" },
+    { "type": "richtext", "id": "subtitle", "label": "Subtitle", "default": "<p>Spend $299 and get <b>10 lbs of chicken breast FREE</b>. Spend $499 and we'll add <b>2 FREE filet mignon steaks</b> too.</p>" },
+    { "type": "header", "content": "Deal" },
+    { "type": "text", "id": "code", "label": "Code", "default": "BLACKFRIDAY" },
+    { "type": "number", "id": "tier1_amount", "label": "Tier 1 minimum ($)", "default": 299 },
+    { "type": "text", "id": "tier1_gift", "label": "Tier 1 gift", "default": "FREE 10 lbs chicken breast" },
+    { "type": "text", "id": "tier1_value", "label": "Tier 1 value", "default": "$153 value — free" },
+    { "type": "number", "id": "tier2_amount", "label": "Tier 2 minimum ($)", "default": 499 },
+    { "type": "text", "id": "tier2_gift", "label": "Tier 2 gift", "default": "FREE chicken breast + 2 filet mignon steaks" },
+    { "type": "text", "id": "tier2_value", "label": "Tier 2 value", "default": "$238 of meat — free" },
+    { "type": "richtext", "id": "auto_note", "label": "Auto-add note", "default": "<p><b>No code needed</b> — your free meat is added to your cart automatically. Born, raised & processed in the USA.</p>" },
+    { "type": "header", "content": "Product sections" },
+    { "type": "range", "id": "per_cat", "label": "Products per section", "min": 4, "max": 16, "step": 4, "default": 8 },
+    { "type": "product_list", "id": "bundle_products", "label": "Bundles (hand-picked)", "limit": 12 },
+    { "type": "collection", "id": "col_bundles", "label": "Bundles collection (used if no hand-picked products)" },
+    { "type": "text", "id": "title_bundles", "label": "Bundles title", "default": "Best Way to Unlock It: Bundles" },
+    { "type": "text", "id": "sub_bundles", "label": "Bundles subtitle", "default": "One box can unlock your free chicken on its own." },
+    { "type": "collection", "id": "col_beef", "label": "Beef collection" },
+    { "type": "text", "id": "title_beef", "label": "Beef title", "default": "Beef" },
+    { "type": "text", "id": "sub_beef", "label": "Beef subtitle", "default": "Grass-fed, grass-finished. Steaks, roasts & ground beef." },
+    { "type": "collection", "id": "col_pork", "label": "Pork collection" },
+    { "type": "text", "id": "title_pork", "label": "Pork title", "default": "Pork" },
+    { "type": "text", "id": "sub_pork", "label": "Pork subtitle", "default": "100% pasture-raised. Bacon, chops, sausage & more." },
+    { "type": "collection", "id": "col_chicken", "label": "Chicken collection" },
+    { "type": "text", "id": "title_chicken", "label": "Chicken title", "default": "Chicken" },
+    { "type": "text", "id": "sub_chicken", "label": "Chicken subtitle", "default": "Pasture-raised chicken, turkey & eggs." },
+    { "type": "header", "content": "FAQ" },
+    { "type": "text", "id": "faq_when", "label": "When does it end", "default": "The deal runs from Friday, Nov 27 at 12:00 AM EST through Saturday, Nov 28 at 11:59 PM EST." },
+    { "type": "text", "id": "faq_where", "label": "Where it comes from", "default": "Our own family farm in Greene, NY, and trusted American farms — born, raised and processed in the USA, shipped frozen nationwide." }
+  ]
+}
+{% endschema %}
