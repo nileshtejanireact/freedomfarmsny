@@ -1,6 +1,12 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
 <head>
+{%- comment -%} ff-gift-redirect: free-gift products/options are never shown as pages {%- endcomment -%}
+{%- if template.name == 'product' -%}
+  {%- if product.tags contains 'free-gift' -%}<script>location.replace('/');</script>
+  {%- elsif product.selected_variant and product.selected_variant.title contains ' GIFT - ' -%}<script>location.replace({{ product.url | json }});</script>
+  {%- endif -%}
+{%- endif -%}
 {% render 'replo-head' %}
 
 <link rel='preconnect dns-prefetch' href='https://api.config-security.com/' crossorigin />

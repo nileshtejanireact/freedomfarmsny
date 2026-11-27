@@ -90,22 +90,34 @@
       var adds = [], removes = [], added = [], removed = [];
       window.__bfLast = window.__bfLast || {};
 
-      // Free items left over from a campaign that is no longer running -> remove
-      cart.items.forEach(function (it) { if (isOurFree(it) && giftIds.indexOf(it.variant_id) === -1) removes.push(it.key); });
-
-      gifts.forEach(function (g) {
-        var mine = function (it) { return it.variant_id === g.v && isOurFree(it); };
-        var free = cart.items.filter(mine);
-        var has = cart.items.some(function (it) { return it.variant_id === g.v; });
-        if (q >= g.min) {
-          if (window.__bfLast[g.v] && !free.length) ss(g.key, '1');      // customer deleted it
-          if (free.length) ss(g.key, null);
-          if (!has && ss(g.key) !== '1') { adds.push({ id: g.v, quantity: 1, properties: { _bf_free: '1', 'Free Gift': camp.name + ' - ' + g.prop } }); added.push(g.name); }
-        } else if (free.length) { removes.push(free[0].key); removed.push(g.name); }
+      // Every $0 gift item counts as a gift, however it got into the cart (even added by hand).
+      var allGiftIds = [];
+      CAMPAIGNS.forEach(function (c) { c.gifts.forEach(function (g) { allGiftIds.push(g.v); }); });
+      var qtyFix = [];
+      // Gifts from a campaign that isn't running (or old tagged items) -> remove
+      cart.items.forEach(function (it) {
+        if ((isOurFree(it) || allGiftIds.indexOf(it.variant_id) > -1) && giftIds.indexOf(it.variant_id) === -1) removes.push(it.key);
       });
 
-      var steps = Promise.resolve(), changed = adds.length || removes.length;
+      gifts.forEach(function (g) {
+        var lines = cart.items.filter(function (it) { return it.variant_id === g.v; });
+        if (q >= g.min) {
+          if (window.__bfLast[g.v] && !lines.length) ss(g.key, '1');      // customer deleted it
+          if (lines.length) ss(g.key, null);
+          if (!lines.length && ss(g.key) !== '1') { adds.push({ id: g.v, quantity: 1, properties: { _bf_free: '1', 'Free Gift': camp.name + ' - ' + g.prop } }); added.push(g.name); }
+          // Only one of each gift per order
+          lines.slice(1).forEach(function (it) { removes.push(it.key); });
+          if (lines.length && lines[0].quantity > 1) qtyFix.push(lines[0].key);
+        } else if (lines.length) {
+          // Cart doesn't qualify (or holds only free items) -> take the gift out
+          lines.forEach(function (it) { removes.push(it.key); });
+          removed.push(g.name);
+        }
+      });
+
+      var steps = Promise.resolve(), changed = adds.length || removes.length || qtyFix.length;
       removes.forEach(function (k) { steps = steps.then(function () { return req('/cart/change.js', { id: k, quantity: 0 }); }); });
+      qtyFix.forEach(function (k) { steps = steps.then(function () { return req('/cart/change.js', { id: k, quantity: 1 }); }); });
       if (adds.length) steps = steps.then(function () { return req('/cart/add.js', { items: adds }); });
       // Drop codes from campaigns that aren't running (e.g. BLACKFRIDAY on Cyber Monday)
       var allCodes = CAMPAIGNS.map(function (c) { return c.code; });
@@ -126,7 +138,7 @@
         if (added.length) toast('🎉 Your <b>FREE ' + added.join(' + ') + '</b> ' + (added.length > 1 ? 'were' : 'was') + ' added!<br><small>' + camp.name + ' deal</small>');
         else if (removed.length) toast('Your cart dropped below the ' + camp.name + ' minimum, so the free ' + removed.join(' + ') + ' ' + (removed.length > 1 ? 'were' : 'was') + ' removed.');
         if (changed) refreshUI(c);
-        gifts.forEach(function (g) { window.__bfLast[g.v] = c.items.some(function (it) { return it.variant_id === g.v && isOurFree(it); }); });
+        gifts.forEach(function (g) { window.__bfLast[g.v] = c.items.some(function (it) { return it.variant_id === g.v; }); });
       });
     }).catch(function () {}).finally(function () { busy = false; });
   }
