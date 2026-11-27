@@ -8,7 +8,7 @@
       {%- assign pltk = 'promo_link_text_' | append: i -%}
       {%- assign psk = 'promo_start_' | append: i -%}
       {%- assign pek = 'promo_end_' | append: i -%}
-      <div class="ar__slide ar__slide--sched" data-start="{{ section.settings[psk] | escape }}" data-end="{{ section.settings[pek] | escape }}"><span class="ar__txt">{{ pmsg | escape }}{%- if section.settings[plk] != blank and section.settings[pltk] != blank %} <a href="{{ section.settings[plk] }}">{{ section.settings[pltk] | escape }}</a>{%- endif -%}</span></div>
+      <div class="ar__slide ar__slide--sched ar__slide--promo" data-start="{{ section.settings[psk] | escape }}" data-end="{{ section.settings[pek] | escape }}"><span class="ar__txt">{{ pmsg | escape }}{%- if section.settings[plk] != blank and section.settings[pltk] != blank %} <a href="{{ section.settings[plk] }}">{{ section.settings[pltk] | escape }}</a>{%- endif -%}</span></div>
     {%- endif -%}
   {%- endfor -%}
   {%- for i in (1..4) -%}
@@ -34,6 +34,8 @@
     .ar-{{ sid }} .ar__txt { display: block; text-align: center; }
     .ar-{{ sid }} .ar__slide--sched { display: none; }
     .ar-{{ sid }} .ar__slide a { text-decoration: none; color: inherit; }
+    .ar-{{ sid }} .ar__slide--promo a { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; font-weight: 700; }
+    .ar-{{ sid }} .ar__slide--promo a:hover { opacity: .85; }
     @media (prefers-reduced-motion: reduce) { .ar-{{ sid }} .ar__track { transition: none !important; } }
   </style>
   <div class="ar__track">{{ slides }}</div>
