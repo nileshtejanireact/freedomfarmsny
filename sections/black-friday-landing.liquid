@@ -277,13 +277,13 @@
       <div class="bfl__steps">
         <div class="bfl__step"><span class="bfl__h">Fill your freezer</span><p>Shop beef, pork, chicken and bundles. Everything counts toward the deal.</p></div>
         <div class="bfl__step"><span class="bfl__h">Hit ${{ s.tier1_amount }} or ${{ s.tier2_amount }}</span><p>Your free chicken breast (and filets at ${{ s.tier2_amount }}+) drops into your cart automatically.</p></div>
-        <div class="bfl__step"><span class="bfl__h">Check out</span><p>Code <b>{{ s.code | escape }}</b> is applied for you. Your free meat ships with your order.</p></div>
+        <div class="bfl__step"><span class="bfl__h">Check out</span><p>Your free meat is already in your cart at <b>$0</b> — no code needed. It ships with your order.</p></div>
       </div>
       <div class="bfl__faq">
         <details><summary>When does the Black Friday deal end?</summary><p>{{ s.faq_when | escape }}</p></details>
-        <details><summary>Do I need a code?</summary><p>No — once your cart reaches ${{ s.tier1_amount }}, the free chicken is added and code {{ s.code | escape }} is applied automatically. If you ever need it, the code is {{ s.code | escape }}.</p></details>
+        <details><summary>Do I need a code?</summary><p>No code needed — once your cart reaches ${{ s.tier1_amount }}, your free chicken is added to your cart at $0 automatically.</p></details>
         <details><summary>Does my free item count toward the ${{ s.tier1_amount }}?</summary><p>No — the minimum is based on the meat you buy. Free items and gift cards don't count toward it.</p></details>
-        <details><summary>Do subscriptions count toward the minimum?</summary><p>The Black Friday minimum is based on one-time purchases. Subscription items don't count toward the ${{ s.tier1_amount }}, so choose "one-time purchase" on the items you want to count. It's one free gift per customer.</p></details>
+        <details><summary>Do subscriptions count toward the minimum?</summary><p>Yes! Subscription items count toward the ${{ s.tier1_amount }} and ${{ s.tier2_amount }}. Your free gift ships once with this order — it doesn't repeat on your future subscription deliveries.</p></details>
         <details><summary>Where does the meat come from?</summary><p>{{ s.faq_where | escape }}</p></details>
       </div>
     </div>
@@ -331,7 +331,7 @@
 
   // Cart meter (free gifts and gift cards don't count)
   function paint(cart) {
-    var q = cart.items.reduce(function (s, it) { return (it.gift_card || it.selling_plan_allocation || (it.properties && it.properties._bf_free)) ? s : s + it.final_line_price; }, 0);
+    var q = cart.items.reduce(function (s, it) { return (it.gift_card || (it.properties && it.properties._bf_free)) ? s : s + it.final_line_price; }, 0);
     var msg;
     if (q >= T2) msg = '🎉 You unlocked it all: <b>FREE chicken breast + 2 FREE filets!</b>';
     else if (q >= T1) msg = '✅ <b>FREE chicken unlocked!</b> Add <b>' + fmt(T2 - q) + '</b> more for <b>2 FREE filets</b>';

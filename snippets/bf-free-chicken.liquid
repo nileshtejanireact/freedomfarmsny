@@ -2,8 +2,9 @@
   bf-free-chicken.liquid — Freedom Farms Black Friday + Cyber Monday free gifts
   ------------------------------------------------------------
   Black Friday  (Nov 27 12:00 AM - Nov 28 11:59 PM EST):
-    $299+ -> FREE 10lb Chicken Breast (code BLACKFRIDAY)
-    $499+ -> + FREE (2) Filet Steaks  (automatic discount covers both)
+    $299+ -> FREE 10lb Chicken Breast ($0 gift product)
+    $499+ -> + FREE (2) Filet Steaks  ($0 gift option)
+  All gifts are $0 items, so subscriptions count toward the minimums and no code is needed.
   Cyber Monday  (Nov 30 12:00 AM - Nov 30 11:59 PM EST):
     $199+ -> FREE (2) Whole Chickens  (code CYBERMONDAY)
   Gifts are auto-added as one-time items and the code is applied for the customer.
@@ -36,11 +37,11 @@
   // Each campaign runs only inside its own time window (UTC). Times = midnight / 11:59 PM EST.
   var CAMPAIGNS = [
     { name: 'Black Friday', code: 'BLACKFRIDAY', start: '2026-11-27T05:00:00Z', end: '2026-11-29T04:59:59Z', gifts: [
-      { v: 44984120475831, min: 29900, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $299+ order', code: true },
+      { v: 58372728225975, min: 29900, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $299+ order' },
       { v: 58334916772023, min: 49900, key: 'bfFiletRemoved', name: '(2) Filet Mignon Steaks', prop: 'FREE with $499+ order' }
     ] },
     { name: 'Cyber Monday', code: 'CYBERMONDAY', start: '2026-11-30T05:00:00Z', end: '2026-12-01T04:59:59Z', gifts: [
-      { v: 58335232819383, min: 19900, key: 'cmChickenRemoved', name: '(2) Whole Chickens', prop: 'FREE with $199+ order', code: true }
+      { v: 58335232819383, min: 19900, key: 'cmChickenRemoved', name: '(2) Whole Chickens', prop: 'FREE with $199+ order' }
     ] }
   ];
   var busy = false, timer = null, own = 0;
@@ -83,8 +84,9 @@
       var camp = active();
       var gifts = camp ? camp.gifts : [];
       var giftIds = gifts.map(function (g) { return g.v; });
-      // Subscription items don't count: Shopify's Buy X Get Y discounts ignore them toward the minimum
-      var q = cart.items.reduce(function (s, it) { return (giftIds.indexOf(it.variant_id) > -1 || isOurFree(it) || it.gift_card || it.selling_plan_allocation) ? s : s + it.final_line_price; }, 0);
+      // Gifts are $0 items, so everything counts toward the minimum - subscriptions included.
+      // A gift is a one-time item: it ships once with this order and never repeats on renewals.
+      var q = cart.items.reduce(function (s, it) { return (giftIds.indexOf(it.variant_id) > -1 || isOurFree(it) || it.gift_card) ? s : s + it.final_line_price; }, 0);
       var adds = [], removes = [], added = [], removed = [];
       window.__bfLast = window.__bfLast || {};
 
