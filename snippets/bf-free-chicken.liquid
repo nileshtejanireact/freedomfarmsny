@@ -83,7 +83,8 @@
       var camp = active();
       var gifts = camp ? camp.gifts : [];
       var giftIds = gifts.map(function (g) { return g.v; });
-      var q = cart.items.reduce(function (s, it) { return (giftIds.indexOf(it.variant_id) > -1 || isOurFree(it) || it.gift_card) ? s : s + it.final_line_price; }, 0);
+      // Subscription items don't count: Shopify's Buy X Get Y discounts ignore them toward the minimum
+      var q = cart.items.reduce(function (s, it) { return (giftIds.indexOf(it.variant_id) > -1 || isOurFree(it) || it.gift_card || it.selling_plan_allocation) ? s : s + it.final_line_price; }, 0);
       var adds = [], removes = [], added = [], removed = [];
       window.__bfLast = window.__bfLast || {};
 

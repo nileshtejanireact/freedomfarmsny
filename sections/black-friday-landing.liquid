@@ -283,7 +283,7 @@
         <details><summary>When does the Black Friday deal end?</summary><p>{{ s.faq_when | escape }}</p></details>
         <details><summary>Do I need a code?</summary><p>No — once your cart reaches ${{ s.tier1_amount }}, the free chicken is added and code {{ s.code | escape }} is applied automatically. If you ever need it, the code is {{ s.code | escape }}.</p></details>
         <details><summary>Does my free item count toward the ${{ s.tier1_amount }}?</summary><p>No — the minimum is based on the meat you buy. Free items and gift cards don't count toward it.</p></details>
-        <details><summary>Can I use it with a subscription?</summary><p>Yes. Your subscription box counts toward the minimum, and the free gift ships with your first order. It's one free gift per customer.</p></details>
+        <details><summary>Do subscriptions count toward the minimum?</summary><p>The Black Friday minimum is based on one-time purchases. Subscription items don't count toward the ${{ s.tier1_amount }}, so choose "one-time purchase" on the items you want to count. It's one free gift per customer.</p></details>
         <details><summary>Where does the meat come from?</summary><p>{{ s.faq_where | escape }}</p></details>
       </div>
     </div>
@@ -331,7 +331,7 @@
 
   // Cart meter (free gifts and gift cards don't count)
   function paint(cart) {
-    var q = cart.items.reduce(function (s, it) { return (it.gift_card || (it.properties && it.properties._bf_free)) ? s : s + it.final_line_price; }, 0);
+    var q = cart.items.reduce(function (s, it) { return (it.gift_card || it.selling_plan_allocation || (it.properties && it.properties._bf_free)) ? s : s + it.final_line_price; }, 0);
     var msg;
     if (q >= T2) msg = '🎉 You unlocked it all: <b>FREE chicken breast + 2 FREE filets!</b>';
     else if (q >= T1) msg = '✅ <b>FREE chicken unlocked!</b> Add <b>' + fmt(T2 - q) + '</b> more for <b>2 FREE filets</b>';
