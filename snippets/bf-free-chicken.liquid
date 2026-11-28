@@ -4,50 +4,76 @@
   Black Friday  (Nov 27 12:00 AM - Nov 28 11:59 PM EST):
     $299+ -> FREE 10lb Chicken Breast ($0 gift product)
     $499+ -> + FREE (2) Filet Steaks  ($0 gift option)
-  All gifts are $0 items, so subscriptions count toward the minimums and no code is needed.
   Cyber Monday  (Nov 30 12:00 AM - Nov 30 11:59 PM EST):
-    $199+ -> FREE (2) Whole Chickens  (code CYBERMONDAY)
-  Gifts are auto-added as one-time items and the code is applied for the customer.
+    $299+ -> FREE shipping (automatic Shopify discount) + customer PICKS one gift:
+             (2) Whole Chickens  OR  (2) Filet Mignon Steaks
+    A picker pops up when the cart reaches $299 and again before checkout if no gift was chosen.
+  All gifts are $0 items, so subscriptions count toward the minimums and no code is needed.
+  Gifts are one-time items: they ship once with this order, never on subscription renewals.
   Under the minimum, or once a campaign ends, the free gift is removed again.
   If the customer deletes a free gift themselves, it is not re-added.
   Dates/amounts: edit CAMPAIGNS below. Turn off: set bf_enabled to false.
 {% endcomment %}
 {%- assign bf_enabled = true -%}
-{%- comment -%} Hide the "BLACK FRIDAY GIFT" variant everywhere customers pick options {%- endcomment -%}
-<style>.basel-swatch[data-value^="black-friday-gift"],[data-value^="black-friday-gift"],[data-option-value^="BLACK FRIDAY GIFT"],[data-value^="cyber-monday-gift"],[data-option-value^="CYBER MONDAY GIFT"]{display:none!important}</style>
+{%- comment -%} Hide the gift variants everywhere customers pick options {%- endcomment -%}
+<style>.basel-swatch[data-value^="black-friday-gift"],[data-value^="black-friday-gift"],[data-option-value^="BLACK FRIDAY GIFT"],[data-value^="cyber-monday-gift"],[data-option-value^="CYBER MONDAY GIFT"],[data-value^="free-gift"],[data-option-value^="FREE GIFT"]{display:none!important}</style>
 <script>
 (function(){
-  function strip(root){ if(root && root.querySelectorAll) root.querySelectorAll('option').forEach(function(o){ if(/^\s*(BLACK FRIDAY|CYBER MONDAY) GIFT/i.test(o.textContent)) o.remove(); }); }
+  function strip(root){ if(root && root.querySelectorAll) root.querySelectorAll('option').forEach(function(o){ if(/^\s*(BLACK FRIDAY|CYBER MONDAY|FREE) GIFT/i.test(o.textContent)) o.remove(); }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ strip(document); }); else strip(document);
   try { new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1) strip(n.tagName==='OPTION'?n.parentNode:n); }); }); }).observe(document.documentElement,{childList:true,subtree:true}); } catch(e){}
 })();
 </script>
 {%- if bf_enabled -%}
+{%- assign ff_chk_img = all_products['whole-free-range-chicken'].featured_image -%}
+{%- assign ff_fil_img = all_products['steak-grill-packs-filet-tenderloin'].featured_image -%}
 <style>
   .bfc-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);z-index:2147483000;background:#13294b;color:#fff;font:600 15px/1.35 Karla,Arial,sans-serif;padding:14px 20px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100vw - 32px);text-align:center;transition:transform .35s ease;border-bottom:4px solid #b22234}
   .bfc-toast.is-on{transform:translate(-50%,0)}
-  .bfc-bar{background:#13294b;color:#fff;font:600 15px/1.4 Karla,Arial,sans-serif;padding:12px 16px;border-radius:8px;margin:0 0 18px;text-align:center;border-bottom:4px solid #b22234}
-  .bfc-bar b{color:#ffd36b}
-  .bfc-bar__track{height:6px;background:rgba(255,255,255,.2);border-radius:6px;margin-top:8px;overflow:hidden}
-  .bfc-bar__fill{height:100%;background:#ffd36b;border-radius:6px;transition:width .4s}
+  .bfc-toast a{color:#ffd36b;text-decoration:underline;cursor:pointer}
+  /* Cyber Monday gift picker */
+  .ffp{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,4,20,.78);backdrop-filter:blur(3px);opacity:0;transition:opacity .25s}
+  .ffp.is-on{opacity:1}
+  .ffp__box{position:relative;width:100%;max-width:560px;max-height:calc(100vh - 32px);overflow:auto;background:#0d0b1f;color:#fff;border-radius:16px;padding:28px 22px 22px;text-align:center;border:2px solid #22f2ff;box-shadow:0 0 0 1px rgba(255,43,214,.5),0 0 28px rgba(34,242,255,.45),0 0 60px rgba(255,43,214,.3);font-family:Karla,Arial,sans-serif}
+  .ffp__x{position:absolute;top:8px;right:10px;width:36px;height:36px;border:0;background:transparent;color:#fff;font-size:26px;line-height:1;cursor:pointer;opacity:.7}
+  .ffp__x:hover{opacity:1}
+  .ffp__k{display:inline-block;font:800 12px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#ff2bd6;text-shadow:0 0 8px rgba(255,43,214,.8);margin-bottom:10px}
+  .ffp__t{display:block;font:900 clamp(24px,6vw,32px)/1.1 Orbitron,Oswald,Impact,sans-serif;text-transform:uppercase;color:#eaffff;text-shadow:0 0 6px #22f2ff,0 0 18px rgba(34,242,255,.8)}
+  .ffp__s{margin:10px 0 18px;font-size:16px;line-height:1.4;color:#d9dcff}
+  .ffp__s b{color:#7dfbff}
+  .ffp__opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ffp__o{display:flex;flex-direction:column;background:#171433;border:2px solid #3a3570;border-radius:12px;padding:0 0 12px;overflow:hidden;cursor:pointer;color:#fff;font:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
+  .ffp__o:hover,.ffp__o:focus-visible{border-color:#22f2ff;box-shadow:0 0 18px rgba(34,242,255,.5);transform:translateY(-2px);outline:0}
+  .ffp__o.is-on{border-color:#ff2bd6;box-shadow:0 0 18px rgba(255,43,214,.6)}
+  .ffp__o img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#222}
+  .ffp__n{display:block;font:700 16px/1.25 Karla,Arial,sans-serif;margin:10px 8px 8px}
+  .ffp__b{display:inline-block;margin:0 10px;padding:10px 8px;border-radius:6px;background:#ff2bd6;color:#fff;font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 0 12px rgba(255,43,214,.6)}
+  .ffp__o.is-on .ffp__b{background:#22f2ff;color:#0d0b1f}
+  .ffp__later{display:inline-block;margin-top:16px;background:none;border:0;color:#a9acd6;text-decoration:underline;font:14px Karla,Arial,sans-serif;cursor:pointer}
+  @media (max-width:420px){.ffp__box{padding:24px 14px 16px}.ffp__opts{gap:10px}.ffp__n{font-size:14px}}
 </style>
 <script>
 (function () {
   if (window.__bfChicken) return; window.__bfChicken = true;
   // Each campaign runs only inside its own time window (UTC). Times = midnight / 11:59 PM EST.
+  //  gifts:  added automatically once the cart reaches min
+  //  choice: the customer picks ONE option once the cart reaches min
   var CAMPAIGNS = [
     { name: 'Black Friday', code: 'BLACKFRIDAY', start: '2026-11-27T05:00:00Z', end: '2026-11-29T04:59:59Z', gifts: [
       { v: 58372728225975, min: 29900, key: 'bfChickenRemoved', name: '10 lbs of Chicken Breast', prop: 'FREE with $299+ order' },
       { v: 58334916772023, min: 49900, key: 'bfFiletRemoved', name: '(2) Filet Mignon Steaks', prop: 'FREE with $499+ order' }
     ] },
-    { name: 'Cyber Monday', code: 'CYBERMONDAY', start: '2026-11-30T05:00:00Z', end: '2026-12-01T04:59:59Z', gifts: [
-      { v: 58335232819383, min: 19900, key: 'cmChickenRemoved', name: '(2) Whole Chickens', prop: 'FREE with $199+ order' }
-    ] }
+    { name: 'Cyber Monday', code: 'CYBERMONDAY', start: '2026-11-30T05:00:00Z', end: '2026-12-01T04:59:59Z', gifts: [],
+      choice: { min: 29900, key: 'cmGiftRemoved', pick: 'ffCmPick', prop: 'FREE with $299+ order', perk: 'FREE shipping', options: [
+        { v: 58335232819383, name: '(2) Whole Chickens', img: {{ ff_chk_img | image_url: width: 400 | json }} },
+        { v: 58334916772023, name: '(2) Filet Mignon Steaks', img: {{ ff_fil_img | image_url: width: 400 | json }} }
+      ] } }
   ];
-  var busy = false, timer = null, own = 0;
+  var busy = false, again = false, timer = null, own = 0;
   var CART_RE = /\/cart\/(add|change|update|clear)(\.js|\.json)?/;
 
   function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return ss(k, v); } }
   function req(url, body) {
     own++;
     return fetch(url, { method: body ? 'POST' : 'GET', credentials: 'same-origin',
@@ -64,12 +90,15 @@
     return null;
   }
   function isOurFree(it) { return it.properties && it.properties._bf_free; }
+  // A gift line tagged for another campaign (e.g. a Black Friday filet left in the cart on Cyber Monday)
+  function staleTag(it, camp) { var f = it.properties && it.properties['Free Gift']; return !!(f && camp && String(f).indexOf(camp.name) !== 0); }
   function codes(cart) { return (cart.discount_codes || []).map(function (d) { return d.code; }); }
   function toast(msg) {
     var t = document.createElement('div'); t.className = 'bfc-toast'; t.innerHTML = msg;
     document.body.appendChild(t);
     requestAnimationFrame(function () { t.classList.add('is-on'); });
-    setTimeout(function () { t.classList.remove('is-on'); setTimeout(function () { t.remove(); }, 400); }, 5000);
+    setTimeout(function () { t.classList.remove('is-on'); setTimeout(function () { t.remove(); }, 400); }, 6000);
+    return t;
   }
   function refreshUI(cart) {
     if (/^\/cart\/?$/.test(location.pathname)) { location.reload(); return; }
@@ -78,29 +107,99 @@
     try { document.dispatchEvent(new CustomEvent('cart:refresh')); } catch (e) {}
   }
 
+  // ---------- Gift picker (Cyber Monday) ----------
+  var picker = null, afterPick = null;
+  function optName(ch, v) { for (var i = 0; i < ch.options.length; i++) if (ch.options[i].v === v) return ch.options[i].name; return 'gift'; }
+  function closePicker(chose) {
+    if (!picker) return;
+    var p = picker; picker = null; p.classList.remove('is-on'); setTimeout(function () { p.remove(); }, 250);
+    document.removeEventListener('keydown', escClose);
+    var go = afterPick; afterPick = null;
+    if (!chose) go = null;
+    return go;
+  }
+  function escClose(e) { if (e.key === 'Escape') closePicker(false); }
+  function openPicker(opts) {
+    opts = opts || {};
+    var camp = active(), ch = camp && camp.choice;
+    if (!ch || picker) return;
+    afterPick = opts.then || null;
+    var cur = +ls(ch.pick) || 0;
+    var el = document.createElement('div'); el.className = 'ffp'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-labelledby', 'ffp-t');
+    var html = '<div class="ffp__box"><button type="button" class="ffp__x" aria-label="Close" data-ffp-close>&times;</button>' +
+      '<span class="ffp__k">' + camp.name + ' deal unlocked</span>' +
+      '<span class="ffp__t" id="ffp-t">Pick your FREE gift</span>' +
+      '<p class="ffp__s">Your order qualifies for <b>' + ch.perk + '</b> + a free gift. Choose one:</p><div class="ffp__opts">';
+    ch.options.forEach(function (o) {
+      html += '<button type="button" class="ffp__o' + (o.v === cur ? ' is-on' : '') + '" data-ffp-pick="' + o.v + '">' +
+        (o.img ? '<img src="' + o.img + '" alt="" loading="lazy">' : '') +
+        '<span class="ffp__n">FREE ' + o.name + '</span><span class="ffp__b">' + (o.v === cur ? 'Selected ✓' : 'Choose this') + '</span></button>';
+    });
+    html += '</div><button type="button" class="ffp__later" data-ffp-close>' + (opts.then ? 'Continue without a free gift' : 'Decide later') + '</button></div>';
+    el.innerHTML = html;
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ffp-pick]');
+      if (b) { pickGift(+b.getAttribute('data-ffp-pick'), true); return; }
+      if (e.target === el || e.target.closest('[data-ffp-close]')) {
+        if (opts.then) ss('ffPickSkip', '1');   // they chose to go on without a gift
+        var go = afterPick; closePicker(false); if (opts.then && go) go();
+      }
+    });
+    document.body.appendChild(el); picker = el;
+    document.addEventListener('keydown', escClose);
+    requestAnimationFrame(function () { el.classList.add('is-on'); var f = el.querySelector('.ffp__o'); if (f) f.focus(); });
+  }
+  function pickGift(v, fromPicker) {
+    var camp = active(), ch = camp && camp.choice; if (!ch) return Promise.resolve();
+    ls(ch.pick, String(v)); ss(ch.key, null); ss('ffPickSkip', null);
+    var go = fromPicker ? closePicker(true) : null;
+    try { document.dispatchEvent(new CustomEvent('ff:giftpick', { detail: { variant: v } })); } catch (e) {}
+    return runSync().then(function () { if (go) go(); });
+  }
+  window.ffGift = {
+    open: function () { openPicker(); },
+    pick: function (v) { return pickGift(+v, false); },
+    current: function () { var c = active(); return c && c.choice ? (+ls(c.choice.pick) || 0) : 0; },
+    campaign: function () { return active(); }
+  };
+
+  // Before checkout: if the cart qualifies but no gift was chosen yet, ask first.
+  function goCheckout(el) {
+    return function () { if (el && el.form && el.name === 'checkout') { window.__ffPass = true; el.click(); } else location.href = '/checkout'; };
+  }
+  document.addEventListener('click', function (e) {
+    if (window.__ffPass) { window.__ffPass = false; return; }
+    var el = e.target.closest && e.target.closest('[name="checkout"],a[href^="/checkout"],a[href*="myshopify.com/checkout"],.checkout-button,.cc__bar-go');
+    if (!el || !window.__ffNeedPick || ss('ffPickSkip') === '1') return;
+    e.preventDefault(); e.stopPropagation();
+    openPicker({ then: goCheckout(el) });
+  }, true);
+
+  // ---------- Cart sync ----------
   function sync() {
-    if (busy) return; busy = true;
-    req('/cart.js').then(function (cart) {
+    return req('/cart.js').then(function (cart) {
       var camp = active();
       var gifts = camp ? camp.gifts : [];
-      var giftIds = gifts.map(function (g) { return g.v; });
+      var ch = camp && camp.choice;
+      var chIds = ch ? ch.options.map(function (o) { return o.v; }) : [];
+      var giftIds = gifts.map(function (g) { return g.v; }).concat(chIds);
       // Gifts are $0 items, so everything counts toward the minimum - subscriptions included.
-      // A gift is a one-time item: it ships once with this order and never repeats on renewals.
       var q = cart.items.reduce(function (s, it) { return (giftIds.indexOf(it.variant_id) > -1 || isOurFree(it) || it.gift_card) ? s : s + it.final_line_price; }, 0);
       var adds = [], removes = [], added = [], removed = [];
       window.__bfLast = window.__bfLast || {};
 
       // Every $0 gift item counts as a gift, however it got into the cart (even added by hand).
       var allGiftIds = [];
-      CAMPAIGNS.forEach(function (c) { c.gifts.forEach(function (g) { allGiftIds.push(g.v); }); });
+      CAMPAIGNS.forEach(function (c) { c.gifts.forEach(function (g) { allGiftIds.push(g.v); }); if (c.choice) c.choice.options.forEach(function (o) { allGiftIds.push(o.v); }); });
       var qtyFix = [];
-      // Gifts from a campaign that isn't running (or old tagged items) -> remove
+      // Gifts from a campaign that isn't running (or tagged for another campaign) -> remove
       cart.items.forEach(function (it) {
-        if ((isOurFree(it) || allGiftIds.indexOf(it.variant_id) > -1) && giftIds.indexOf(it.variant_id) === -1) removes.push(it.key);
+        if ((isOurFree(it) || allGiftIds.indexOf(it.variant_id) > -1) && (giftIds.indexOf(it.variant_id) === -1 || staleTag(it, camp))) removes.push(it.key);
       });
+      function lineOf(v) { return cart.items.filter(function (it) { return it.variant_id === v && !staleTag(it, camp); }); }
 
       gifts.forEach(function (g) {
-        var lines = cart.items.filter(function (it) { return it.variant_id === g.v; });
+        var lines = lineOf(g.v);
         if (q >= g.min) {
           if (window.__bfLast[g.v] && !lines.length) ss(g.key, '1');      // customer deleted it
           if (lines.length) ss(g.key, null);
@@ -115,34 +214,65 @@
         }
       });
 
+      var needPick = false;
+      if (ch) {
+        var cl = [];
+        chIds.forEach(function (v) { cl = cl.concat(lineOf(v)); });
+        if (q >= ch.min) {
+          if (window.__bfLast.choice && !cl.length) ss(ch.key, '1');       // customer deleted it
+          if (cl.length) ss(ch.key, null);
+          var pick = +ls(ch.pick) || 0;
+          if (chIds.indexOf(pick) === -1) pick = 0;
+          var want = pick || (cl.length ? cl[0].variant_id : 0);
+          var keep = null;
+          // Only ONE gift: keep the chosen one, remove anything else
+          cl.forEach(function (it) { if (!keep && it.variant_id === want) keep = it; else removes.push(it.key); });
+          if (keep && keep.quantity > 1) qtyFix.push(keep.key);
+          if (!keep && ss(ch.key) !== '1') {
+            if (want) { adds.push({ id: want, quantity: 1, properties: { _bf_free: '1', 'Free Gift': camp.name + ' - ' + ch.prop } }); added.push(optName(ch, want)); }
+            else needPick = true;
+          }
+        } else if (cl.length) {
+          cl.forEach(function (it) { removes.push(it.key); });
+          removed.push(optName(ch, cl[0].variant_id));
+        }
+      }
+      window.__ffNeedPick = needPick;
+
       var steps = Promise.resolve(), changed = adds.length || removes.length || qtyFix.length;
       removes.forEach(function (k) { steps = steps.then(function () { return req('/cart/change.js', { id: k, quantity: 0 }); }); });
       qtyFix.forEach(function (k) { steps = steps.then(function () { return req('/cart/change.js', { id: k, quantity: 1 }); }); });
       if (adds.length) steps = steps.then(function () { return req('/cart/add.js', { items: adds }); });
       // Drop codes from campaigns that aren't running (e.g. BLACKFRIDAY on Cyber Monday)
       var allCodes = CAMPAIGNS.map(function (c) { return c.code; });
-      var keep = codes(cart).filter(function (k) { return allCodes.indexOf(k) === -1 || (camp && k === camp.code); });
-      if (keep.length !== codes(cart).length) {
-        steps = steps.then(function () { return req('/cart/update.js', { discount: keep.join(',') }); });
+      var keepCodes = codes(cart).filter(function (k) { return allCodes.indexOf(k) === -1 || (camp && k === camp.code); });
+      if (keepCodes.length !== codes(cart).length) {
+        steps = steps.then(function () { return req('/cart/update.js', { discount: keepCodes.join(',') }); });
         changed = true;
       }
-      if (camp) {
-        var codeGift = gifts.filter(function (g) { return g.code; })[0];
-        var codeGiftIn = codeGift && (adds.some(function (a) { return a.id === codeGift.v; }) || cart.items.some(function (it) { return it.variant_id === codeGift.v; }));
-        if (codeGiftIn && q >= codeGift.min && codes(cart).indexOf(camp.code) === -1) {
-          steps = steps.then(function () { return req('/cart/update.js', { discount: keep.concat(camp.code).join(',') }); });
-          changed = true;
-        }
-      }
       return steps.then(function () { return changed ? req('/cart.js') : cart; }).then(function (c) {
-        if (added.length) toast('🎉 Your <b>FREE ' + added.join(' + ') + '</b> ' + (added.length > 1 ? 'were' : 'was') + ' added!<br><small>' + camp.name + ' deal</small>');
+        if (added.length) {
+          var t = ch
+            ? toast('🎉 <b>FREE ' + added.join(' + ') + '</b> added + <b>' + ch.perk + '</b> unlocked!<br><small>' + camp.name + ' deal · <a data-ffp-open>Change gift</a></small>')
+            : toast('🎉 Your <b>FREE ' + added.join(' + ') + '</b> ' + (added.length > 1 ? 'were' : 'was') + ' added!<br><small>' + camp.name + ' deal</small>');
+          var a = t.querySelector('[data-ffp-open]'); if (a) a.addEventListener('click', function () { openPicker(); });
+        }
         else if (removed.length) toast('Your cart dropped below the ' + camp.name + ' minimum, so the free ' + removed.join(' + ') + ' ' + (removed.length > 1 ? 'were' : 'was') + ' removed.');
         if (changed) refreshUI(c);
         gifts.forEach(function (g) { window.__bfLast[g.v] = c.items.some(function (it) { return it.variant_id === g.v; }); });
+        if (ch) window.__bfLast.choice = c.items.some(function (it) { return chIds.indexOf(it.variant_id) > -1; });
+        // First time the cart qualifies without a gift: ask which one they want
+        if (needPick && !picker && ss('ffPickAsked') !== '1') { ss('ffPickAsked', '1'); openPicker(); }
+        try { document.dispatchEvent(new CustomEvent('ff:giftsync', { detail: { qualifies: !!(ch && q >= ch.min), needPick: needPick } })); } catch (e) {}
       });
-    }).catch(function () {}).finally(function () { busy = false; });
+    });
   }
-  function later() { clearTimeout(timer); timer = setTimeout(sync, 500); }
+  function runSync() {
+    if (busy) { again = true; return Promise.resolve(); }
+    busy = true;
+    return sync().catch(function () {}).finally(function () { busy = false; if (again) { again = false; later(); } });
+  }
+  function later() { clearTimeout(timer); timer = setTimeout(runSync, 500); }
   function watch() { if (own === 0) later(); }
   if (window.fetch) {
     var of = window.fetch;
@@ -160,7 +290,7 @@
     if (x.__bfUrl && CART_RE.test(x.__bfUrl)) x.addEventListener('load', watch);
     return os.apply(this, arguments);
   };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync); else sync();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', runSync); else runSync();
 })();
 </script>
 {%- endif -%}

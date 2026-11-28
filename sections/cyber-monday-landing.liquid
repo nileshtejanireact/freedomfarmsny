@@ -1,0 +1,494 @@
+{%- comment -%}
+  Cyber Monday landing page (SMS destination).
+  Deal: $299+ = FREE shipping + customer picks a FREE gift: (2) whole chickens OR (2) filet mignon steaks.
+  The gift is added by snippets/bf-free-chicken.liquid (window.ffGift); free shipping is an automatic Shopify discount.
+{%- endcomment -%}
+{%- assign sid = section.id -%}
+{%- assign s = section.settings -%}
+{%- assign t1 = s.min_amount | times: 100 -%}
+{%- capture hero_img -%}{%- if s.hero_image != blank -%}{{ s.hero_image | image_url: width: 2000 }}{%- else -%}{{ 'farm-hero.png' | asset_url }}{%- endif -%}{%- endcapture -%}
+{%- assign skip_handles = 'chicken-breast-copy' | split: ',' -%}
+{%- assign g1 = all_products[s.gift1_handle] -%}
+{%- assign g2 = all_products[s.gift2_handle] -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+
+<div class="cml cml-{{ sid }}" id="cml-{{ sid }}" data-start="{{ s.start | escape }}" data-end="{{ s.end | escape }}" data-t1="{{ t1 }}">
+<style>
+  .cml-{{ sid }}{--bg:#0a0820;--bg2:#120f2e;--card:#171433;--line:#2c2860;--cyan:#22f2ff;--pink:#ff2bd6;--lime:#b6ff3b;--ink:#eef0ff;--muted:#a9acd6;
+    --glowc:0 0 4px #fff,0 0 10px var(--cyan),0 0 22px var(--cyan),0 0 44px rgba(34,242,255,.6);
+    --glowp:0 0 4px #fff,0 0 10px var(--pink),0 0 22px var(--pink),0 0 44px rgba(255,43,214,.6);
+    width:100vw;margin-left:calc(50% - 50vw);background:var(--bg);color:var(--ink);font-family:Karla,Arial,sans-serif;overflow:hidden}
+  .cml-{{ sid }} *{box-sizing:border-box}
+  .cml-{{ sid }} .cml__in{max-width:1200px;margin:0 auto;padding:0 16px}
+  .cml-{{ sid }} .cml__h{font-family:Orbitron,Oswald,Impact,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.03em;line-height:1.05;display:block}
+  .cml-{{ sid }} .cml__btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--pink);color:#fff;font:800 15px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:17px 28px;border-radius:8px;text-decoration:none;border:0;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 0 18px rgba(255,43,214,.7),inset 0 0 0 2px rgba(255,255,255,.25)}
+  .cml-{{ sid }} .cml__btn:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,43,214,.95),inset 0 0 0 2px rgba(255,255,255,.4);color:#fff}
+  .cml-{{ sid }} .cml__btn--ghost{background:transparent;color:var(--cyan);box-shadow:0 0 14px rgba(34,242,255,.5),inset 0 0 0 2px var(--cyan)}
+  .cml-{{ sid }} .cml__btn--ghost:hover{color:var(--cyan);box-shadow:0 0 26px rgba(34,242,255,.8),inset 0 0 0 2px var(--cyan)}
+
+  /* HERO */
+  .cml-{{ sid }} .cml__hero{position:relative;text-align:center;padding:66px 0 58px;background:var(--bg) url('{{ hero_img }}') center/cover no-repeat}
+  .cml-{{ sid }} .cml__hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,8,32,.9),rgba(10,8,32,.8) 50%,rgba(10,8,32,.97)),repeating-linear-gradient(0deg,rgba(34,242,255,.05) 0 1px,transparent 1px 4px)}
+  .cml-{{ sid }} .cml__hero:after{content:"";position:absolute;left:-10%;right:-10%;bottom:-1px;height:46%;background:linear-gradient(transparent,rgba(255,43,214,.16)),repeating-linear-gradient(90deg,rgba(34,242,255,.22) 0 1px,transparent 1px 70px);transform:perspective(300px) rotateX(55deg);transform-origin:bottom;pointer-events:none}
+  .cml-{{ sid }} .cml__hero>*{position:relative;z-index:1}
+  .cml-{{ sid }} .cml__kick{display:inline-block;color:var(--cyan);border:2px solid var(--cyan);font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;border-radius:40px;margin-bottom:22px;box-shadow:0 0 12px rgba(34,242,255,.6),inset 0 0 10px rgba(34,242,255,.3);text-shadow:0 0 6px var(--cyan)}
+  .cml-{{ sid }} .cml__title{font-size:clamp(48px,10.5vw,128px);color:#fff;text-shadow:var(--glowp);animation:cmlFlicker 4s infinite}
+  .cml-{{ sid }} .cml__title span{display:block;color:#fff;text-shadow:var(--glowc)}
+  @keyframes cmlFlicker{0%,18%,22%,25%,53%,57%,100%{opacity:1}20%,24%,55%{opacity:.55}}
+  .cml-{{ sid }} .cml__sub{font:600 clamp(18px,2.6vw,26px)/1.35 Karla,Arial,sans-serif;max-width:780px;margin:20px auto 0;color:var(--ink)}
+  .cml-{{ sid }} .cml__sub p{margin:0;color:var(--ink)!important}
+  .cml-{{ sid }} .cml__sub b{color:var(--lime);text-shadow:0 0 10px rgba(182,255,59,.6)}
+  .cml-{{ sid }} .cml__cdl{font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);text-shadow:0 0 8px var(--pink);margin-top:26px}
+  .cml-{{ sid }} .cml__cd{display:flex;justify-content:center;gap:10px;margin:14px 0 8px}
+  .cml-{{ sid }} .cml__cd div{background:rgba(10,8,32,.7);border:1px solid var(--cyan);border-radius:8px;min-width:78px;padding:10px 6px;box-shadow:0 0 12px rgba(34,242,255,.4),inset 0 0 12px rgba(34,242,255,.15)}
+  .cml-{{ sid }} .cml__cd b{display:block;font:900 32px/1 Orbitron,Oswald,Impact,sans-serif;color:#fff;text-shadow:0 0 8px var(--cyan)}
+  .cml-{{ sid }} .cml__cd span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .cml-{{ sid }} .cml__cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:28px}
+  .cml-{{ sid }} .cml__line{height:6px;background:linear-gradient(180deg,#ff2b4a 0 33%,#fff 33% 66%,#2b6bff 66%);box-shadow:0 0 10px rgba(255,43,74,.8),0 0 18px rgba(43,107,255,.7)}
+  .cml-{{ sid }} .cml__flag{display:block;width:clamp(120px,16vw,190px);height:auto;margin:0 auto 18px;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,255,255,.35));animation:cmlWave 3.2s ease-in-out infinite;transform-origin:left center}
+  .cml-{{ sid }} .cml__flag .r{stroke:#ff2b4a;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 3px #ff2b4a) drop-shadow(0 0 8px #ff2b4a)}
+  .cml-{{ sid }} .cml__flag .w{stroke:#fff;stroke-width:2.5;stroke-linecap:round;opacity:.85;filter:drop-shadow(0 0 4px #fff)}
+  .cml-{{ sid }} .cml__flag .b{fill:rgba(43,107,255,.22);stroke:#2b6bff;stroke-width:3;filter:drop-shadow(0 0 4px #2b6bff) drop-shadow(0 0 10px #2b6bff)}
+  .cml-{{ sid }} .cml__flag .s{fill:#fff;filter:drop-shadow(0 0 3px #fff)}
+  .cml-{{ sid }} .cml__flag .p{stroke:#cfd6e3;stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 4px #fff)}
+  @keyframes cmlWave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-2deg) scaleX(.98)}}
+  .cml-{{ sid }} .cml__kick .cml__us{display:inline-block;margin-right:8px;color:#ff2b4a;text-shadow:0 0 6px #ff2b4a}
+
+  /* DEAL */
+  .cml-{{ sid }} .cml__deal{padding:58px 0 28px}
+  .cml-{{ sid }} .cml__eyebrow{font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);text-shadow:0 0 8px rgba(255,43,214,.7);text-align:center;display:block}
+  .cml-{{ sid }} .cml__sec-t{font-size:clamp(28px,4.6vw,48px);color:#fff;text-shadow:0 0 12px rgba(34,242,255,.55);text-align:center;margin:12px 0 30px}
+  .cml-{{ sid }} .cml__offer{display:grid;grid-template-columns:1fr 1.6fr;gap:22px;align-items:stretch}
+  .cml-{{ sid }} .cml__box{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:28px 22px;text-align:center}
+  .cml-{{ sid }} .cml__box--spend{border-color:var(--cyan);box-shadow:0 0 22px rgba(34,242,255,.3),inset 0 0 22px rgba(34,242,255,.08);display:flex;flex-direction:column;justify-content:center}
+  .cml-{{ sid }} .cml__spend{font:700 14px/1 Karla,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .cml-{{ sid }} .cml__amt{font-size:clamp(56px,7vw,80px);color:#fff;text-shadow:var(--glowc);margin:10px 0 14px}
+  .cml-{{ sid }} .cml__perk{display:flex;flex-direction:column;gap:10px;align-items:center}
+  .cml-{{ sid }} .cml__perk span{display:inline-block;font:800 15px/1.2 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:8px;border:2px solid var(--lime);color:var(--lime);text-shadow:0 0 8px rgba(182,255,59,.6);box-shadow:0 0 12px rgba(182,255,59,.3)}
+  .cml-{{ sid }} .cml__perk i{font-style:normal;color:var(--muted);font-size:14px}
+  .cml-{{ sid }} .cml__box--gift{border-color:var(--pink);box-shadow:0 0 22px rgba(255,43,214,.3),inset 0 0 22px rgba(255,43,214,.08)}
+  .cml-{{ sid }} .cml__gt{font-size:clamp(20px,2.6vw,26px);color:#fff;margin-bottom:6px}
+  .cml-{{ sid }} .cml__gs{color:var(--muted);margin:0 0 18px;font-size:15px}
+  .cml-{{ sid }} .cml__gifts{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+  .cml-{{ sid }} .cml__or{font:900 18px/1 Orbitron,Oswald,Impact,sans-serif;color:var(--pink);text-shadow:0 0 10px var(--pink)}
+  .cml-{{ sid }} .cml__g{display:flex;flex-direction:column;background:var(--bg2);border:2px solid var(--line);border-radius:12px;overflow:hidden;padding:0 0 14px;cursor:pointer;color:var(--ink);font:inherit;text-align:center;transition:border-color .15s,box-shadow .15s,transform .15s}
+  .cml-{{ sid }} .cml__g:hover,.cml-{{ sid }} .cml__g:focus-visible{border-color:var(--cyan);box-shadow:0 0 18px rgba(34,242,255,.5);transform:translateY(-2px);outline:0}
+  .cml-{{ sid }} .cml__g.is-on{border-color:var(--pink);box-shadow:0 0 22px rgba(255,43,214,.7)}
+  .cml-{{ sid }} .cml__g img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#222}
+  .cml-{{ sid }} .cml__gn{display:block;font:700 17px/1.25 Karla,Arial,sans-serif;margin:12px 10px 4px}
+  .cml-{{ sid }} .cml__gv{display:block;color:var(--muted);font-size:13px;margin-bottom:10px}
+  .cml-{{ sid }} .cml__gb{display:inline-block;margin:0 12px;padding:10px 8px;border-radius:6px;background:transparent;border:2px solid var(--cyan);color:var(--cyan);font:800 12px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+  .cml-{{ sid }} .cml__g.is-on .cml__gb{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 0 12px rgba(255,43,214,.7)}
+  .cml-{{ sid }} .cml__gnote{margin:14px 0 0;color:var(--muted);font-size:14px;min-height:20px}
+  .cml-{{ sid }} .cml__gnote b{color:var(--lime)}
+  .cml-{{ sid }} .cml__auto{text-align:center;margin:22px auto 0;max-width:720px;color:var(--muted);font-size:16px}
+  .cml-{{ sid }} .cml__auto p{margin:0;color:inherit}
+  .cml-{{ sid }} .cml__auto b{color:#fff}
+
+  /* METER */
+  .cml-{{ sid }} .cml__meter{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px 18px;margin:28px auto 0;max-width:820px}
+  .cml-{{ sid }} .cml__mtxt{font:600 16px/1.35 Karla,Arial,sans-serif;text-align:center}
+  .cml-{{ sid }} .cml__mtxt b{color:var(--cyan)}
+  .cml-{{ sid }} .cml__mtxt a{color:var(--pink);text-decoration:underline;cursor:pointer}
+  .cml-{{ sid }} .cml__track{position:relative;height:12px;background:rgba(255,255,255,.1);border-radius:12px;margin:14px 0 0;overflow:hidden}
+  .cml-{{ sid }} .cml__fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink));box-shadow:0 0 12px var(--pink);border-radius:12px;transition:width .5s}
+  .cml-{{ sid }} .cml__sticky{position:fixed;left:0;right:0;bottom:0;z-index:2147482000;background:var(--bg);border-top:2px solid var(--pink);box-shadow:0 -4px 20px rgba(255,43,214,.35);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:none;align-items:center;gap:12px;transform:translateY(110%);transition:transform .3s}
+  .cml-{{ sid }} .cml__sticky.is-on{transform:none}
+  .cml-{{ sid }} .cml__sticky .cml__mtxt{flex:1;text-align:left;font-size:14px}
+  .cml-{{ sid }} .cml__sticky>a{flex:none;background:var(--pink);color:#fff;font:800 12px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:12px 14px;border-radius:6px;text-decoration:none}
+
+  /* PRODUCT SECTIONS */
+  .cml-{{ sid }} .cml__nav{position:sticky;top:0;z-index:20;background:rgba(10,8,32,.95);border-bottom:1px solid var(--line);margin-top:40px}
+  .cml-{{ sid }} .cml__nav .cml__in{display:flex;gap:8px;justify-content:center;padding-top:10px;padding-bottom:10px;overflow-x:auto}
+  .cml-{{ sid }} .cml__nav a{flex:none;font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);text-decoration:none;padding:11px 18px;border:2px solid var(--cyan);border-radius:40px;box-shadow:0 0 8px rgba(34,242,255,.35)}
+  .cml-{{ sid }} .cml__nav a:hover{background:var(--cyan);color:var(--bg)}
+  .cml-{{ sid }} .cml__cat{padding:48px 0 8px;scroll-margin-top:70px}
+  .cml-{{ sid }} .cml__cat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;border-bottom:2px solid var(--pink);box-shadow:0 8px 12px -10px rgba(255,43,214,.7);padding-bottom:12px}
+  .cml-{{ sid }} .cml__cat-t{font-size:clamp(26px,4vw,42px);color:#fff;text-shadow:0 0 10px rgba(34,242,255,.6)}
+  .cml-{{ sid }} .cml__cat-s{color:var(--muted);margin-top:8px;font-size:16px}
+  .cml-{{ sid }} .cml__all{flex:none;color:var(--pink);font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+  .cml-{{ sid }} .cml__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .cml-{{ sid }} .cml__card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s}
+  .cml-{{ sid }} .cml__card:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 0 22px rgba(34,242,255,.35)}
+  .cml-{{ sid }} .cml__img{position:relative;display:block;aspect-ratio:1/1;background:#222}
+  .cml-{{ sid }} .cml__img img{width:100%;height:100%;object-fit:cover;display:block}
+  .cml-{{ sid }} .cml__tag{position:absolute;left:10px;top:10px;background:var(--pink);color:#fff;font:800 10px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:7px 9px;border-radius:4px;box-shadow:0 0 10px rgba(255,43,214,.7)}
+  .cml-{{ sid }} .cml__tag--lime{background:var(--lime);color:var(--bg);box-shadow:0 0 10px rgba(182,255,59,.7)}
+  .cml-{{ sid }} .cml__body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .cml-{{ sid }} .cml__name{font:700 15px/1.3 Karla,Arial,sans-serif;color:var(--ink);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:39px}
+  .cml-{{ sid }} .cml__name:hover{color:var(--cyan)}
+  .cml-{{ sid }} .cml__price{font:800 19px/1 Orbitron,Oswald,Impact,sans-serif;color:#fff}
+  .cml-{{ sid }} .cml__price s{font:400 14px/1 Karla,Arial,sans-serif;color:var(--muted);margin-left:6px}
+  .cml-{{ sid }} .cml__var{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:6px;font:14px Karla,Arial,sans-serif;background:var(--bg2);color:var(--ink)}
+  .cml-{{ sid }} .cml__add{margin-top:auto;width:100%;background:transparent;color:var(--cyan);border:2px solid var(--cyan);border-radius:6px;padding:12px 10px;font:800 13px/1 Orbitron,Oswald,Impact,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
+  .cml-{{ sid }} .cml__add:hover{background:var(--cyan);color:var(--bg);box-shadow:0 0 16px rgba(34,242,255,.7)}
+  .cml-{{ sid }} .cml__add.is-done{background:var(--lime);border-color:var(--lime);color:var(--bg)}
+  .cml-{{ sid }} .cml__cat--bundles{background:var(--bg2);margin-top:0;padding:48px 0 52px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+  /* HOW + FAQ */
+  .cml-{{ sid }} .cml__how{padding:56px 0}
+  .cml-{{ sid }} .cml__steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:st}
+  .cml-{{ sid }} .cml__step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 22px;text-align:center}
+  .cml-{{ sid }} .cml__step:before{counter-increment:st;content:counter(st);display:inline-flex;width:46px;height:46px;border-radius:50%;border:2px solid var(--pink);color:#fff;text-shadow:0 0 8px var(--pink);box-shadow:0 0 12px rgba(255,43,214,.6);align-items:center;justify-content:center;font:900 20px/1 Orbitron,Oswald,Impact,sans-serif;margin-bottom:12px}
+  .cml-{{ sid }} .cml__step .cml__h{font-size:18px;color:#fff;margin-bottom:8px}
+  .cml-{{ sid }} .cml__step p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+  .cml-{{ sid }} .cml__faq{max-width:820px;margin:44px auto 0}
+  .cml-{{ sid }} .cml__faq details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+  .cml-{{ sid }} .cml__faq summary{cursor:pointer;list-style:none;padding:18px 20px;font:700 17px/1.3 Karla,Arial,sans-serif;color:#fff;display:flex;justify-content:space-between;gap:12px}
+  .cml-{{ sid }} .cml__faq summary::-webkit-details-marker{display:none}
+  .cml-{{ sid }} .cml__faq summary:after{content:"+";font:900 20px/1 Orbitron,Oswald,Impact,sans-serif;color:var(--cyan)}
+  .cml-{{ sid }} .cml__faq details[open] summary:after{content:"–"}
+  .cml-{{ sid }} .cml__faq details p{margin:0;padding:0 20px 18px;color:var(--muted)!important;line-height:1.5}
+  .cml-{{ sid }} .cml__close{position:relative;text-align:center;padding:56px 0;background:linear-gradient(120deg,rgba(255,43,214,.22),rgba(34,242,255,.18));border-top:2px solid var(--pink)}
+  .cml-{{ sid }} .cml__close .cml__h{font-size:clamp(28px,4.6vw,50px);color:#fff;text-shadow:var(--glowp)}
+  .cml-{{ sid }} .cml__close p{font-size:18px;margin:14px 0 26px;color:var(--ink)!important}
+  .cml-{{ sid }} .cml__ended{display:none;background:var(--pink);color:#fff;text-align:center;padding:14px 16px;font-weight:700}
+
+  @media (prefers-reduced-motion:reduce){.cml-{{ sid }} .cml__title,.cml-{{ sid }} .cml__flag{animation:none}}
+  @media (max-width:980px){.cml-{{ sid }} .cml__grid{grid-template-columns:repeat(3,1fr)}.cml-{{ sid }} .cml__offer{grid-template-columns:1fr}}
+  @media (max-width:749px){
+    .cml-{{ sid }} .cml__hero{padding:46px 0 42px}
+    .cml-{{ sid }} .cml__kick{font-size:11px;letter-spacing:.12em;padding:8px 12px;white-space:nowrap}
+    .cml-{{ sid }} .cml__cd div{min-width:64px}
+    .cml-{{ sid }} .cml__cd b{font-size:24px}
+    .cml-{{ sid }} .cml__steps{grid-template-columns:1fr}
+    .cml-{{ sid }} .cml__box{padding:22px 14px}
+    .cml-{{ sid }} .cml__gifts{gap:8px}
+    .cml-{{ sid }} .cml__gn{font-size:14px}
+    .cml-{{ sid }} .cml__gb{font-size:11px;margin:0 8px}
+    .cml-{{ sid }} .cml__grid{grid-template-columns:repeat(2,1fr);gap:12px}
+    .cml-{{ sid }} .cml__body{padding:10px 10px 12px;gap:8px}
+    .cml-{{ sid }} .cml__name{font-size:14px;min-height:36px}
+    .cml-{{ sid }} .cml__add{padding:11px 6px;font-size:12px}
+    .cml-{{ sid }} .cml__cat-head{flex-direction:column;align-items:flex-start;gap:8px}
+    .cml-{{ sid }} .cml__nav .cml__in{justify-content:flex-start}
+    .cml-{{ sid }} .cml__sticky{display:flex}
+    .cml-{{ sid }}{padding-bottom:70px}
+  }
+</style>
+
+  <div class="cml__ended" data-ended>Our Cyber Monday deal has ended — thank you! Everything below is still available at our everyday farm prices.</div>
+
+  {%- comment -%} HERO {%- endcomment -%}
+  <section class="cml__hero">
+    <div class="cml__in">
+      <svg class="cml__flag" viewBox="0 0 194 100" aria-hidden="true" focusable="false"><line class="p" x1="4" y1="2" x2="4" y2="98"/><line class="r" x1="82" y1="8" x2="186" y2="8"/><line class="w" x1="82" y1="15" x2="186" y2="15"/><line class="r" x1="82" y1="22" x2="186" y2="22"/><line class="w" x1="82" y1="29" x2="186" y2="29"/><line class="r" x1="82" y1="36" x2="186" y2="36"/><line class="w" x1="82" y1="43" x2="186" y2="43"/><line class="r" x1="82" y1="50" x2="186" y2="50"/><line class="w" x1="8" y1="57" x2="186" y2="57"/><line class="r" x1="8" y1="64" x2="186" y2="64"/><line class="w" x1="8" y1="71" x2="186" y2="71"/><line class="r" x1="8" y1="78" x2="186" y2="78"/><line class="w" x1="8" y1="85" x2="186" y2="85"/><line class="r" x1="8" y1="92" x2="186" y2="92"/><rect class="b" x="8" y="4" width="74" height="51" rx="3"/><circle class="s" cx="15" cy="15.0" r="1.9"/><circle class="s" cx="27" cy="15.0" r="1.9"/><circle class="s" cx="39" cy="15.0" r="1.9"/><circle class="s" cx="51" cy="15.0" r="1.9"/><circle class="s" cx="63" cy="15.0" r="1.9"/><circle class="s" cx="75" cy="15.0" r="1.9"/><circle class="s" cx="21" cy="24.5" r="1.9"/><circle class="s" cx="33" cy="24.5" r="1.9"/><circle class="s" cx="45" cy="24.5" r="1.9"/><circle class="s" cx="57" cy="24.5" r="1.9"/><circle class="s" cx="69" cy="24.5" r="1.9"/><circle class="s" cx="15" cy="34.0" r="1.9"/><circle class="s" cx="27" cy="34.0" r="1.9"/><circle class="s" cx="39" cy="34.0" r="1.9"/><circle class="s" cx="51" cy="34.0" r="1.9"/><circle class="s" cx="63" cy="34.0" r="1.9"/><circle class="s" cx="75" cy="34.0" r="1.9"/><circle class="s" cx="21" cy="43.5" r="1.9"/><circle class="s" cx="33" cy="43.5" r="1.9"/><circle class="s" cx="45" cy="43.5" r="1.9"/><circle class="s" cx="57" cy="43.5" r="1.9"/><circle class="s" cx="69" cy="43.5" r="1.9"/><circle class="s" cx="15" cy="53.0" r="1.9"/><circle class="s" cx="27" cy="53.0" r="1.9"/><circle class="s" cx="39" cy="53.0" r="1.9"/><circle class="s" cx="51" cy="53.0" r="1.9"/><circle class="s" cx="63" cy="53.0" r="1.9"/><circle class="s" cx="75" cy="53.0" r="1.9"/></svg>
+      <span class="cml__kick"><span class="cml__us">★</span>{{ s.kicker | escape }}</span>
+      <span class="cml__h cml__title" role="heading" aria-level="1">{{ s.title_1 | escape }}<span>{{ s.title_2 | escape }}</span></span>
+      <div class="cml__sub">{{ s.subtitle }}</div>
+      <div class="cml__cdl" data-cd-label>Deal starts in</div>
+      <div class="cml__cd" data-cd aria-live="off">
+        <div><b data-d>00</b><span>Days</span></div><div><b data-h>00</b><span>Hours</span></div><div><b data-m>00</b><span>Mins</span></div><div><b data-s>00</b><span>Secs</span></div>
+      </div>
+      <div class="cml__cta">
+        <a class="cml__btn" href="#cml-bundles-{{ sid }}">Shop the deal</a>
+        <a class="cml__btn cml__btn--ghost" href="#cml-deal-{{ sid }}">Pick your gift</a>
+      </div>
+    </div>
+  </section>
+  <div class="cml__line" aria-hidden="true"></div>
+
+  {%- comment -%} DEAL {%- endcomment -%}
+  <section class="cml__deal" id="cml-deal-{{ sid }}">
+    <div class="cml__in">
+      <span class="cml__eyebrow">The Cyber Monday deal</span>
+      <span class="cml__h cml__sec-t" role="heading" aria-level="2">Free shipping + free meat. You pick.</span>
+      <div class="cml__offer">
+        <div class="cml__box cml__box--spend">
+          <div class="cml__spend">Spend</div>
+          <span class="cml__h cml__amt">${{ s.min_amount }}+</span>
+          <div class="cml__perk"><span>Free shipping</span><i>+</i><span>Free gift of your choice</span></div>
+        </div>
+        <div class="cml__box cml__box--gift">
+          <span class="cml__h cml__gt" role="heading" aria-level="3">Choose your free gift</span>
+          <p class="cml__gs">Pick one now — it's added to your cart at $0 when you hit ${{ s.min_amount }}.</p>
+          <div class="cml__gifts">
+            <button type="button" class="cml__g" data-pick="{{ s.gift1_variant }}">
+              {%- if g1.featured_image -%}<img src="{{ g1.featured_image | image_url: width: 500 }}" alt="{{ s.gift1_name | escape }}" loading="lazy" width="500" height="375">{%- endif -%}
+              <span class="cml__gn">{{ s.gift1_name | escape }}</span><span class="cml__gv">{{ s.gift1_value | escape }}</span><span class="cml__gb" data-pick-label>Choose this</span>
+            </button>
+            <span class="cml__or" aria-hidden="true">OR</span>
+            <button type="button" class="cml__g" data-pick="{{ s.gift2_variant }}">
+              {%- if g2.featured_image -%}<img src="{{ g2.featured_image | image_url: width: 500 }}" alt="{{ s.gift2_name | escape }}" loading="lazy" width="500" height="375">{%- endif -%}
+              <span class="cml__gn">{{ s.gift2_name | escape }}</span><span class="cml__gv">{{ s.gift2_value | escape }}</span><span class="cml__gb" data-pick-label>Choose this</span>
+            </button>
+          </div>
+          <p class="cml__gnote" data-gnote aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="cml__auto">{{ s.auto_note }}</div>
+
+      <div class="cml__meter">
+        <div class="cml__mtxt" data-mtxt>Add <b>${{ s.min_amount }}</b> of meat to unlock <b>FREE shipping + your free gift</b>.</div>
+        <div class="cml__track"><div class="cml__fill" data-fill></div></div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} PRODUCT SECTIONS {%- endcomment -%}
+  {%- capture cats -%}bundles,beef,pork,chicken{%- endcapture -%}
+  <nav class="cml__nav" aria-label="Shop by category"><div class="cml__in">
+    {%- for c in (1..4) -%}
+      {%- assign key = cats | split: ',' | slice: forloop.index0 | first -%}
+      {%- assign ck = 'col_' | append: key -%}
+      {%- assign tk = 'title_' | append: key -%}
+      {%- assign has = false -%}{%- if s[ck] != blank -%}{%- assign has = true -%}{%- endif -%}{%- if key == 'bundles' and s.bundle_products.size > 0 -%}{%- assign has = true -%}{%- endif -%}
+      {%- if has -%}<a href="#cml-{{ key }}-{{ sid }}">{% if key == 'bundles' %}Bundles{% else %}{{ s[tk] | escape }}{% endif %}</a>{%- endif -%}
+    {%- endfor -%}
+  </div></nav>
+
+  {%- assign seen = ',' -%}
+  {%- for c in (1..4) -%}
+    {%- assign key = cats | split: ',' | slice: forloop.index0 | first -%}
+    {%- assign ck = 'col_' | append: key -%}
+    {%- assign tk = 'title_' | append: key -%}
+    {%- assign stk = 'sub_' | append: key -%}
+    {%- assign col = s[ck] -%}
+    {%- if key == 'bundles' and s.bundle_products.size > 0 -%}{%- assign list = s.bundle_products -%}{%- assign col = blank -%}{%- elsif col != blank -%}{%- assign list = col.products -%}{%- else -%}{%- assign list = blank -%}{%- endif -%}
+    {%- if list != blank -%}
+    <section class="cml__cat{% if key == 'bundles' %} cml__cat--bundles{% endif %}" id="cml-{{ key }}-{{ sid }}">
+      <div class="cml__in">
+        <div class="cml__cat-head">
+          <div>
+            <span class="cml__h cml__cat-t" role="heading" aria-level="2">{{ s[tk] | escape }}</span>
+            {%- if s[stk] != blank -%}<div class="cml__cat-s">{{ s[stk] | escape }}</div>{%- endif -%}
+          </div>
+          {%- if col != blank -%}<a class="cml__all" href="{{ col.url }}">View all {{ col.products_count }} →</a>{%- endif -%}
+        </div>
+        <div class="cml__grid">
+          {%- assign shown = 0 -%}
+          {%- for pass in (1..2) -%}
+          {%- for product in list -%}
+            {%- if shown >= s.per_cat and key != 'bundles' -%}{%- break -%}{%- endif -%}
+            {%- unless product.available -%}{%- continue -%}{%- endunless -%}
+            {%- assign is_dep = false -%}{%- if product.title contains 'Deposit' or product.title contains 'DEPOSIT' -%}{%- assign is_dep = true -%}{%- endif -%}
+            {%- if pass == 1 and is_dep -%}{%- continue -%}{%- endif -%}
+            {%- if pass == 2 and is_dep == false -%}{%- continue -%}{%- endif -%}
+            {%- assign hkey = ',' | append: product.handle | append: ',' -%}
+            {%- if seen contains hkey -%}{%- continue -%}{%- endif -%}
+            {%- if skip_handles contains product.handle or product.gift_card? or product.tags contains 'free-gift' -%}{%- continue -%}{%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}{%- assign seen = seen | append: product.handle | append: ',' -%}
+            {%- assign v = product.selected_or_first_available_variant -%}
+            {%- if v.title contains 'GIFT' -%}{%- assign v = product.variants.first -%}{%- endif -%}
+            <article class="cml__card">
+              <a class="cml__img" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+                {%- if product.featured_image != blank -%}
+                  <img src="{{ product.featured_image | image_url: width: 600 }}" srcset="{{ product.featured_image | image_url: width: 360 }} 360w, {{ product.featured_image | image_url: width: 600 }} 600w" sizes="(max-width: 749px) 50vw, 25vw" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600" height="600">
+                {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}
+                {%- if v.price >= t1 -%}<span class="cml__tag cml__tag--lime">Unlocks free gift + shipping</span>{%- elsif v.compare_at_price > v.price -%}<span class="cml__tag">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>{%- endif -%}
+              </a>
+              <div class="cml__body">
+                <a class="cml__name" href="{{ product.url }}">{{ product.title | escape }}</a>
+                <div class="cml__price" data-price>{{ v.price | money_without_trailing_zeros }}{%- if v.compare_at_price > v.price -%}<s>{{ v.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}</div>
+                {%- assign real_variants = 0 -%}
+                {%- for pv in product.variants -%}{%- unless pv.title contains ' GIFT - ' -%}{%- assign real_variants = real_variants | plus: 1 -%}{%- endunless -%}{%- endfor -%}
+                {%- if real_variants > 1 -%}
+                  <select class="cml__var" data-var aria-label="Choose an option for {{ product.title | escape }}">
+                    {%- for pv in product.variants -%}
+                      {%- if pv.title contains ' GIFT - ' -%}{%- continue -%}{%- endif -%}
+                      <option value="{{ pv.id }}" data-price="{{ pv.price | money_without_trailing_zeros }}" {% unless pv.available %}disabled{% endunless %} {% if pv.id == v.id %}selected{% endif %}>{{ pv.title | escape }} — {{ pv.price | money_without_trailing_zeros }}</option>
+                    {%- endfor -%}
+                  </select>
+                {%- else -%}
+                  <input type="hidden" data-var value="{{ v.id }}">
+                {%- endif -%}
+                <button type="button" class="cml__add" data-add>Add to cart</button>
+              </div>
+            </article>
+          {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} HOW IT WORKS + FAQ {%- endcomment -%}
+  <section class="cml__how">
+    <div class="cml__in">
+      <span class="cml__eyebrow">Simple as 1-2-3</span>
+      <span class="cml__h cml__sec-t" role="heading" aria-level="2">How to claim it</span>
+      <div class="cml__steps">
+        <div class="cml__step"><span class="cml__h">Fill your cart</span><p>Shop beef, pork, chicken and bundles. Everything counts — subscriptions too.</p></div>
+        <div class="cml__step"><span class="cml__h">Hit ${{ s.min_amount }}</span><p>Shipping becomes FREE and you pick your gift: {{ s.gift1_name | escape }} or {{ s.gift2_name | escape }}.</p></div>
+        <div class="cml__step"><span class="cml__h">Check out</span><p>Your gift is in your cart at <b>$0</b> and shipping is free at checkout — no code needed.</p></div>
+      </div>
+      <div class="cml__faq">
+        <details><summary>When does the Cyber Monday deal end?</summary><p>{{ s.faq_when | escape }}</p></details>
+        <details><summary>Do I need a code?</summary><p>No code needed. Once your cart reaches ${{ s.min_amount }}, free shipping is applied at checkout and your free gift is added to your cart at $0.</p></details>
+        <details><summary>Can I change my free gift?</summary><p>Yes — pick a different gift on this page or tap "Change gift" in the pop-up. Only one free gift per order.</p></details>
+        <details><summary>Does my free gift count toward the ${{ s.min_amount }}?</summary><p>No — the minimum is based on the meat you buy. Free items and gift cards don't count toward it.</p></details>
+        <details><summary>Do subscriptions count toward the minimum?</summary><p>Yes! Subscription items count toward the ${{ s.min_amount }}. Your free gift and free shipping apply once, to this order — they don't repeat on future subscription deliveries.</p></details>
+        <details><summary>Where does the meat come from?</summary><p>{{ s.faq_where | escape }}</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cml__close">
+    <div class="cml__in">
+      <span class="cml__h" role="heading" aria-level="2">{{ s.close_title | escape }}</span>
+      <p>Free shipping + a free gift on every order of ${{ s.min_amount }}+. Today only.</p>
+      <a class="cml__btn" href="#cml-bundles-{{ sid }}">Shop Cyber Monday</a>
+    </div>
+  </section>
+
+  <div class="cml__sticky" data-sticky>
+    <div class="cml__mtxt" data-mtxt>Add <b>${{ s.min_amount }}</b> for <b>FREE shipping + gift</b></div>
+    <a href="/cart">View cart</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('cml-{{ sid }}');
+  if (!root) return;
+  var START = Date.parse(root.dataset.start) || 0, END = Date.parse(root.dataset.end) || Infinity;
+  var T1 = +root.dataset.t1;
+  var GIFTS = { {{ s.gift1_variant | json }}: {{ s.gift1_name | json }}, {{ s.gift2_variant | json }}: {{ s.gift2_name | json }} };
+  var fmt = function (c) { var v = c / 100; return '$' + (v % 1 === 0 ? v.toFixed(0) : v.toFixed(2)); };
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  var live = function () { var n = Date.now(); return n >= START && n <= END; };
+
+  // Countdown
+  var lab = root.querySelector('[data-cd-label]'), cd = root.querySelector('[data-cd]');
+  function tick() {
+    var now = Date.now(), target, label;
+    if (now < START) { target = START; label = 'Deal starts in'; }
+    else if (now <= END) { target = END; label = 'Deal ends in'; }
+    else { lab.textContent = 'This deal has ended'; cd.style.display = 'none'; root.querySelector('[data-ended]').style.display = 'block'; return; }
+    var d = Math.max(0, Math.floor((target - now) / 1000));
+    lab.textContent = label;
+    cd.querySelector('[data-d]').textContent = pad(Math.floor(d / 86400));
+    cd.querySelector('[data-h]').textContent = pad(Math.floor(d % 86400 / 3600));
+    cd.querySelector('[data-m]').textContent = pad(Math.floor(d % 3600 / 60));
+    cd.querySelector('[data-s]').textContent = pad(d % 60);
+    setTimeout(tick, 1000);
+  }
+  tick();
+
+  // Gift choice (stored by the gift script; added to the cart once it reaches the minimum)
+  var PICK_KEY = 'ffCmPick';
+  function getPick() { try { return +(window.ffGift && window.ffGift.current()) || +localStorage.getItem(PICK_KEY) || 0; } catch (e) { return 0; } }
+  var lastQ = 0;
+  function paintPick() {
+    var p = getPick();
+    root.querySelectorAll('[data-pick]').forEach(function (b) {
+      var on = +b.getAttribute('data-pick') === p;
+      b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.querySelector('[data-pick-label]').textContent = on ? 'Selected ✓' : 'Choose this';
+    });
+    var note = root.querySelector('[data-gnote]');
+    if (!p) note.innerHTML = '';
+    else if (!live()) note.innerHTML = 'Saved! <b>' + GIFTS[p] + '</b> will be added when the deal starts and your cart hits ' + fmt(T1) + '.';
+    else if (lastQ >= T1) note.innerHTML = '✅ <b>FREE ' + GIFTS[p] + '</b> is in your cart.';
+    else note.innerHTML = 'Saved! <b>FREE ' + GIFTS[p] + '</b> drops into your cart at ' + fmt(T1) + '.';
+  }
+  root.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pick]'); if (!b) return;
+    var v = +b.getAttribute('data-pick');
+    try { localStorage.setItem(PICK_KEY, String(v)); sessionStorage.removeItem('cmGiftRemoved'); } catch (err) {}
+    if (window.ffGift && window.ffGift.campaign()) window.ffGift.pick(v).then(function () { setTimeout(refresh, 300); });
+    paintPick();
+  });
+  document.addEventListener('ff:giftpick', paintPick);
+
+  // Cart meter (free gifts and gift cards don't count)
+  function paint(cart) {
+    var q = cart.items.reduce(function (s, it) { return (it.gift_card || (it.properties && it.properties._bf_free) || GIFTS[it.variant_id]) ? s : s + it.final_line_price; }, 0);
+    lastQ = q;
+    var p = getPick(), msg;
+    if (q >= T1) msg = p ? '🎉 Unlocked: <b>FREE shipping + FREE ' + GIFTS[p] + '</b>' : '🎉 <b>FREE shipping unlocked!</b> <a data-open-picker>Pick your free gift</a>';
+    else if (q > 0) msg = 'You\'re <b>' + fmt(T1 - q) + '</b> away from <b>FREE shipping + a free gift</b>';
+    else msg = 'Add <b>' + fmt(T1) + '</b> of meat to unlock <b>FREE shipping + your free gift</b>';
+    root.querySelectorAll('[data-mtxt]').forEach(function (el) { el.innerHTML = msg; });
+    root.querySelector('[data-fill]').style.width = Math.min(100, q / T1 * 100) + '%';
+    paintPick();
+  }
+  root.addEventListener('click', function (e) {
+    if (!e.target.closest('[data-open-picker]')) return;
+    if (window.ffGift && window.ffGift.campaign()) window.ffGift.open(); else document.getElementById('cml-deal-{{ sid }}').scrollIntoView({ behavior: 'smooth' });
+  });
+  function refresh() { return fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(paint).catch(function () {}); }
+  refresh();
+  document.addEventListener('cart:refresh', function () { setTimeout(refresh, 300); });
+  document.addEventListener('ff:giftsync', function () { setTimeout(refresh, 200); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
+
+  // Sticky bar after the hero (mobile), above the theme's bottom toolbar
+  var sticky = root.querySelector('[data-sticky]'), hero = root.querySelector('.cml__hero');
+  if (window.IntersectionObserver) new IntersectionObserver(function (e) { sticky.classList.toggle('is-on', !e[0].isIntersecting); }).observe(hero);
+  function lift() {
+    var tb = document.querySelector('.basel-toolbar'), h = 0;
+    if (tb) { var cs = getComputedStyle(tb); if (cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position === 'fixed') h = tb.offsetHeight; }
+    sticky.style.bottom = h + 'px';
+    root.style.paddingBottom = window.innerWidth < 750 ? (70 + h) + 'px' : '';
+  }
+  lift(); window.addEventListener('resize', lift); window.addEventListener('load', lift);
+
+  // Variant price + add to cart
+  root.addEventListener('change', function (e) {
+    var sel = e.target.closest('[data-var]'); if (!sel || sel.tagName !== 'SELECT') return;
+    var o = sel.options[sel.selectedIndex], p = sel.closest('.cml__card').querySelector('[data-price]');
+    if (o && p) p.textContent = o.getAttribute('data-price');
+  });
+  root.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-add]'); if (!btn) return;
+    var card = btn.closest('.cml__card'), id = card.querySelector('[data-var]').value;
+    btn.disabled = true; btn.textContent = 'Adding…';
+    fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: Number(id), quantity: 1 }) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function () { btn.classList.add('is-done'); btn.textContent = 'Added ✓'; return refresh(); })
+      .catch(function () { window.location.href = card.querySelector('.cml__name').href; })
+      .then(function () { setTimeout(function () { btn.disabled = false; btn.classList.remove('is-done'); btn.textContent = 'Add to cart'; }, 1600); setTimeout(refresh, 2500); });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Cyber Monday landing",
+  "settings": [
+    { "type": "header", "content": "Timing (UTC — midnight EST = 05:00)" },
+    { "type": "text", "id": "start", "label": "Deal start", "default": "2026-11-30T05:00:00Z" },
+    { "type": "text", "id": "end", "label": "Deal end", "default": "2026-12-01T04:59:59Z" },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image", "info": "Empty = farm photo" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Freedom Farms · Today only" },
+    { "type": "text", "id": "title_1", "label": "Title line 1", "default": "Cyber" },
+    { "type": "text", "id": "title_2", "label": "Title line 2", "default": "Monday" },
+    { "type": "richtext", "id": "subtitle", "label": "Subtitle", "default": "<p>Spend $299 and get <b>FREE shipping</b> + your choice of <b>2 FREE whole chickens</b> or <b>2 FREE filet mignon steaks</b>.</p>" },
+    { "type": "header", "content": "Deal" },
+    { "type": "number", "id": "min_amount", "label": "Minimum ($)", "default": 299 },
+    { "type": "text", "id": "gift1_handle", "label": "Gift 1 product handle (for the photo)", "default": "whole-free-range-chicken" },
+    { "type": "number", "id": "gift1_variant", "label": "Gift 1 $0 variant ID", "default": 58335232819383 },
+    { "type": "text", "id": "gift1_name", "label": "Gift 1 name", "default": "2 Whole Chickens" },
+    { "type": "text", "id": "gift1_value", "label": "Gift 1 note", "default": "Pasture-raised · free" },
+    { "type": "text", "id": "gift2_handle", "label": "Gift 2 product handle (for the photo)", "default": "steak-grill-packs-filet-tenderloin" },
+    { "type": "number", "id": "gift2_variant", "label": "Gift 2 $0 variant ID", "default": 58334916772023 },
+    { "type": "text", "id": "gift2_name", "label": "Gift 2 name", "default": "2 Filet Mignon Steaks" },
+    { "type": "text", "id": "gift2_value", "label": "Gift 2 note", "default": "Grass-fed · free" },
+    { "type": "richtext", "id": "auto_note", "label": "Note under the deal", "default": "<p><b>No code needed</b> — free shipping applies at checkout and your gift is added to your cart automatically. Born, raised & processed in the USA.</p>" },
+    { "type": "header", "content": "Product sections" },
+    { "type": "range", "id": "per_cat", "label": "Products per section", "min": 4, "max": 16, "step": 4, "default": 8 },
+    { "type": "product_list", "id": "bundle_products", "label": "Bundles (hand-picked)", "limit": 12 },
+    { "type": "collection", "id": "col_bundles", "label": "Bundles collection (used if no hand-picked products)" },
+    { "type": "text", "id": "title_bundles", "label": "Bundles title", "default": "Fastest Way to $299: Bundles" },
+    { "type": "text", "id": "sub_bundles", "label": "Bundles subtitle", "default": "One box can unlock free shipping + your free gift on its own." },
+    { "type": "collection", "id": "col_beef", "label": "Beef collection" },
+    { "type": "text", "id": "title_beef", "label": "Beef title", "default": "Beef" },
+    { "type": "text", "id": "sub_beef", "label": "Beef subtitle", "default": "Grass-fed, grass-finished. Steaks, roasts & ground beef." },
+    { "type": "collection", "id": "col_pork", "label": "Pork collection" },
+    { "type": "text", "id": "title_pork", "label": "Pork title", "default": "Pork" },
+    { "type": "text", "id": "sub_pork", "label": "Pork subtitle", "default": "100% pasture-raised. Bacon, chops, sausage & more." },
+    { "type": "collection", "id": "col_chicken", "label": "Chicken collection" },
+    { "type": "text", "id": "title_chicken", "label": "Chicken title", "default": "Chicken" },
+    { "type": "text", "id": "sub_chicken", "label": "Chicken subtitle", "default": "Pasture-raised chicken, turkey & eggs." },
+    { "type": "header", "content": "FAQ + closing" },
+    { "type": "text", "id": "faq_when", "label": "When does it end", "default": "The deal runs all day Monday, Nov 30 — from 12:00 AM to 11:59 PM EST." },
+    { "type": "text", "id": "faq_where", "label": "Where it comes from", "default": "Our own family farm in Greene, NY, and trusted American farms — born, raised and processed in the USA, shipped frozen nationwide." },
+    { "type": "text", "id": "close_title", "label": "Closing title", "default": "Fill the freezer. Ship it free." }
+  ]
+}
+{% endschema %}

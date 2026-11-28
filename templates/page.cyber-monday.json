@@ -1,0 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cm_landing": {
+      "type": "cyber-monday-landing",
+      "settings": {
+        "col_beef": "beef",
+        "col_pork": "pork",
+        "col_chicken": "100-pasture-raised-chicken",
+        "per_cat": 8,
+        "bundle_products": [
+          "fall-stock-up-box-save-100",
+          "beef-variety-box",
+          "pork-variety-box",
+          "farm-fresh-beef-pork-chicken-bundle",
+          "the-ranchers-reserve-collection-by-freedom-farms-our-best-cuts",
+          "beef-pork-box",
+          "13lbs-of-premium-farm-raised-meat",
+          "5lbs-chicken-breast-5lbs-of-ground-beef"
+        ]
+      }
+    }
+  },
+  "order": [
+    "cm_landing"
+  ]
+}
